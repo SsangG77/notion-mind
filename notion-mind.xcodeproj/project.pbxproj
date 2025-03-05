@@ -6,15 +6,24 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		91F64E562D78758800D3ACAF /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 91F64E552D78758800D3ACAF /* RxCocoa */; };
+		91F64E582D78758800D3ACAF /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 91F64E572D78758800D3ACAF /* RxRelay */; };
+		91F64EA62D788BF300D3ACAF /* InriaSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 91F64EA32D788BF300D3ACAF /* InriaSans-Bold.ttf */; };
+		91F64EA82D788BF300D3ACAF /* InriaSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 91F64EA52D788BF300D3ACAF /* InriaSans-Regular.ttf */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		91F64E3C2D78739F00D3ACAF /* notion-mind.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "notion-mind.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		91F64EA32D788BF300D3ACAF /* InriaSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InriaSans-Bold.ttf"; sourceTree = "<group>"; };
+		91F64EA52D788BF300D3ACAF /* InriaSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InriaSans-Regular.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
 		91F64E4E2D7873A100D3ACAF /* Exceptions for "notion-mind" folder in "notion-mind" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				ETC/Info.plist,
 			);
 			target = 91F64E3B2D78739F00D3ACAF /* notion-mind */;
 		};
@@ -36,6 +45,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				91F64E582D78758800D3ACAF /* RxRelay in Frameworks */,
+				91F64E562D78758800D3ACAF /* RxCocoa in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -47,6 +58,7 @@
 			children = (
 				91F64E3E2D78739F00D3ACAF /* notion-mind */,
 				91F64E3D2D78739F00D3ACAF /* Products */,
+				91F64EA92D788C0E00D3ACAF /* Font */,
 			);
 			sourceTree = "<group>";
 		};
@@ -56,6 +68,15 @@
 				91F64E3C2D78739F00D3ACAF /* notion-mind.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		91F64EA92D788C0E00D3ACAF /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				91F64EA32D788BF300D3ACAF /* InriaSans-Bold.ttf */,
+				91F64EA52D788BF300D3ACAF /* InriaSans-Regular.ttf */,
+			);
+			path = Font;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -78,6 +99,8 @@
 			);
 			name = "notion-mind";
 			packageProductDependencies = (
+				91F64E552D78758800D3ACAF /* RxCocoa */,
+				91F64E572D78758800D3ACAF /* RxRelay */,
 			);
 			productName = "notion-mind";
 			productReference = 91F64E3C2D78739F00D3ACAF /* notion-mind.app */;
@@ -107,6 +130,9 @@
 			);
 			mainGroup = 91F64E332D78739F00D3ACAF;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				91F64E542D78758700D3ACAF /* XCRemoteSwiftPackageReference "RxSwift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 91F64E3D2D78739F00D3ACAF /* Products */;
 			projectDirPath = "";
@@ -122,6 +148,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				91F64EA62D788BF300D3ACAF /* InriaSans-Bold.ttf in Resources */,
+				91F64EA82D788BF300D3ACAF /* InriaSans-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,12 +175,15 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = M3KH86595Z;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "notion-mind/Info.plist";
+				INFOPLIST_FILE = "notion-mind/ETC/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Notion Mind";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -175,12 +206,15 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = M3KH86595Z;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "notion-mind/Info.plist";
+				INFOPLIST_FILE = "notion-mind/ETC/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Notion Mind";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -335,6 +369,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		91F64E542D78758700D3ACAF /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.9.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		91F64E552D78758800D3ACAF /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 91F64E542D78758700D3ACAF /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		91F64E572D78758800D3ACAF /* RxRelay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 91F64E542D78758700D3ACAF /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxRelay;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 91F64E342D78739F00D3ACAF /* Project object */;
 }
