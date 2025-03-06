@@ -10,6 +10,8 @@ import UIKit
 
 extension UIColor {
     
+    
+    // hexcode로 색 추출
     convenience init(hexCode: String, alpha: CGFloat = 1.0) {
         var hexFormatted: String = hexCode.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).uppercased()
         
@@ -27,4 +29,11 @@ extension UIColor {
                   blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
                   alpha: alpha)
     }
+    
+    
+    
+    
+    static let adaptiveBackground: UIColor = UIColor { traitCollection in
+            return traitCollection.userInterfaceStyle == .dark ? UIColor(hexCode: "#191919") : UIColor(hexCode: "#F1F1F1")
+        }
 }

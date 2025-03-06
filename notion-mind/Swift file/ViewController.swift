@@ -9,29 +9,71 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    let connectNotionBtn = ConnectNotionButton()
+    
+    lazy var button = CustomBorderButton()
+    lazy var mainTitle = setTitle()
+    lazy var imageView  = setImageView()
+    lazy var stackView = setStackView()
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+
         
-        self.view.backgroundColor = .red
-        
-        self.view.addSubview(connectNotionBtn)
-        connectNotionBtn.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(stackView)
+        self.view.addSubview(button)
         NSLayoutConstraint.activate([
-            connectNotionBtn.heightAnchor.constraint(equalToConstant: 60),
-            connectNotionBtn.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -350),
-            connectNotionBtn.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 70),
-            connectNotionBtn.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-//            connectNotionBtn.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
+            stackView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 50),
+            stackView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 250),
+            stackView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            
+            button.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 40),
+            button.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            button.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -250)
+            
         ])
-        
         
     }
 
 
+}
+
+extension ViewController {
+    
+
+    func setUI() {
+        self.view.backgroundColor = UIColor.init(hexCode: "#191919")
+    }
+}
+
+
+//MARK: - 컴포넌트
+extension ViewController {
+    
+    func setTitle() -> UILabel {
+        let label = UILabel()
+        label.text = "Notion Mind"
+        label.font = UIFont(name: "InriaSans-Bold", size: 40)
+        return label
+    }
+    
+    func setImageView() -> UIImageView {
+        let imageView = UIImageView(image: UIImage(named: "notionMindIcon")!.resized(to: CGSize(width: 100, height: 100)))
+         imageView.contentMode = .scaleAspectFit
+         return imageView
+    }
+    
+    func setStackView() -> UIStackView {
+        let stackView = UIStackView(arrangedSubviews: [imageView, mainTitle])
+        stackView.axis = .vertical
+        stackView.spacing = 20
+        stackView.alignment = .center
+        stackView.arrangedSubviews.forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+
+        return stackView
+    }
+    
 }
 
 
