@@ -1,42 +1,12 @@
 //
-//  ConnectNotionself.swift
+//  ConnectNotionButton+Ext.swift
 //  notion-mind
 //
-//  Created by 차상진 on 3/5/25.
+//  Created by 차상진 on 3/7/25.
 //
 
 import Foundation
 import UIKit
-
-
-//MARK: - 바꾼 후
-class CustomBorderButton: UIButton {
-    
-    private lazy var label:UILabel = self.setLabel(title: "Connect to Notion")
-    
-    private lazy var notionImage: UIImageView = self.setImage()
-    
-    private lazy var stackView: UIStackView = self.setStackView()
-    
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupUI()
-       
-        
-
-        addTarget(self, action: #selector(buttonTouchedDown), for: .touchDown)
-        addTarget(self, action: #selector(buttonReleased), for: [.touchUpInside, .touchDragExit])
-    }
-
- 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
-
-
 
 
 
@@ -44,12 +14,12 @@ class CustomBorderButton: UIButton {
 extension CustomBorderButton {
     
     
-    @objc private func buttonTouchedDown() {
+    @objc func buttonTouchedDown() {
         stackView.backgroundColor = UIColor.black
         label.textColor = UIColor.white
     }
 
-    @objc private func buttonReleased() {
+    @objc func buttonReleased() {
         stackView.backgroundColor = UIColor(hexCode: "F1F1F1")
         label.textColor = UIColor.black
     }
@@ -62,15 +32,12 @@ extension CustomBorderButton {
     
     func setLabel(title: String) -> UILabel {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Connect to Notion"
-        label.font = UIFont(name: "InriaSans-Regular", size: 20)
+        label.setFont(text: "Connect to Notion", style: .regular, size: 20)
         return label
     }
     
     func setImage() -> UIImageView {
         let imageView = UIImageView(image: UIImage(named: "notion")!.resized(to: CGSize(width: 34, height: 34)))
-         imageView.translatesAutoresizingMaskIntoConstraints = false
          imageView.contentMode = .scaleAspectFit
          return imageView
     }
@@ -85,6 +52,7 @@ extension CustomBorderButton {
         stackView.layer.cornerRadius = 11
         stackView.layoutMargins = UIEdgeInsets(top: .zero, left: 0, bottom: .zero, right: 40)
         stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.arrangedSubviews.forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
         stackView.isUserInteractionEnabled = false
         return stackView
     }
@@ -124,56 +92,3 @@ extension CustomBorderButton {
     
 }
 
-
-
-
-
-
-//MARK: - preview
-#if DEBUG
-
-import SwiftUI
-import UIKit
-
-
-class ConnectButtonVC: UIViewController {
-    
-
-    let button = CustomBorderButton()
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        self.view.addSubview(button)
-        NSLayoutConstraint.activate([
-            button.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 50),
-            button.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -250),
-            button.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
-        ])
-        
-    }
-
-}
-
-
-struct ConnectNotionButtonPresentable: UIViewControllerRepresentable {
-    func updateUIViewController(_ uiViewCOntroller: UIViewControllerType, context: Context) {
-        
-    }
-    
-    func makeUIViewController(context: Context) -> some UIViewController {
-        ConnectButtonVC()
-    }
-    
-}
-
-struct ConnectNotionButtonPresentablePreviews: PreviewProvider {
-    static var previews: some View {
-        ConnectNotionButtonPresentable()
-            .ignoresSafeArea()
-    }
-}
-
-
-
-#endif
