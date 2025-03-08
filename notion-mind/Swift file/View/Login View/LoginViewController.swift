@@ -57,7 +57,7 @@ class LoginViewController: UIViewController {
     
     private func navigateToMain() {
         let mainVC = MainViewController()
-        UIApplication.shared.windows.first?.rootViewController = UINavigationController(rootViewController: mainVC)
+        UIApplication.shared.windows.first?.rootViewController = mainVC
     }
    
     

@@ -21,12 +21,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         
         
+        //UserDefaults 전부 삭제
+        for key in UserDefaults.standard.dictionaryRepresentation().keys {
+            UserDefaults.standard.removeObject(forKey: key.description)
+        }
         
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
-//            window.rootViewController = LoginViewController() // 변경된 클래스 적용
-//            self.window = window
-//            window.makeKeyAndVisible()
+
         
         let isLoggedIn = AuthManager.shared.isLoggedIn()
 
@@ -39,7 +41,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                    rootViewController = LoginViewController()
                }
 
-        window.rootViewController = UINavigationController(rootViewController: rootViewController)
+        window.rootViewController = rootViewController /*UINavigationController(rootViewController: rootViewController)*/
         self.window = window
         window.makeKeyAndVisible()
         

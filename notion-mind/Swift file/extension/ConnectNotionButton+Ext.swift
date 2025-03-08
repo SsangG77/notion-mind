@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SnapKit
 
 
 
@@ -30,6 +31,7 @@ extension CustomBorderButton {
 //MARK: - 컴포넌트 설정
 extension CustomBorderButton {
     
+    
     func setLabel(title: String) -> UILabel {
         let label = UILabel()
         label.setFont(text: "Connect to Notion", style: .regular, size: 20)
@@ -44,7 +46,6 @@ extension CustomBorderButton {
     
     func setStackView() -> UIStackView {
         let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.spacing = -30
         stackView.alignment = .center
@@ -65,7 +66,6 @@ extension CustomBorderButton {
 extension CustomBorderButton {
     
     func setupUI() {
-        self.translatesAutoresizingMaskIntoConstraints = false
         self.backgroundColor =  UIColor.black // 버튼 배경 설정
         layer.cornerRadius = 16 // 테두리 곡률 설정
         
@@ -75,18 +75,20 @@ extension CustomBorderButton {
         
         addSubview(stackView)
         
-        NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 3),
-            stackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 3),
-            stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
-            stackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
-        ])
+        
+        stackView.snp.makeConstraints {
+            $0.leading.top.equalToSuperview().inset(3)
+            $0.trailing.bottom.equalToSuperview().inset(10)
+        }
         
         
         //버튼 높이 설정
-        NSLayoutConstraint.activate([
-            self.heightAnchor.constraint(equalToConstant: 70)
-        ])
+        self.snp.makeConstraints {
+            $0.height.equalTo(70)
+        }
+        
+        
+        
         
     }
     

@@ -22,4 +22,16 @@ extension UILabel {
         self.font = font.setFontStyle(style: style, size: size)
         self.textColor = color
     }
+    
+    
+    func changeTextColorByBG(for bgColor: UIColor) {
+        var white: CGFloat = 0
+        bgColor.getWhite(&white, alpha: nil)
+    
+        
+        self.textColor = white > 0.5 ? .black : .white
+    }
+    
+    
+    
 }

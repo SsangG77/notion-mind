@@ -7,7 +7,7 @@
 
 import Foundation
 import UIKit
-
+import SnapKit
 
 
 extension LoginViewController {
@@ -30,8 +30,8 @@ extension LoginViewController {
         stackView.axis = .vertical
         stackView.spacing = 20
         stackView.alignment = .center
-        stackView.arrangedSubviews.forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+//        stackView.arrangedSubviews.forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
+//        stackView.translatesAutoresizingMaskIntoConstraints = false
 
         return stackView
     }
@@ -46,16 +46,21 @@ extension LoginViewController {
     func setLayout() {
         self.view.addSubview(stackView)
         self.view.addSubview(connectButton)
-        NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 50),
-            stackView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 250),
-            stackView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            
-            connectButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 40),
-            connectButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            connectButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -250)
-            
-        ])
+
+        stackView.snp.makeConstraints {
+            $0.leading.equalTo(self.view.snp.leading).inset(50)
+            $0.top.equalTo(self.view.snp.top).inset(250)
+            $0.centerX.equalTo(self.view.snp.centerX)
+        }
+        
+        connectButton.snp.makeConstraints {
+            $0.leading.equalTo(self.view.snp.leading).inset(40)
+            $0.centerX.equalTo(self.view.snp.centerX)
+            $0.bottom.equalTo(self.view.snp.bottom).inset(250)
+        }
+        
+        
+        
     }
     
 }

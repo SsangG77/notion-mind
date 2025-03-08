@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SnapKit
 
 
 
@@ -56,11 +57,12 @@ class ConnectButtonVC: UIViewController {
         super.viewDidLoad()
         
         self.view.addSubview(button)
-        NSLayoutConstraint.activate([
-            button.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 50),
-            button.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -250),
-            button.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
-        ])
+        
+        button.snp.makeConstraints {
+            $0.leading.equalTo(self.view.snp.leading).inset(50)
+            $0.bottom.equalTo(self.view.snp.bottom).inset(250)
+            $0.centerX.equalTo(self.view.snp.centerX)
+        }
         
     }
 
