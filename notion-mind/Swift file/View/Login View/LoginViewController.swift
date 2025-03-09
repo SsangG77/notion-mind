@@ -73,7 +73,7 @@ class LoginViewController: UIViewController {
 import SwiftUI
 
 
-struct MainVCPresentable: UIViewControllerRepresentable {
+struct LoginVCPresentable: UIViewControllerRepresentable {
     func updateUIViewController(_ uiViewCOntroller: UIViewControllerType, context: Context) {
         
     }
@@ -84,9 +84,9 @@ struct MainVCPresentable: UIViewControllerRepresentable {
     
 }
 
-struct MainVCPresentablePreviews: PreviewProvider {
+struct LoginVCPresentablePreviews: PreviewProvider {
     static var previews: some View {
-        MainVCPresentable()
+        LoginVCPresentable()
             .ignoresSafeArea()
     }
 }
