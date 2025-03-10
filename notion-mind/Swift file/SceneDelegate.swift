@@ -31,13 +31,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         
         let isLoggedIn = AuthManager.shared.isLoggedIn()
-
+        
                let rootViewController: UIViewController
                if isLoggedIn {
-                   print("로그인 상태 : \(isLoggedIn)")
                    rootViewController = MainViewController()
                } else {
-                   print("로그인 상태 : \(isLoggedIn)")
                    rootViewController = LoginViewController()
                }
 

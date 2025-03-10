@@ -8,6 +8,9 @@
 import Foundation
 import UIKit
 import SnapKit
+import RxSwift
+import RxRelay
+import RxCocoa
 
 
 //MARK: - 컴포넌트
@@ -61,30 +64,46 @@ extension MainViewController {
     
     //레이아웃 업데이트 부분
     func updateLayout() {
+        Service.myPrint("레이아웃 업데이트") {
+            print(#function)
+            print(#line)
+        }
         
-        let frameHeight           = self.view.frame.height  // MainViewController의 높이
-        let frameWidth            = self.view.frame.width   // MainViewController의 넓이
+        let frameHeight    = self.view.frame.height  // MainViewController의 높이
+        let frameWidth     = self.view.frame.width   // MainViewController의 넓이
         
         //기존 노드들 제거
         contentView.subviews.forEach { $0.removeFromSuperview() }
         
         var nodesCount = 0
-        var savedOffset: [CGRect] = []
         
-        mainViewModel.nodesRelay
-            .bind(onNext: { [weak self] nodes in
-                guard let self = self else { return }
-                
-                nodesCount = mainViewModel.nodeCount.value
-                
-                for node in nodes {
-                    let newRect = setNode(savedOffset: savedOffset, frame: self.view.frame, node: node)
-                    savedOffset.append(newRect)
-                    
-                }//for
-                
+        mainViewModel.nodeCount
+            .subscribe(onNext: { count in
+                Service.myPrint("노드 개수", count) {
+                    print(#function)
+                    print(#line)
+                }
+                nodesCount = count
             })
             .disposed(by: disposeBag)
+
+        
+        mainViewModel.nodesRelay
+            .observe(on: MainScheduler.instance) // UI 업데이트는 메인 스레드에서 실행
+            .subscribe(onNext: { [weak self] nodes in
+                guard let self = self else { return }
+
+                Service.myPrint("레이아웃 업데이트") {
+                    print(#function)
+                    print(#line)
+                }
+                
+                savedOffset = nodes.map { node in
+                    self.setNode(savedOffset: self.savedOffset, frame: self.view.frame, node: node, nodesCount: nodesCount)
+                }
+            })
+            .disposed(by: disposeBag)
+
         
         
         //콘텐트 뷰 크기를 업데이트
@@ -103,11 +122,10 @@ extension MainViewController {
 
 extension MainViewController {
     
-    func setNode(savedOffset: [CGRect], frame: CGRect , node: Node) -> CGRect {
+    func setNode(savedOffset: [CGRect], frame: CGRect , node: Node, nodesCount: Int) -> CGRect {
         
         let frameHeight           = frame.height  // MainViewController의 높이
         let frameWidth            = frame.width   // MainViewController의 넓이
-        let nodesCount            = mainViewModel.nodeCount.value
         
         let nodeView = NodeView(node: node)
         self.contentView.addSubview(nodeView)
@@ -131,7 +149,7 @@ extension MainViewController {
         var randomY: CGFloat
         var newRect: CGRect
         
-        let inset: CGFloat = 400
+        let inset: CGFloat = CGFloat(10 * nodesCount)
         
         repeat {
             randomX = CGFloat.random(in: inset...(frameWidth + CGFloat(150 * nodesCount) - nodeWidth - inset))
@@ -192,24 +210,24 @@ extension MainViewController: UIScrollViewDelegate {
 
 import SwiftUI
 
-
-struct MainVCPresentable: UIViewControllerRepresentable {
-    func updateUIViewController(_ uiViewCOntroller: UIViewControllerType, context: Context) {
-        
-    }
-    
-    func makeUIViewController(context: Context) -> some UIViewController {
-        MainViewController()
-    }
-    
-}
-
-struct MainVCPresentablePreviews: PreviewProvider {
-    static var previews: some View {
-        MainVCPresentable()
-            .ignoresSafeArea()
-    }
-}
+//
+//struct MainVCPresentable: UIViewControllerRepresentable {
+//    func updateUIViewController(_ uiViewCOntroller: UIViewControllerType, context: Context) {
+//        
+//    }
+//    
+//    func makeUIViewController(context: Context) -> some UIViewController {
+//        MainViewController()
+//    }
+//    
+//}
+//
+//struct MainVCPresentablePreviews: PreviewProvider {
+//    static var previews: some View {
+//        MainVCPresentable()
+//            .ignoresSafeArea()
+//    }
+//}
 
 
 

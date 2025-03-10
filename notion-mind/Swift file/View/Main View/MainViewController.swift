@@ -23,15 +23,23 @@ class MainViewController: UIViewController {
     
     //Rx 설정
     let disposeBag = DisposeBag()
+ 
+    
+    var savedOffset: [CGRect] = []
     
    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.scrollView.delegate = self
-        mainViewModel.fetchNodes()
         
         
         setLayout()
+        
+        mainViewModel.nodesRelay
+            .bind(to: { nodes in
+                self.mainViewModel.isLoading.accept(true)
+            })
+            
        
         
     } // viewDidLoad
@@ -39,7 +47,18 @@ class MainViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        
+        
         updateLayout()
+        
+        mainViewModel.isLoading
+            .subscribe(onNext: {
+                print($0)
+                
+            })
+            .disposed(by: disposeBag)
+        
+        
     }
 
     

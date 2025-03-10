@@ -23,9 +23,6 @@ class LoginViewController: UIViewController {
     private let loginViewModel = LoginViewModel()
     private let disposeBag = DisposeBag()
 
-    
-    
-    
 // viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
