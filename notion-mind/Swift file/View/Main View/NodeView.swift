@@ -18,7 +18,9 @@ import SnapKit
 class NodeView: UIView {
     var node: Node
     
-     let innerView: UIView
+    let innerView: UIView
+    
+    
     
     
     init(node: Node, frame: CGRect = .zero) {
@@ -28,6 +30,10 @@ class NodeView: UIView {
         setupUI()
         
     }
+    
+    
+    
+    
     
     
     
@@ -48,7 +54,7 @@ import UIKit
 
 class NodeViewVC: UIViewController {
     
-    let node = Node(id: "id1", icon: nil, cover: nil, title: "ios", property: [])
+    let node = Node(id: "id1", icon: nil, cover: nil, title: "ios", property: [], rect: CGRect())
 
     override func viewDidLoad() {
         super.viewDidLoad()

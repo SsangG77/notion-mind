@@ -22,9 +22,8 @@ struct Service {
     
     static func myPrint<T>(_ title: String, _ content: T = (Any).self, completion:() -> Void = {}) {
         print("================================================== \(title) ==================================================")
-        print(content)
         completion()
-        print("")
+        print(content)
     }
     
     

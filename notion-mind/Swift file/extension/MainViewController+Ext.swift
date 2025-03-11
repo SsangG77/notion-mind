@@ -13,6 +13,104 @@ import RxRelay
 import RxCocoa
 
 
+
+extension MainViewController {
+    
+    /// 직선 그리기
+    /// - Parameters:
+    ///   - startOffset: 시작점 (x, y)
+    ///   - endOffset: 끝점 (x, y)
+    func drawLine(from startOffset: CGPoint, to endOffset: CGPoint) {
+        let linePath = UIBezierPath()
+        linePath.move(to: startOffset)  // 시작점
+        linePath.addLine(to: endOffset) // 끝점
+
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.path = linePath.cgPath
+        shapeLayer.strokeColor = UIColor.black.cgColor // 선 색상 (검은색)
+        shapeLayer.lineWidth = 10.0  // 선 두께
+        shapeLayer.lineCap = .round  // 선 끝 모양
+
+//        contentView.layer.addSublayer(shapeLayer) // contentView에 추가
+        contentView.layer.insertSublayer(shapeLayer, at: 0)
+    }
+    
+    
+//    func drawLinks(savedNode: [Node]) {
+//        for node in savedNode {
+//            
+//            let nodeRect = node.rect
+//            let centerX = nodeRect.minX + nodeRect.width / 2
+//            let centerY = nodeRect.minY + nodeRect.height / 2
+//        
+//            // 이미 링크연결을 한 노드인지 판별하기
+//            if !linkedNodeId.contains(node.id) {
+//                
+//                //속성 타입중에 relation이 있으면
+//                if node.property.contains(where: { $0.type == .relation }) {
+//                    let relationArray = node.property.filter { $0.type == .relation }
+//                    
+//                    for relation in relationArray {
+//                        if let idArr = relation.value as? [String] {
+//                            for id in idArr {
+//                                if !linkedNodeId.contains(id) {
+//                                    if let findNode = savedNode.first(where: { $0.id == id }) {
+//                                        let findNodeRect = findNode.rect
+//                                        let findNodeCenterX = findNodeRect.minX + findNodeRect.width / 2
+//                                        let findNodeCenterY = findNodeRect.minY + findNodeRect.height / 2
+//                                        
+//                                        self.drawLine(from: CGPoint(x: centerX, y: centerY), to: CGPoint(x: findNodeCenterX, y: findNodeCenterY))
+//                                    }
+//                                }
+//                            }
+//                        } else {
+//                            print("배열이 아닙니다.")
+//                        }
+//                    }
+//                }//if
+//            } //if
+//        }
+//    }
+    func drawLinks(savedNode: [Node]) {
+        for node in savedNode {
+            let nodeRect = node.rect
+            let centerX = nodeRect.midX
+            let centerY = nodeRect.midY
+            
+            
+            guard !linkedNodeId.contains(node.id) else { continue }
+            
+            let relationProperties = node.property.filter { $0.type == .relation }
+            
+            let relatedIds = relationProperties
+                .compactMap { $0.value as? [String] }
+                .flatMap { $0 }
+                .filter { !linkedNodeId.contains($0) }
+            
+            let relatedNodes = relatedIds.compactMap { id in
+                savedNode.first(where: { $0.id == id })
+            }
+            
+            for findNode in relatedNodes {
+                let findNodeRect = findNode.rect
+                let findNodeCenterX = findNodeRect.midX
+                let findNodeCenterY = findNodeRect.midY
+                
+                drawLine(from: CGPoint(x: centerX, y: centerY), to: CGPoint(x: findNodeCenterX, y: findNodeCenterY))
+            }
+        }
+    }
+
+
+    
+    
+    
+}
+
+
+
+
+
 //MARK: - 컴포넌트
 extension MainViewController {
     
@@ -64,10 +162,6 @@ extension MainViewController {
     
     //레이아웃 업데이트 부분
     func updateLayout() {
-        Service.myPrint("레이아웃 업데이트") {
-            print(#function)
-            print(#line)
-        }
         
         let frameHeight    = self.view.frame.height  // MainViewController의 높이
         let frameWidth     = self.view.frame.width   // MainViewController의 넓이
@@ -77,12 +171,10 @@ extension MainViewController {
         
         var nodesCount = 0
         
+        mainViewModel.isLoading.accept(true)
+        
         mainViewModel.nodeCount
             .subscribe(onNext: { count in
-                Service.myPrint("노드 개수", count) {
-                    print(#function)
-                    print(#line)
-                }
                 nodesCount = count
             })
             .disposed(by: disposeBag)
@@ -93,28 +185,33 @@ extension MainViewController {
             .subscribe(onNext: { [weak self] nodes in
                 guard let self = self else { return }
 
-                Service.myPrint("레이아웃 업데이트") {
-                    print(#function)
-                    print(#line)
+                Service.myPrint("nodes", nodes) {
+                    
                 }
+                for node in nodes {
+                    let newNode = self.setNode(frame: self.view.frame, node: node, nodesCount: nodesCount)
+                    savedNode.append(newNode)
+                }
+                mainViewModel.isLoading.accept(false)
                 
-                savedOffset = nodes.map { node in
-                    self.setNode(savedOffset: self.savedOffset, frame: self.view.frame, node: node, nodesCount: nodesCount)
-                }
             })
             .disposed(by: disposeBag)
 
-        
+//        mainViewModel.nodesRelay.accept(savedNode) //이거 하면 NodeView가 두번 그려짐
+//        drawLine()
         
         //콘텐트 뷰 크기를 업데이트
         contentView.snp.remakeConstraints {
             
-            $0.height.equalTo(frameHeight + (150 * CGFloat(nodesCount)) + 500)
-            $0.width.equalTo(frameWidth   + (150 * CGFloat(nodesCount)) + 500)
+            $0.height.equalTo(frameHeight + CGFloat(nodePerSize * nodesCount))
+            $0.width.equalTo(frameWidth   + CGFloat(nodePerSize * nodesCount))
             
             $0.edges.equalTo(scrollView.contentLayoutGuide)
             
         }
+        
+       
+        mainViewModel.isLoading.accept(false)
         
     }
     
@@ -122,8 +219,15 @@ extension MainViewController {
 
 extension MainViewController {
     
-    func setNode(savedOffset: [CGRect], frame: CGRect , node: Node, nodesCount: Int) -> CGRect {
-        
+    
+    
+    /// newSetNode
+    /// - Parameters:
+    ///   - frame: 노드 배치를 위한 범위 전체 프레임
+    ///   - node: 해당 노드
+    ///   - nodesCount: 노드 총 갯수
+    /// - Returns: 배치된 노드 Rect 값
+    func setNode(frame: CGRect , node: Node, nodesCount: Int) -> Node {
         let frameHeight           = frame.height  // MainViewController의 높이
         let frameWidth            = frame.width   // MainViewController의 넓이
         
@@ -149,25 +253,37 @@ extension MainViewController {
         var randomY: CGFloat
         var newRect: CGRect
         
-        let inset: CGFloat = CGFloat(10 * nodesCount)
+        let inset: CGFloat = CGFloat((nodePerSize/20) * nodesCount)
         
         repeat {
-            randomX = CGFloat.random(in: inset...(frameWidth + CGFloat(150 * nodesCount) - nodeWidth - inset))
-            randomY = CGFloat.random(in: inset...(frameHeight + CGFloat(150 * nodesCount) - nodeHeight - inset))
+            
+            //(x,y)를 지정할 범위를 정함
+            randomX = CGFloat.random(in: inset...(frameWidth + CGFloat(nodePerSize * nodesCount) - nodeWidth - inset))
+            randomY = CGFloat.random(in: inset...(frameHeight + CGFloat(nodePerSize * nodesCount) - nodeHeight - inset))
+            
+            //(x,y, width, height)를 생성해서 모든 node rect배열에 저장
             newRect = CGRect(x: randomX, y: randomY, width: nodeWidth, height: nodeHeight)
-        } while savedOffset.contains(where: { $0.intersects(newRect)})
+        }
+        while savedNode.contains(where: { $0.rect.intersects(newRect) })
+
+        
+        let newNode = Node(id: node.id, icon: node.icon, cover: node.cover, title: node.title, property: node.property, rect: newRect)
         
         
         nodeView.snp.updateConstraints {
             $0.leading.equalToSuperview().offset(randomX)
             $0.top.equalToSuperview().offset(randomY)
         }
-        
-        
-        return newRect
-        
-        
-    }// setNode
+        return newNode
+    }
+    
+   
+    private func drawLine() {
+     
+    }
+    
+    
+    
 }
 
 
