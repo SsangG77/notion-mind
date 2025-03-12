@@ -14,100 +14,23 @@ import RxCocoa
 
 
 
+
+
+
+//MARK: - Action
 extension MainViewController {
     
-    /// 직선 그리기
-    /// - Parameters:
-    ///   - startOffset: 시작점 (x, y)
-    ///   - endOffset: 끝점 (x, y)
-    func drawLine(from startOffset: CGPoint, to endOffset: CGPoint) {
-        let linePath = UIBezierPath()
-        linePath.move(to: startOffset)  // 시작점
-        linePath.addLine(to: endOffset) // 끝점
-
-        let shapeLayer = CAShapeLayer()
-        shapeLayer.path = linePath.cgPath
-        shapeLayer.strokeColor = UIColor.black.cgColor // 선 색상 (검은색)
-        shapeLayer.lineWidth = 10.0  // 선 두께
-        shapeLayer.lineCap = .round  // 선 끝 모양
-
-//        contentView.layer.addSublayer(shapeLayer) // contentView에 추가
-        contentView.layer.insertSublayer(shapeLayer, at: 0)
+    @objc func settingButtonTapped() {
+        print("버튼 클릭됨")
+        let settingsVC = SettingViewController()
+        let navController = UINavigationController(rootViewController: settingsVC) // 네비게이션 컨트롤러 포함
+        navController.modalPresentationStyle = .fullScreen // 전체 화면으로 표시
+        present(navController, animated: true, completion: nil)
     }
-    
-    
-//    func drawLinks(savedNode: [Node]) {
-//        for node in savedNode {
-//            
-//            let nodeRect = node.rect
-//            let centerX = nodeRect.minX + nodeRect.width / 2
-//            let centerY = nodeRect.minY + nodeRect.height / 2
-//        
-//            // 이미 링크연결을 한 노드인지 판별하기
-//            if !linkedNodeId.contains(node.id) {
-//                
-//                //속성 타입중에 relation이 있으면
-//                if node.property.contains(where: { $0.type == .relation }) {
-//                    let relationArray = node.property.filter { $0.type == .relation }
-//                    
-//                    for relation in relationArray {
-//                        if let idArr = relation.value as? [String] {
-//                            for id in idArr {
-//                                if !linkedNodeId.contains(id) {
-//                                    if let findNode = savedNode.first(where: { $0.id == id }) {
-//                                        let findNodeRect = findNode.rect
-//                                        let findNodeCenterX = findNodeRect.minX + findNodeRect.width / 2
-//                                        let findNodeCenterY = findNodeRect.minY + findNodeRect.height / 2
-//                                        
-//                                        self.drawLine(from: CGPoint(x: centerX, y: centerY), to: CGPoint(x: findNodeCenterX, y: findNodeCenterY))
-//                                    }
-//                                }
-//                            }
-//                        } else {
-//                            print("배열이 아닙니다.")
-//                        }
-//                    }
-//                }//if
-//            } //if
-//        }
-//    }
-    func drawLinks(savedNode: [Node]) {
-        for node in savedNode {
-            let nodeRect = node.rect
-            let centerX = nodeRect.midX
-            let centerY = nodeRect.midY
-            
-            
-            guard !linkedNodeId.contains(node.id) else { continue }
-            
-            let relationProperties = node.property.filter { $0.type == .relation }
-            
-            let relatedIds = relationProperties
-                .compactMap { $0.value as? [String] }
-                .flatMap { $0 }
-                .filter { !linkedNodeId.contains($0) }
-            
-            let relatedNodes = relatedIds.compactMap { id in
-                savedNode.first(where: { $0.id == id })
-            }
-            
-            for findNode in relatedNodes {
-                let findNodeRect = findNode.rect
-                let findNodeCenterX = findNodeRect.midX
-                let findNodeCenterY = findNodeRect.midY
-                
-                drawLine(from: CGPoint(x: centerX, y: centerY), to: CGPoint(x: findNodeCenterX, y: findNodeCenterY))
-            }
-        }
-    }
-
-
     
     
     
 }
-
-
 
 
 
@@ -117,13 +40,10 @@ extension MainViewController {
     func setScrollView() -> UIScrollView {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.backgroundColor = .blue
+        scrollView.backgroundColor = .white
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 10.0
         scrollView.zoomScale = 1.5
-        
-        
-        
         return scrollView
     }
     
@@ -135,7 +55,22 @@ extension MainViewController {
          return innerView
     }
     
+    
+    func setSettingButton() -> UIButton {
+        let settingButton = UIButton()
+
+        settingButton.setImage(UIImage(named: "settingButton"), for: .normal)
+        settingButton.imageView?.contentMode = .scaleAspectFit // 이미지 크기 유지
+//        settingButton.tintColor = .white
+//        settingButton.backgroundColor = .black
+        settingButton.clipsToBounds = true
+        return settingButton
+    }
+    
+    
 }
+
+
 
 
 
@@ -154,15 +89,10 @@ extension MainViewController {
             $0.edges.equalTo(self.view.snp.edges)
         }
         
-       
-
-    
-        
     }
     
     //레이아웃 업데이트 부분
     func updateLayout() {
-        
         let frameHeight    = self.view.frame.height  // MainViewController의 높이
         let frameWidth     = self.view.frame.width   // MainViewController의 넓이
         
@@ -184,10 +114,6 @@ extension MainViewController {
             .observe(on: MainScheduler.instance) // UI 업데이트는 메인 스레드에서 실행
             .subscribe(onNext: { [weak self] nodes in
                 guard let self = self else { return }
-
-                Service.myPrint("nodes", nodes) {
-                    
-                }
                 for node in nodes {
                     let newNode = self.setNode(frame: self.view.frame, node: node, nodesCount: nodesCount)
                     savedNode.append(newNode)
@@ -213,13 +139,37 @@ extension MainViewController {
        
         mainViewModel.isLoading.accept(false)
         
+    } // updateLayout
+    
+    func positionSettingButtton() {
+        let overlayView = TransparentOverlayView() // 버튼을 배치할 오버레이 뷰
+        view.addSubview(overlayView)
+        overlayView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        overlayView.isUserInteractionEnabled = true // 터치 이벤트 필터링을 위해 true로 설정
+        
+        
+        overlayView.addSubview(settingButton) // overlayView에 버튼 추가
+
+        settingButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(30)
+            make.top.equalToSuperview().inset(60)
+            make.width.height.equalTo(50)
+        }
+        
+        settingButton.isUserInteractionEnabled = true
+        settingButton.addTarget(self, action: #selector(settingButtonTapped), for: .touchUpInside)
+        
     }
     
 }
 
+
+
+//MARK: - node, line 설정
 extension MainViewController {
-    
-    
     
     /// newSetNode
     /// - Parameters:
@@ -234,7 +184,6 @@ extension MainViewController {
         let nodeView = NodeView(node: node)
         self.contentView.addSubview(nodeView)
         
-        
         // 임시로 (0,0)에 배치
         nodeView.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(0)
@@ -243,8 +192,6 @@ extension MainViewController {
         
         //배치하고 레이아웃 업데이트
         self.contentView.layoutIfNeeded()
-        
-        
         
         let nodeHeight = nodeView.frame.height
         let nodeWidth = nodeView.frame.width
@@ -277,15 +224,61 @@ extension MainViewController {
         return newNode
     }
     
-   
-    private func drawLine() {
-     
+    
+    
+    
+    /// 직선 그리기
+    /// - Parameters:
+    ///   - startOffset: 시작점 (x, y)
+    ///   - endOffset: 끝점 (x, y)
+    func drawLine(from startOffset: CGPoint, to endOffset: CGPoint) {
+        let linePath = UIBezierPath()
+        linePath.move(to: startOffset)  // 시작점
+        linePath.addLine(to: endOffset) // 끝점
+
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.path = linePath.cgPath
+        shapeLayer.strokeColor = UIColor.black.cgColor // 선 색상 (검은색)
+        shapeLayer.lineWidth = 5.0  // 선 두께
+        shapeLayer.lineCap = .round  // 선 끝 모양
+        contentView.layer.insertSublayer(shapeLayer, at: 0)
     }
     
+    func drawLinks(savedNode: [Node]) {
+        for node in savedNode {
+            let nodeRect = node.rect
+            let centerX = nodeRect.midX
+            let centerY = nodeRect.midY
+            
+            
+            guard !linkedNodeId.contains(node.id) else { continue }
+            
+            let relationProperties = node.property.filter { $0.type == .relation }
+            
+            let relatedIds = relationProperties
+                .compactMap { $0.value as? [String] }
+                .flatMap { $0 }
+                .filter { !linkedNodeId.contains($0) }
+            
+            let relatedNodes = relatedIds.compactMap { id in
+                savedNode.first(where: { $0.id == id })
+            }
+            
+            for findNode in relatedNodes {
+                let findNodeRect = findNode.rect
+                let findNodeCenterX = findNodeRect.midX
+                let findNodeCenterY = findNodeRect.midY
+                
+                drawLine(from: CGPoint(x: centerX, y: centerY), to: CGPoint(x: findNodeCenterX, y: findNodeCenterY))
+            }
+        }
+    } // drawLinks
+    
+   
+   
     
     
 }
-
 
 
 
@@ -326,24 +319,24 @@ extension MainViewController: UIScrollViewDelegate {
 
 import SwiftUI
 
-//
-//struct MainVCPresentable: UIViewControllerRepresentable {
-//    func updateUIViewController(_ uiViewCOntroller: UIViewControllerType, context: Context) {
-//        
-//    }
-//    
-//    func makeUIViewController(context: Context) -> some UIViewController {
-//        MainViewController()
-//    }
-//    
-//}
-//
-//struct MainVCPresentablePreviews: PreviewProvider {
-//    static var previews: some View {
-//        MainVCPresentable()
-//            .ignoresSafeArea()
-//    }
-//}
+
+struct MainVCPresentable: UIViewControllerRepresentable {
+    func updateUIViewController(_ uiViewCOntroller: UIViewControllerType, context: Context) {
+        
+    }
+    
+    func makeUIViewController(context: Context) -> some UIViewController {
+        MainViewController()
+    }
+    
+}
+
+struct MainVCPresentablePreviews: PreviewProvider {
+    static var previews: some View {
+        MainVCPresentable()
+            .ignoresSafeArea()
+    }
+}
 
 
 

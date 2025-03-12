@@ -16,6 +16,11 @@ class MainViewController: UIViewController {
     //컴포넌트
     lazy var scrollView:    UIScrollView = setScrollView()
     lazy var contentView :  UIView       = setContentView()
+    lazy var settingButton: UIButton    =  setSettingButton()
+    
+    
+    
+    
     
     //뷰모델
     let mainViewModel = MainViewModel()
@@ -42,10 +47,7 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.scrollView.delegate = self
-        
-       
 
-        
         setLayout()
         
         mainViewModel.nodesRelay
@@ -54,14 +56,6 @@ class MainViewController: UIViewController {
             })
         
         
-//        mainViewModel.isLoading
-//            .subscribe(onNext: { isLoading in
-//            })
-//            .disposed(by: disposeBag)
-        
-        
-       
-
        
         
     } // viewDidLoad
@@ -71,12 +65,10 @@ class MainViewController: UIViewController {
         super.viewDidLayoutSubviews()
         
         updateLayout()
-        
-        
-//        self.drawLine(from: CGPoint(x: 50, y: 50), to: CGPoint(x: 600, y: 400))
-        
         drawLinks(savedNode: savedNode)
         
+      
+        positionSettingButtton()
     }
 
     
