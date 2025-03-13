@@ -21,8 +21,7 @@ import RxCocoa
 extension MainViewController {
     
     @objc func settingButtonTapped() {
-        print("버튼 클릭됨")
-        let settingsVC = SettingViewController()
+        
         let navController = UINavigationController(rootViewController: settingsVC) // 네비게이션 컨트롤러 포함
         navController.modalPresentationStyle = .fullScreen // 전체 화면으로 표시
         present(navController, animated: true, completion: nil)
@@ -40,7 +39,7 @@ extension MainViewController {
     func setScrollView() -> UIScrollView {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.backgroundColor = .white
+        scrollView.backgroundColor = UIColor.init(hexCode: "DFDFDF")
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 10.0
         scrollView.zoomScale = 1.5
@@ -50,7 +49,7 @@ extension MainViewController {
     func setContentView() -> UIView {
         let innerView = UIView()
          innerView.translatesAutoresizingMaskIntoConstraints = false
-        innerView.backgroundColor = .white
+        innerView.backgroundColor = UIColor.init(hexCode: "DFDFDF")
          
          return innerView
     }

@@ -30,8 +30,6 @@ extension LoginViewController {
         stackView.axis = .vertical
         stackView.spacing = 20
         stackView.alignment = .center
-//        stackView.arrangedSubviews.forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
-//        stackView.translatesAutoresizingMaskIntoConstraints = false
 
         return stackView
     }

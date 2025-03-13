@@ -72,6 +72,14 @@ extension NodeView {
             $0.bottom.equalTo(self.snp.bottom).inset(12)
             $0.trailing.equalTo(self.snp.trailing).inset(12)
         }
+         
+         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+         self.addGestureRecognizer(tapGesture)
+    }
+    
+    
+    @objc func handleTap() {
+        print("\(String(describing: node.title)) Tap!")
     }
 }
 

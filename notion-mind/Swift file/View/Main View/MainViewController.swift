@@ -26,6 +26,10 @@ class MainViewController: UIViewController {
     let mainViewModel = MainViewModel()
     
     
+    //viewcontroller
+    let settingsVC = SettingViewController()
+    
+    
     //Rx 설정
     let disposeBag = DisposeBag()
  
@@ -49,26 +53,21 @@ class MainViewController: UIViewController {
         self.scrollView.delegate = self
 
         setLayout()
+        positionSettingButtton()
         
         mainViewModel.nodesRelay
             .bind(to: { _ in
                 self.mainViewModel.isLoading.accept(true)
             })
         
-        
-       
-        
+        updateLayout()
+
     } // viewDidLoad
     
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
-        updateLayout()
         drawLinks(savedNode: savedNode)
-        
-      
-        positionSettingButtton()
     }
 
     

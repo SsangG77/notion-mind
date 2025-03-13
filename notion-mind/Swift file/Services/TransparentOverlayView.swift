@@ -19,6 +19,7 @@ class TransparentOverlayView: UIView {
            button.frame.contains(point) {
             return button
         }
+      
         
         // 그 외에는 nil을 반환하여 터치 이벤트를 ScrollView로 전달
         return nil

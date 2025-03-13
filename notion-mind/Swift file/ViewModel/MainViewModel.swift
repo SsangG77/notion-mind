@@ -58,6 +58,9 @@ class NodeAPI {
     let nodesRelay: BehaviorRelay<[Node]> = BehaviorRelay(value: [])
 
     
+    
+    //실제로는 웹소켓에서 데이터가 변경될때만 데이터를 수신함.
+    //현재는 더미 데이터
     func getNodeByObservable() {
 
         var nodes: [Node] = []
@@ -96,16 +99,16 @@ class NodeAPI {
                 "id 4"
             ])
         ], rect: CGRect()))
-//        nodes.append(Node(id: "id 1", icon: "🥬", cover: nil, title: "1 node", property: [
-//            Property(name: "하위항목", type: .relation, value: [
-//                "id 2", "id 3"
-//            ])
-//        ], rect: CGRect()))
-//        nodes.append(Node(id: "id 1", icon: "🥬", cover: nil, title: "1 node", property: [
-//            Property(name: "하위항목", type: .relation, value: [
-//                "id 2", "id 3"
-//            ])
-//        ], rect: CGRect()))
+        nodes.append(Node(id: "id 8", icon: "🥬", cover: nil, title: "8 node", property: [
+            Property(name: "하위항목", type: .relation, value: [
+                "id 3"
+            ])
+        ], rect: CGRect()))
+        nodes.append(Node(id: "id 9", icon: "🥬", cover: nil, title: "9 node", property: [
+            Property(name: "하위항목", type: .relation, value: [
+                "id 3"
+            ])
+        ], rect: CGRect()))
 //        nodes.append(Node(id: "id 1", icon: "🥬", cover: nil, title: "1 node", property: [
 //            Property(name: "하위항목", type: .relation, value: [
 //                "id 2", "id 3"

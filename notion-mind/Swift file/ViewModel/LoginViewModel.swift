@@ -20,10 +20,13 @@ class LoginViewModel {
     
     init() {
         
-        loginButtonTapped // 로그인 버튼 클릭에 의해 전달된 Observable
-            .subscribe(onNext: { // 로그인 버튼 클릭 구독
+        loginButtonTapped // 버튼 클릭에 의해 전달된 Observable
+            .subscribe(onNext: { // 버튼 클릭 구독
+                print("버튼 클릭됨. - \(AuthManager.shared.isLoggedIn())")
+                
                 AuthManager.shared.login() //로그인 실행
                 self.loginSuccess.onNext(true) //로그인 유무 Observable의 값이 변경됨
+                
             })
             .disposed(by: disposeBag)
     }

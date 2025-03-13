@@ -20,16 +20,18 @@ class NodeView: UIView {
     
     let innerView: UIView
     
-    
-    
-    
     init(node: Node, frame: CGRect = .zero) {
         self.node = node
         self.innerView = NodeView.createInnerView(node: node) //추가
         super.init(frame: frame)
         setupUI()
         
+        
+      
+        
     }
+    
+   
     
     
     

@@ -18,14 +18,6 @@ struct Node {
     
     
     
-    
-//    func setRectNode(rect: CGRect) -> Node {
-//        
-//        let node = Node(id: self.id, icon: self.icon, cover: self.cover, title: self.title, property: self.property, rect: CGRect())
-//        
-//        return node
-//    }
-    
     mutating func setRect(rect: CGRect) {
         self.rect = rect
     }

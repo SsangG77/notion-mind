@@ -14,7 +14,7 @@ import RxRelay
 class LoginViewController: UIViewController {
 
     // 컴포넌트
-    lazy var connectButton = CustomBorderButton()
+    lazy var connectButton = CustomBorderButton(frame: .zero, type: .login)
     lazy var mainTitle = setTitle()
     lazy var imageView  = setImageView()
     lazy var stackView = setStackView()
@@ -29,7 +29,7 @@ class LoginViewController: UIViewController {
         setUI()
         setLayout()
         
-        
+        print("로그인 뷰")
         connectButton.rx.tap //로그인 버튼 클릭하여 이벤트 방출
             .bind(to: loginViewModel.loginButtonTapped)
             .disposed(by: disposeBag)

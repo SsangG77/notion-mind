@@ -34,10 +34,10 @@ extension UIColor {
     
     
     static let adaptiveBackground: UIColor = UIColor { traitCollection in
-            return traitCollection.userInterfaceStyle == .dark ? UIColor(hexCode: "#262626") : UIColor(hexCode: "#F1F1F1")
+            return traitCollection.userInterfaceStyle == .dark ? UIColor(hexCode: "#262626") : UIColor(hexCode: "#DFDFDF")
         }
     
     static let adaptiveForeground: UIColor = UIColor { traitCollection in
-            return traitCollection.userInterfaceStyle == .dark ? UIColor(hexCode: "#F1F1F1") : UIColor(hexCode: "#262626")
+            return traitCollection.userInterfaceStyle == .dark ? UIColor(hexCode: "#DFDFDF") : UIColor(hexCode: "#262626")
         }
 }
