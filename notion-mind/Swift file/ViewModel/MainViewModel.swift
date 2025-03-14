@@ -18,11 +18,14 @@ class MainViewModel {
     let nodeApi = NodeAPI()
     
     
+    
+    //싱글톤 인스턴스
+    static let shared = MainViewModel()
+    
+    
+    
     // Rx
-    lazy var nodesRelay = nodeApi.nodesRelay
-    
-    
-    
+    let nodesRelay: BehaviorRelay<[Node]>
     var nodeCount: BehaviorRelay<Int> = BehaviorRelay<Int>(value: 0)
     
     // TODO: 데이터를 불러올때 상태 감지 옵저블
@@ -36,7 +39,8 @@ class MainViewModel {
    
     init() {
         
-
+        self.nodesRelay = nodeApi.nodesRelay
+        
         nodesRelay
             .subscribe(onNext: { nodes in
                 self.nodeCount.accept(nodes.count)
@@ -45,13 +49,18 @@ class MainViewModel {
             .disposed(by: disposeBag)
 
         
-        nodeApi.getNodeByObservable()
+//        nodeApi.getNodeByObservable()
+        fetchNodes()
     }
-
-
     
-}
+    // **노드 데이터를 불러오는 함수**
+        func fetchNodes() {
+            isLoading.accept(true) // 🔥 로딩 시작
+            nodeApi.getNodeByObservable()
+            isLoading.accept(false) // 🔥 로딩 완료
+        }
 
+}
 
 
 class NodeAPI {

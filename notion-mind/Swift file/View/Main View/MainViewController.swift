@@ -22,12 +22,17 @@ class MainViewController: UIViewController {
     
     
     
+    
     //뷰모델
     let mainViewModel = MainViewModel()
     
     
     //viewcontroller
-    let settingsVC = SettingViewController()
+    lazy var settingsVC = SettingViewController()
+    lazy var settingNavController = UINavigationController(rootViewController: settingsVC)
+    
+//    lazy var nodeDetailVC = NodeDetailViewController()
+//    lazy var nodeDetailNavController = UINavigationController(rootViewController: nodeDetailVC)
     
     
     //Rx 설정

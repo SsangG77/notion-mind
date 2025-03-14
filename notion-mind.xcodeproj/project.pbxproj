@@ -12,6 +12,7 @@
 		91F64E582D78758800D3ACAF /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 91F64E572D78758800D3ACAF /* RxRelay */; };
 		91F64EA62D788BF300D3ACAF /* InriaSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 91F64EA32D788BF300D3ACAF /* InriaSans-Bold.ttf */; };
 		91F64EA82D788BF300D3ACAF /* InriaSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 91F64EA52D788BF300D3ACAF /* InriaSans-Regular.ttf */; };
+		91FE8CDE2D843088005B3557 /* UIViewSeparator in Frameworks */ = {isa = PBXBuildFile; productRef = 91FE8CDD2D843088005B3557 /* UIViewSeparator */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				91C35ACD2D7C18B20085516C /* SnapKit in Frameworks */,
+				91FE8CDE2D843088005B3557 /* UIViewSeparator in Frameworks */,
 				91F64E582D78758800D3ACAF /* RxRelay in Frameworks */,
 				91F64E562D78758800D3ACAF /* RxCocoa in Frameworks */,
 			);
@@ -104,6 +106,7 @@
 				91F64E552D78758800D3ACAF /* RxCocoa */,
 				91F64E572D78758800D3ACAF /* RxRelay */,
 				91C35ACC2D7C18B20085516C /* SnapKit */,
+				91FE8CDD2D843088005B3557 /* UIViewSeparator */,
 			);
 			productName = "notion-mind";
 			productReference = 91F64E3C2D78739F00D3ACAF /* notion-mind.app */;
@@ -136,6 +139,7 @@
 			packageReferences = (
 				91F64E542D78758700D3ACAF /* XCRemoteSwiftPackageReference "RxSwift" */,
 				91C35ACB2D7C18B20085516C /* XCRemoteSwiftPackageReference "SnapKit" */,
+				91FE8CDC2D843088005B3557 /* XCRemoteSwiftPackageReference "UIViewSeparator" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 91F64E3D2D78739F00D3ACAF /* Products */;
@@ -391,6 +395,14 @@
 				minimumVersion = 6.9.0;
 			};
 		};
+		91FE8CDC2D843088005B3557 /* XCRemoteSwiftPackageReference "UIViewSeparator" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SsangG77/UIViewSeparator.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 1.1.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -408,6 +420,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 91F64E542D78758700D3ACAF /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxRelay;
+		};
+		91FE8CDD2D843088005B3557 /* UIViewSeparator */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 91FE8CDC2D843088005B3557 /* XCRemoteSwiftPackageReference "UIViewSeparator" */;
+			productName = UIViewSeparator;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

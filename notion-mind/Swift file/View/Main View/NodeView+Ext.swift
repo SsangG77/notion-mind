@@ -5,9 +5,15 @@
 //  Created by 차상진 on 3/8/25.
 //
 
+
 import Foundation
 import UIKit
 import SnapKit
+import RxSwift
+import RxRelay
+import RxCocoa
+
+
 
 
 
@@ -73,13 +79,18 @@ extension NodeView {
             $0.trailing.equalTo(self.snp.trailing).inset(12)
         }
          
-         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-         self.addGestureRecognizer(tapGesture)
+//         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+//         self.addGestureRecognizer(tapGesture)
     }
     
     
-    @objc func handleTap() {
-        print("\(String(describing: node.title)) Tap!")
-    }
+//    @objc func handleTap() {
+//        print("\(String(describing: node.title)) Tap!")
+//        
+//        let navController = UINavigationController(rootViewController: nodeDetailVC) // 네비게이션 컨트롤러 포함
+//        navController.modalPresentationStyle = .fullScreen // 전체 화면으로 표시
+//        present(navController, animated: true, completion: nil)
+//        
+//    }
 }
 

@@ -34,12 +34,7 @@ class SettingViewController: UIViewController {
         setupCloseButton() // setting close button
         setUI()
         
-     
-        
     }
-    
-
-    
     
 }
 
@@ -71,11 +66,9 @@ extension SettingViewController {
 //            $0.bottom.equalToSuperview().inset(30)
             $0.leading.equalToSuperview().inset(30)
             $0.centerX.equalToSuperview()
-        }
-        
-        logoutButton.snp.makeConstraints {
             $0.bottom.equalToSuperview().inset(50) // 마지막 뷰의 하단을 scrollView의 bottom과 연결
         }
+        
     }
 
 }

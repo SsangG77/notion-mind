@@ -18,7 +18,16 @@ import SnapKit
 class NodeView: UIView {
     var node: Node
     
+    
+    // vc
+    let nodeDetailVC: NodeDetailViewController = NodeDetailViewController()
+    
+    
+    
+    //component
     let innerView: UIView
+    
+    
     
     init(node: Node, frame: CGRect = .zero) {
         self.node = node
@@ -26,19 +35,7 @@ class NodeView: UIView {
         super.init(frame: frame)
         setupUI()
         
-        
-      
-        
     }
-    
-   
-    
-    
-    
-    
-    
-    
-    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

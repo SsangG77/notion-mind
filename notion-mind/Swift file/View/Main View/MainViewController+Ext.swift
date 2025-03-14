@@ -13,26 +13,6 @@ import RxRelay
 import RxCocoa
 
 
-
-
-
-
-//MARK: - Action
-extension MainViewController {
-    
-    @objc func settingButtonTapped() {
-        
-        let navController = UINavigationController(rootViewController: settingsVC) // 네비게이션 컨트롤러 포함
-        navController.modalPresentationStyle = .fullScreen // 전체 화면으로 표시
-        present(navController, animated: true, completion: nil)
-    }
-    
-    
-    
-}
-
-
-
 //MARK: - 컴포넌트
 extension MainViewController {
     
@@ -109,7 +89,8 @@ extension MainViewController {
             .disposed(by: disposeBag)
 
         
-        mainViewModel.nodesRelay
+//        mainViewModel.nodesRelay
+        MainViewModel.shared.nodesRelay
             .observe(on: MainScheduler.instance) // UI 업데이트는 메인 스레드에서 실행
             .subscribe(onNext: { [weak self] nodes in
                 guard let self = self else { return }
@@ -166,6 +147,32 @@ extension MainViewController {
 }
 
 
+//MARK: - Action
+extension MainViewController {
+    
+    @objc func settingButtonTapped() {
+        
+//        let navController = UINavigationController(rootViewController: settingsVC) // 네비게이션 컨트롤러 포함
+        settingNavController.modalPresentationStyle = .fullScreen // 전체 화면으로 표시
+        present(settingNavController, animated: true, completion: nil)
+    }
+    
+    @objc private func nodeViewTapped(_ sender: UITapGestureRecognizer) {
+        guard let tappedView = sender.view as? NodeView else { return }
+        let tappedNode = tappedView.node
+
+        let detailVC = NodeDetailViewController()
+        detailVC.setNode(node: tappedNode)
+        
+        let navController = UINavigationController(rootViewController: detailVC) // 네비게이션 컨트롤러 포함
+        navController.modalPresentationStyle = .fullScreen
+        present(navController, animated: true, completion: nil)
+        
+    }
+
+}
+
+
 
 //MARK: - node, line 설정
 extension MainViewController {
@@ -181,6 +188,7 @@ extension MainViewController {
         let frameWidth            = frame.width   // MainViewController의 넓이
         
         let nodeView = NodeView(node: node)
+        
         self.contentView.addSubview(nodeView)
         
         // 임시로 (0,0)에 배치
@@ -214,12 +222,18 @@ extension MainViewController {
 
         
         let newNode = Node(id: node.id, icon: node.icon, cover: node.cover, title: node.title, property: node.property, rect: newRect)
-        
-        
+                
+       
         nodeView.snp.updateConstraints {
             $0.leading.equalToSuperview().offset(randomX)
             $0.top.equalToSuperview().offset(randomY)
         }
+        
+        // ✅ 탭 제스처 추가
+           let tapGesture = UITapGestureRecognizer(target: self, action: #selector(nodeViewTapped(_:)))
+           nodeView.addGestureRecognizer(tapGesture)
+           nodeView.isUserInteractionEnabled = true
+        
         return newNode
     }
     
@@ -307,6 +321,13 @@ extension MainViewController: UIScrollViewDelegate {
         )
     }
 }
+
+
+
+
+
+
+
 
 
 
