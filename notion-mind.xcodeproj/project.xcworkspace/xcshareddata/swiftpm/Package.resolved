@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SsangG77/UIViewSeparator.git",
       "state" : {
-        "revision" : "876a6b66052342334178945b45da867050d58f16",
-        "version" : "1.1.1"
+        "revision" : "a28a829cd8516dc8903692c4fea2bb4b50368e92",
+        "version" : "1.1.2"
       }
     }
   ],

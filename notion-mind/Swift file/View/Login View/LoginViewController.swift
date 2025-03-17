@@ -9,6 +9,9 @@ import UIKit
 import RxSwift
 import RxCocoa
 import RxRelay
+import SafariServices
+
+
 
 // LoginViewController
 class LoginViewController: UIViewController {
@@ -20,46 +23,72 @@ class LoginViewController: UIViewController {
     lazy var stackView = setStackView()
     
     //rx 설정
-    private let loginViewModel = LoginViewModel()
+    private let loginViewModel: LoginViewModel
     private let disposeBag = DisposeBag()
+    
+    
+    //view model
+    let webService = WebService()
+    
+    //safari view controller
+    var safariViewController: SFSafariViewController?
+    
+    init(viewModel: LoginViewModel) {
+        self.loginViewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: Notification.Name("CloseSafariViewController"), object: nil)
+    }
 
 // viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         setUI()
         setLayout()
-        
-        print("로그인 뷰")
-        connectButton.rx.tap //로그인 버튼 클릭하여 이벤트 방출
-            .bind(to: loginViewModel.loginButtonTapped)
-            .disposed(by: disposeBag)
-        
-        
-        self.loginViewModel.loginSuccess // 로그인 성공 이벤트 방출됨
-            .observe(on: MainScheduler.instance) //
-            .subscribe(onNext: { [weak self] success in //
-                if success {
-                    self?.navigateToMain()
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        
-        
-        
+       
+        eventHandling()
+       
         
     }
 // viewDidLoad
     
-    
-    private func navigateToMain() {
-        let mainVC = MainViewController()
-        UIApplication.shared.windows.first?.rootViewController = mainVC
+    private func eventHandling() {
+        connectButton.rx.tap //로그인 버튼 클릭하여 이벤트 방출
+            .subscribe(onNext: {
+                self.openNotionAuth()
+            })
+            .disposed(by: disposeBag)
+        
+        
+        self.loginViewModel.authSuccess // 로그인 성공 이벤트 방출됨
+            .observe(on: MainScheduler.instance) //
+            .subscribe(onNext: { [weak self] success in //
+                guard let self = self else { return }
+                self.closeSafari()
+                if success {
+                    self.navigateToMain()
+                } else {
+                    print("로그인 실패 알림창 띄우기")
+                }
+            })
+            .disposed(by: disposeBag)
     }
+    
+    
+    
+  
    
     
 }
 // LoginViewController
+
 
 
 
@@ -76,7 +105,7 @@ struct LoginVCPresentable: UIViewControllerRepresentable {
     }
     
     func makeUIViewController(context: Context) -> some UIViewController {
-        LoginViewController()
+        LoginViewController(viewModel:LoginViewModel())
     }
     
 }

@@ -13,12 +13,26 @@ import RxRelay
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
+    
+    
+    let loginViewModel = LoginViewModel()
+
+    
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
+        
+        
+//        if let urlContext = connectionOptions.urlContexts.first {
+//               let sendingAppID = urlContext.options.sourceApplication
+//               let url = urlContext.url
+//               print("URL을 보낸 앱: \(sendingAppID ?? "Unknown")")
+//               print("실행된 URL: \(url)")
+//           }
+        
         
         
         //UserDefaults 전부 삭제
@@ -36,7 +50,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                if isLoggedIn {
                    rootViewController = MainViewController()
                } else {
-                   rootViewController = LoginViewController()
+                   rootViewController = LoginViewController(viewModel: loginViewModel)
                }
 
         window.rootViewController = rootViewController /*UINavigationController(rootViewController: rootViewController)*/
@@ -44,6 +58,47 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.makeKeyAndVisible()
         
     }
+    
+    
+    
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        guard let urlContext = URLContexts.first else { return }
+        print("SceneDelegate에서 URL 실행됨: \(urlContext.url.absoluteString)")
+        
+        
+        let url = urlContext.url
+        guard let components = URLComponents(string: url.absoluteString) else { return }
+//        let host = components.host ?? "host 없음"
+        let items = components.queryItems ?? []
+        
+        for i in items {
+            
+            let queryName = i.name
+            print("query name : \(queryName)")
+            
+            switch queryName {
+            case "scuess":
+                guard let value = i.value else { continue }
+                
+                if value == "true" {
+                    print("query : \(value)")
+                    loginViewModel.authSuccess.accept(true)
+                } else {
+                    loginViewModel.authSuccess.accept(false)
+                }
+            default:
+                break
+            } // switch
+            
+        
+            
+        }
+        
+         
+    }
+    
+ 
+
 
     
     

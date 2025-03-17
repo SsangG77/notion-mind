@@ -11,31 +11,39 @@ import RxSwift
 import RxRelay
 
 
+struct LoginResult {
+    var isSuccess: Bool
+}
+
+
 class LoginViewModel {
 
     let disposeBag = DisposeBag()
     
+    
     let loginButtonTapped = PublishSubject<Void>()
-    let loginSuccess = PublishSubject<Bool>()
+    let authSuccess: PublishRelay<Bool> = PublishRelay()
     
     init() {
-        
-        loginButtonTapped // 버튼 클릭에 의해 전달된 Observable
-            .subscribe(onNext: { // 버튼 클릭 구독
-                print("버튼 클릭됨. - \(AuthManager.shared.isLoggedIn())")
-                
-                AuthManager.shared.login() //로그인 실행
-                self.loginSuccess.onNext(true) //로그인 유무 Observable의 값이 변경됨
-                
+        authSuccess
+            .subscribe(onNext: { success in
+                if success {
+                    print("login success")
+                    //workspace id 저자
+                } else {
+                    print("login fail")
+                }
             })
             .disposed(by: disposeBag)
+        
+        
+        
+        
+        
+        
     }
     
-    
-    
-    
-    
-    
-    
 }
+
+
 

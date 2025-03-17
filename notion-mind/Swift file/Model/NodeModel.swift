@@ -33,7 +33,7 @@ struct Property<T> {
 }
 
 enum PropertyType {
-    case    checkbox,
+    case    checkbox, // bool
             created_by,
             created_time,
             date,
@@ -42,11 +42,11 @@ enum PropertyType {
             formula,
             last_edited_by,
             last_edited_time,
-            multi_select,
+            multi_select, // array
             number,
             people,
             phone_number,
-            relation,
+            relation, // array
             rich_text,
             rollup,
             select,

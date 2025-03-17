@@ -48,89 +48,44 @@ class MainViewModel {
             })
             .disposed(by: disposeBag)
 
-        
-//        nodeApi.getNodeByObservable()
         fetchNodes()
     }
     
     // **노드 데이터를 불러오는 함수**
         func fetchNodes() {
-            isLoading.accept(true) // 🔥 로딩 시작
+            isLoading.accept(true) // 로딩 시작
             nodeApi.getNodeByObservable()
-            isLoading.accept(false) // 🔥 로딩 완료
+            isLoading.accept(false) // 로딩 완료
         }
 
 }
 
 
-class NodeAPI {
-    let nodesRelay: BehaviorRelay<[Node]> = BehaviorRelay(value: [])
-
+class WebService {
     
     
-    //실제로는 웹소켓에서 데이터가 변경될때만 데이터를 수신함.
-    //현재는 더미 데이터
-    func getNodeByObservable() {
-
-        var nodes: [Node] = []
-        nodes.append(Node(id: "id 1", icon: "🥬", cover: nil, title: "1 node", property: [
-            Property(name: "하위항목", type: .relation, value: [
-                "id 2", "id 3"
-            ])
-        ], rect: CGRect()))
-        nodes.append(Node(id: "id 2", icon: "🥬", cover: nil, title: "2 node", property: [
-            Property(name: "하위항목", type: .relation, value: [
-                "id 1"
-            ])
-        ], rect: CGRect()))
-        nodes.append(Node(id: "id 3", icon: "🥬", cover: nil, title: "3 node", property: [
-            Property(name: "하위항목", type: .relation, value: [
-                "id 1"
-            ])
-        ], rect: CGRect()))
-        nodes.append(Node(id: "id 4", icon: "🥬", cover: nil, title: "4 node", property: [
-            Property(name: "하위항목", type: .relation, value: [
-                "id 5", "id 6", "id 7"
-            ])
-        ], rect: CGRect()))
-        nodes.append(Node(id: "id 5", icon: "🥬", cover: nil, title: "5 node", property: [
-            Property(name: "하위항목", type: .relation, value: [
-                "id 4"
-            ])
-        ], rect: CGRect()))
-        nodes.append(Node(id: "id 6", icon: "🥬", cover: nil, title: "6 node", property: [
-            Property(name: "하위항목", type: .relation, value: [
-                "id 4"
-            ])
-        ], rect: CGRect()))
-        nodes.append(Node(id: "id 7", icon: "🥬", cover: nil, title: "7 node", property: [
-            Property(name: "하위항목", type: .relation, value: [
-                "id 4"
-            ])
-        ], rect: CGRect()))
-        nodes.append(Node(id: "id 8", icon: "🥬", cover: nil, title: "8 node", property: [
-            Property(name: "하위항목", type: .relation, value: [
-                "id 3"
-            ])
-        ], rect: CGRect()))
-        nodes.append(Node(id: "id 9", icon: "🥬", cover: nil, title: "9 node", property: [
-            Property(name: "하위항목", type: .relation, value: [
-                "id 3"
-            ])
-        ], rect: CGRect()))
-//        nodes.append(Node(id: "id 1", icon: "🥬", cover: nil, title: "1 node", property: [
-//            Property(name: "하위항목", type: .relation, value: [
-//                "id 2", "id 3"
-//            ])
-//        ], rect: CGRect()))
-//        nodes.append(Node(id: "id 1", icon: "🥬", cover: nil, title: "1 node", property: [
-//            Property(name: "하위항목", type: .relation, value: [
-//                "id 2", "id 3"
-//            ])
-//        ], rect: CGRect()))
-        
-
-        nodesRelay.accept(nodes)
+    // notion auth url
+    var auth = ""
+    
+    
+    init() {
+        auth = self.setServerIP(.local) + "/auth/notion"
+    }
+    
+    
+    
+    func setServerIP(_ host: HostType) -> String {
+        switch host {
+        case .local:
+            return "https://1bf9-58-226-117-28.ngrok-free.app" //localhost ngrok
+            
+        case .global:
+            
+            return "" // TODO: 서버 호스팅 후 ip 추가
+        }
+    }
+    
+    enum HostType {
+        case local, global
     }
 }
-

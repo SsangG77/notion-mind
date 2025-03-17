@@ -8,11 +8,36 @@
 import Foundation
 import UIKit
 import SnapKit
+import SafariServices
 
 
+//MARK: - Navigation
+extension LoginViewController {
+    func openNotionAuth() {
+        guard let url = URL(string: webService.auth) else { return }
+        let safariVC = SFSafariViewController(url: url)
+        safariViewController = safariVC
+        present(safariVC, animated: true)
+    }
+    
+    func closeSafari() {
+        if let safariVC = safariViewController {
+            safariVC.dismiss(animated: true) {
+                print("✅ SafariViewController 닫힘")
+            }
+        }
+    }
+    
+    func navigateToMain() {
+        let mainVC = MainViewController()
+        UIApplication.shared.windows.first?.rootViewController = mainVC
+    }
+}
+
+
+//MARK: -
 extension LoginViewController {
     
-   
     func setTitle() -> UILabel {
         let label = UILabel()
         label.setFont(text: "Notion Mind", style: .bold, size: 40, color: .adaptiveForeground)
@@ -39,8 +64,6 @@ extension LoginViewController {
         self.view.backgroundColor = .adaptiveBackground
     }
     
-    
-    
     func setLayout() {
         self.view.addSubview(stackView)
         self.view.addSubview(connectButton)
@@ -56,9 +79,8 @@ extension LoginViewController {
             $0.centerX.equalTo(self.view.snp.centerX)
             $0.bottom.equalTo(self.view.snp.bottom).inset(250)
         }
-        
-        
-        
     }
     
 }
+
+
