@@ -6,15 +6,17 @@
 //
 
 import Foundation
+import UIKit
 
 //MARK: - node model
 struct Node {
     let id: String
+    let parrentId: String?
     let icon: String?
     let cover: String?
     let title: String?
-    let property: [Property<Any>]
-    var rect: CGRect
+    let property: [Property]
+    var rect: CGRect = .zero
     
     
     
@@ -26,31 +28,37 @@ struct Node {
 
 
 //MARK: - 속성 model
-struct Property<T> {
+struct Property {
     let name: String
     let type: PropertyType
-    let value: T
+    let value: [ValueType]
+}
+
+struct ValueType {
+    let id: String
+    let name: String
+    let color: String
 }
 
 enum PropertyType {
     case    checkbox, // bool
-            created_by,
-            created_time,
-            date,
             email,
-            files,
+            date,
             formula,
-            last_edited_by,
-            last_edited_time,
             multi_select, // array
             number,
             people,
             phone_number,
             relation, // array
             rich_text,
-            rollup,
             select,
             status,
             title,
             url
+    //            rollup,
+    //            created_by,
+    //            created_time,
+    //            files,
+    //            last_edited_by,
+    //            last_edited_time,
 }

@@ -53,7 +53,7 @@ import UIKit
 
 class NodeViewVC: UIViewController {
     
-    let node = Node(id: "id1", icon: nil, cover: nil, title: "ios", property: [], rect: CGRect())
+    let node = Node(id: "id1", parrentId: "", icon: nil, cover: nil, title: "ios", property: [], rect: CGRect())
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -221,7 +221,7 @@ extension MainViewController {
         while savedNode.contains(where: { $0.rect.intersects(newRect) })
 
         
-        let newNode = Node(id: node.id, icon: node.icon, cover: node.cover, title: node.title, property: node.property, rect: newRect)
+                let newNode = Node(id: node.id, parrentId: node.parrentId, icon: node.icon, cover: node.cover, title: node.title, property: node.property, rect: newRect)
                 
        
         nodeView.snp.updateConstraints {
@@ -266,11 +266,17 @@ extension MainViewController {
             
             guard !linkedNodeId.contains(node.id) else { continue }
             
+            //type이 .relation인 property들만 가져오기
             let relationProperties = node.property.filter { $0.type == .relation }
             
+            // 거기서 value들만 가져오기
+            
+            
+            
             let relatedIds = relationProperties
-                .compactMap { $0.value as? [String] }
+                .compactMap { $0.value }
                 .flatMap { $0 }
+                .map { $0.name }
                 .filter { !linkedNodeId.contains($0) }
             
             let relatedNodes = relatedIds.compactMap { id in

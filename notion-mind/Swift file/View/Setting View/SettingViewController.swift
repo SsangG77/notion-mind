@@ -16,7 +16,7 @@ import RxCocoa
 class SettingViewController: UIViewController {
     
     // view model
-    let loginViewModel = LoginViewModel()
+    let settingViewModel = SettingViewModel()
     
     // 컴포넌트
     lazy var scrollView = setScrollView()
@@ -29,19 +29,29 @@ class SettingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(hexCode: "DFDFDF")
+//        view.backgroundColor = UIColor(hexCode: "DFDFDF")
         title = "Setting"
         setupCloseButton() // setting close button
         setUI()
         
+        
+        logoutButton.rx.tap
+//            .bind(to: settingViewModel.logoutButtonTapped)
+            .bind {
+                self.settingViewModel.logoutButtonTapped.accept($0)
+                
+            }
+            .disposed(by: disposeBag)
     }
     
 }
 
-
+//MARK: - set Layout
 extension SettingViewController {
     
     func setUI() {
+        view.backgroundColor = UIColor(hexCode: "DFDFDF")
+
         view.addSubview(scrollView)
         scrollView.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -131,6 +141,7 @@ extension SettingViewController {
 //        stackView.backgroundColor = .blue
         
 #warning("임시 데이터베이스 데이터")
+    
         stackView.addArrangedSubview(setSingleDBView(title: "A DB"))
         stackView.addArrangedSubview(setSingleDBView(title: "A DB"))
         stackView.addArrangedSubview(setSingleDBView(title: "A DB"))

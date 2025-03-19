@@ -50,6 +50,12 @@ class LoginViewController: UIViewController {
 // viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        Service.myPrint("information") {
+            print("login : ", UserDefaultsManager.getData(type: Bool.self, key: .isLogin) ?? "login 없음")
+            print("bot_id : ", UserDefaultsManager.getData(type: String.self, key: .botId) ?? "bot_id 없음")
+        }
+        
         setUI()
         setLayout()
        
@@ -73,6 +79,7 @@ class LoginViewController: UIViewController {
                 guard let self = self else { return }
                 self.closeSafari()
                 if success {
+                    UserDefaultsManager.setData(value: true, key: .isLogin)
                     self.navigateToMain()
                 } else {
                     print("로그인 실패 알림창 띄우기")

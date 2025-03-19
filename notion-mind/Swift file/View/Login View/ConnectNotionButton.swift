@@ -45,8 +45,6 @@ class CustomBorderButton: UIButton {
             break
         }
         
-        
-       
         addTarget(self, action: #selector(buttonTouchedDown), for: .touchDown)
         addTarget(self, action: #selector(buttonReleased), for: [.touchUpInside, .touchDragExit])
     }

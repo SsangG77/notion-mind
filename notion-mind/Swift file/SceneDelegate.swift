@@ -36,15 +36,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         
         //UserDefaults 전부 삭제
-        for key in UserDefaults.standard.dictionaryRepresentation().keys {
-            UserDefaults.standard.removeObject(forKey: key.description)
-        }
+//        for key in UserDefaults.standard.dictionaryRepresentation().keys {
+//            UserDefaults.standard.removeObject(forKey: key.description)
+//        }
         
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
 
         
-        let isLoggedIn = AuthManager.shared.isLoggedIn()
+        let isLoggedIn = UserDefaultsManager.getData(type: Bool.self, key: .isLogin) ?? false
+        /*AuthManager.shared.isLoggedIn()*/
+        
         
                let rootViewController: UIViewController
                if isLoggedIn {
@@ -53,7 +55,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                    rootViewController = LoginViewController(viewModel: loginViewModel)
                }
 
-        window.rootViewController = rootViewController /*UINavigationController(rootViewController: rootViewController)*/
+        window.rootViewController = rootViewController
         self.window = window
         window.makeKeyAndVisible()
         
@@ -75,17 +77,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             
             let queryName = i.name
             print("query name : \(queryName)")
-            
+            guard let value = i.value else { continue }
             switch queryName {
             case "scuess":
-                guard let value = i.value else { continue }
-                
                 if value == "true" {
-                    print("query : \(value)")
+                    print("value : \(value)")
                     loginViewModel.authSuccess.accept(true)
                 } else {
                     loginViewModel.authSuccess.accept(false)
                 }
+                
+            case "bot_id":
+                //로컬에 이 값을 저장
+                print("bot_id : \(value)")
+                UserDefaultsManager.setData(value: value, key: .botId)
+                
             default:
                 break
             } // switch

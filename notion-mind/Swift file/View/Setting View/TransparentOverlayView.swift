@@ -10,6 +10,7 @@ import UIKit
 
 
 
+/// 메인화면에서 설정 버튼을 클릭하면 설정 화면으로 이동하고 그 외의 이벤트는 스크롤뷰(메인화면)로 전달된다.
 class TransparentOverlayView: UIView {
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         _ = super.hitTest(point, with: event)
