@@ -13,12 +13,12 @@ class NodeDetailViewModel {
     func propToView(prop: Property) -> UIView {
         
         switch prop.type {
-        case .multi_select:
+        case "multi_select":
             let stackView = UIStackView()
             stackView.axis = .vertical
             stackView.alignment = .leading
             stackView.spacing = 8
-            for value in prop.value as! [ValueType] {
+            for value in prop.value {
                 let label = UILabel()
                 label.setFont(text: value.name, style: .bold, size: 15, color: .white)
                 
@@ -40,7 +40,7 @@ class NodeDetailViewModel {
             }
             return stackView
             
-        case .select, .status:
+        case "select", "status":
             let stackView  = UIStackView()
             stackView.axis = .vertical
             stackView.spacing = 5
@@ -58,13 +58,13 @@ class NodeDetailViewModel {
             
             
             
-        case .checkbox:
+        case "checkbox":
             let label = UILabel()
             let value = prop.value[0].name
             label.text = value == "true" ? "✅" : "✖️"
             return label
             
-//        case .relation:
+//        case "relation":
             
             
         default:

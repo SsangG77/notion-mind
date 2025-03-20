@@ -19,7 +19,8 @@ extension MainViewController {
     func setScrollView() -> UIScrollView {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.backgroundColor = UIColor.init(hexCode: "DFDFDF")
+//        scrollView.backgroundColor = UIColor.init(hexCode: "DFDFDF")
+        scrollView.backgroundColor = .blue
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 10.0
         scrollView.zoomScale = 1.5
@@ -30,6 +31,7 @@ extension MainViewController {
         let innerView = UIView()
          innerView.translatesAutoresizingMaskIntoConstraints = false
         innerView.backgroundColor = UIColor.init(hexCode: "DFDFDF")
+        innerView.backgroundColor = .red
          
          return innerView
     }
@@ -85,12 +87,15 @@ extension MainViewController {
         mainViewModel.nodeCount
             .subscribe(onNext: { count in
                 nodesCount = count
+                Service.myPrint("updateLayout() nodes count") {
+                    print(nodesCount)
+                }
             })
             .disposed(by: disposeBag)
 
         
-//        mainViewModel.nodesRelay
-        MainViewModel.shared.nodesRelay
+//        MainViewModel.shared.nodesRelay
+        mainViewModel.nodesRelay
             .observe(on: MainScheduler.instance) // UI 업데이트는 메인 스레드에서 실행
             .subscribe(onNext: { [weak self] nodes in
                 guard let self = self else { return }
@@ -108,7 +113,6 @@ extension MainViewController {
         
         //콘텐트 뷰 크기를 업데이트
         contentView.snp.remakeConstraints {
-            
             $0.height.equalTo(frameHeight + CGFloat(nodePerSize * nodesCount))
             $0.width.equalTo(frameWidth   + CGFloat(nodePerSize * nodesCount))
             
@@ -184,6 +188,10 @@ extension MainViewController {
     ///   - nodesCount: 노드 총 갯수
     /// - Returns: 배치된 노드 Rect 값
     func setNode(frame: CGRect , node: Node, nodesCount: Int) -> Node {
+        Service.myPrint("setNode()", nodesCount) {
+            print(#function)
+        }
+        
         let frameHeight           = frame.height  // MainViewController의 높이
         let frameWidth            = frame.width   // MainViewController의 넓이
         
@@ -218,10 +226,10 @@ extension MainViewController {
             //(x,y, width, height)를 생성해서 모든 node rect배열에 저장
             newRect = CGRect(x: randomX, y: randomY, width: nodeWidth, height: nodeHeight)
         }
-        while savedNode.contains(where: { $0.rect.intersects(newRect) })
+        while savedNode.contains(where: { $0.rect!.intersects(newRect) })
 
         
-                let newNode = Node(id: node.id, parrentId: node.parrentId, icon: node.icon, cover: node.cover, title: node.title, property: node.property, rect: newRect)
+                let newNode = Node(id: node.id, parentId: node.parentId, icon: node.icon, cover: node.cover, title: node.title, property: node.property, rect: newRect)
                 
        
         nodeView.snp.updateConstraints {
@@ -259,15 +267,15 @@ extension MainViewController {
     
     func drawLinks(savedNode: [Node]) {
         for node in savedNode {
-            let nodeRect = node.rect
+            let nodeRect = node.rect!
             let centerX = nodeRect.midX
             let centerY = nodeRect.midY
             
             
             guard !linkedNodeId.contains(node.id) else { continue }
             
-            //type이 .relation인 property들만 가져오기
-            let relationProperties = node.property.filter { $0.type == .relation }
+            //type이 "relation"인 property들만 가져오기
+            let relationProperties = node.property.filter { $0.type == "relation" }
             
             // 거기서 value들만 가져오기
             
@@ -284,7 +292,7 @@ extension MainViewController {
             }
             
             for findNode in relatedNodes {
-                let findNodeRect = findNode.rect
+                let findNodeRect = findNode.rect!
                 let findNodeCenterX = findNodeRect.midX
                 let findNodeCenterY = findNodeRect.midY
                 

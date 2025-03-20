@@ -21,17 +21,27 @@ extension NodeDetailViewController {
         self.view.backgroundColor = .white
         
         
-        self.view.addSubview(scrollView) //1
-        scrollView.addSubview(contentView) //2
+        self.view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
         
         
         
-        scrollView.snp.makeConstraints { //3
+        scrollView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
         
+        if node?.cover != nil {
+            
+            contentView.addSubview(imageView)
+            imageView.snp.makeConstraints {
+                $0.top.equalToSuperview()
+                $0.leading.trailing.equalToSuperview()
+            }
+        }
         
-        contentView.addSubview(propertyView) //4
+        
+        
+        contentView.addSubview(propertyView)
         
         
         contentView.snp.makeConstraints {
@@ -41,7 +51,11 @@ extension NodeDetailViewController {
            }
         
         propertyView.snp.makeConstraints { //5
-            $0.top.equalToSuperview().inset(20)
+            if node?.cover != nil {
+                $0.top.equalTo(imageView.snp.bottom).inset(-20)
+            } else {
+                $0.top.equalToSuperview().inset(20)
+            }
             $0.leading.trailing.equalToSuperview().inset(20)
         }
         
@@ -76,6 +90,28 @@ extension NodeDetailViewController {
         contentView.backgroundColor = UIColor.init(hexCode: "DFDFDF")
         
         return contentView
+    }
+    
+    func setCoverView() -> UIImageView {
+        let imageView = UIImageView()
+        guard let node = node else { return imageView }
+        URLSession.shared.dataTask(with: URL(string: node.cover!)!) { [weak self] data, response, error in
+                   guard let self,
+                         let data = data,
+                         response != nil,
+                         error == nil else { return }
+                   DispatchQueue.main.async {
+                       self.imageView.image = UIImage(data: data) ?? UIImage()
+                   }
+               }.resume()
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.backgroundColor = .gray
+        imageView.snp.makeConstraints {
+            $0.height.equalTo(230)
+        }
+        
+        return imageView
     }
     
     
@@ -117,7 +153,8 @@ extension NodeDetailViewController {
         }
         
         
-        stackView.separator(color: UIColor(hexCode: "787773") , height: 2, spacing: 15)
+        stackView.separator(color: UIColor(hexCode: "787773") , height: 2, spacing: 12)
+        
         
         return stackView
     }

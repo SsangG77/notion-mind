@@ -21,9 +21,10 @@ class NodeDetailViewController: UIViewController {
     
     
     // component
-    lazy var scrollView = setScrollView()
-    lazy var contentView = setContentView()
-    lazy var propertyView = setPropertyView()
+    lazy var scrollView     = setScrollView()
+    lazy var contentView    = setContentView()
+    lazy var propertyView   = setPropertyView()
+    lazy var imageView      = setCoverView()
     // rx
     let disposeBag = DisposeBag()
     
@@ -32,22 +33,22 @@ class NodeDetailViewController: UIViewController {
     
     
 //    var node: Node? = nil
-    var node: Node? = Node(id: "id 1", parrentId: "", icon: "🥬", cover: nil, title: "1 node", property: [
-        Property(name: "항목", type: .relation, value: [
+    var node: Node? = Node(id: "id 1", parentId: "preant_id", icon: "🥬", cover: "https://images.unsplash.com/photo-1742387436246-a7288481be39?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", title: "1 node", property: [
+        Property(name: "항목", type: "relation", value: [
             ValueType(id: UUID().uuidString, name: "id 2", color: "clear"),
             ValueType(id: UUID().uuidString, name: "id 3", color: "clear"),
         ]),
-        Property(name: "pages", type: .relation, value: [
+        Property(name: "pages", type: "relation", value: [
             ValueType(id: UUID().uuidString, name: "id 4", color: "clear"),
             ValueType(id: UUID().uuidString, name: "id 5", color: "clear"),
         ]),
-        Property(name: "Tech", type: .multi_select, value: [
+        Property(name: "Tech", type: "multi_select", value: [
             
             ValueType(id: UUID().uuidString, name: "rxswift", color: "red"),
             ValueType(id: UUID().uuidString, name: "uikit", color: "green"),
             ValueType(id: UUID().uuidString, name: "mvvm", color: "blue"),
         ]),
-        Property(name: "Done", type: .checkbox, value: [
+        Property(name: "Done", type: "checkbox", value: [
             ValueType(id: UUID().uuidString, name: "false", color: "clear"),
         ])
     ], rect: CGRect())

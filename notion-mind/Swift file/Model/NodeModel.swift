@@ -9,38 +9,36 @@ import Foundation
 import UIKit
 
 //MARK: - node model
-struct Node {
+struct Node: Decodable {
     let id: String
-    let parrentId: String?
+    let parentId: String?
     let icon: String?
     let cover: String?
     let title: String?
     let property: [Property]
-    var rect: CGRect = .zero
-    
-    
+    var rect: CGRect?
     
     mutating func setRect(rect: CGRect) {
         self.rect = rect
     }
-    
 }
+
 
 
 //MARK: - 속성 model
-struct Property {
+struct Property: Codable {
     let name: String
-    let type: PropertyType
+    let type: String /*PropertyType*/
     let value: [ValueType]
 }
 
-struct ValueType {
+struct ValueType: Codable {
     let id: String
     let name: String
     let color: String
 }
 
-enum PropertyType {
+enum PropertyType: Codable {
     case    checkbox, // bool
             email,
             date,

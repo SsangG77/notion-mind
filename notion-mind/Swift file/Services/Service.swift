@@ -13,6 +13,7 @@ import Foundation
 struct Service {
     
     static func myPrint<T>(_ title: String, _ content: T = (Any).self, completion:() -> Void = {}) {
+        print("")
         print("================================================== \(title) ==================================================")
         completion()
         print(content)

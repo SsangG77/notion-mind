@@ -25,7 +25,7 @@ class MainViewModel {
     
     
     // Rx
-    let nodesRelay: BehaviorRelay<[Node]>
+    var nodesRelay: BehaviorRelay<[Node]> = BehaviorRelay(value: [])
     var nodeCount: BehaviorRelay<Int> = BehaviorRelay<Int>(value: 0)
     
     // TODO: 데이터를 불러올때 상태 감지 옵저블
@@ -39,7 +39,7 @@ class MainViewModel {
    
     init() {
         
-        self.nodesRelay = nodeApi.nodesRelay
+//        self.nodesRelay = nodeApi.nodesRelay
         
         nodesRelay
             .subscribe(onNext: { nodes in
@@ -48,7 +48,25 @@ class MainViewModel {
             })
             .disposed(by: disposeBag)
 
-        fetchNodes()
+//        fetchNodes()
+        
+        nodeApi.fetchNodes()
+            .withUnretained(self)
+            .subscribe(onNext: { vm, nodes in
+//                Service.myPrint("server response data") {
+//                    print(nodes)
+//                }
+                vm.nodesRelay.accept(nodes)
+//                vm.nodeCount.accept(nodes.count)
+                Service.myPrint("MainViewModel.nodeApi.fetchNodes") {
+                    print("node count : ", nodes.count)
+                }
+                
+                
+            })
+            .disposed(by: disposeBag)
+        
+        
     }
     
     // **노드 데이터를 불러오는 함수**
@@ -61,31 +79,3 @@ class MainViewModel {
 }
 
 
-class WebService {
-    
-    
-    // notion auth url
-    var auth = ""
-    
-    
-    init() {
-        auth = self.setServerIP(.local) + "/auth/notion"
-    }
-    
-    
-    
-    func setServerIP(_ host: HostType) -> String {
-        switch host {
-        case .local:
-            return "https://1bf9-58-226-117-28.ngrok-free.app" //localhost ngrok
-            
-        case .global:
-            
-            return "" // TODO: 서버 호스팅 후 ip 추가
-        }
-    }
-    
-    enum HostType {
-        case local, global
-    }
-}

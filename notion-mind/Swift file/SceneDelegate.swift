@@ -65,7 +65,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         guard let urlContext = URLContexts.first else { return }
-        print("SceneDelegate에서 URL 실행됨: \(urlContext.url.absoluteString)")
         
         
         let url = urlContext.url
@@ -76,12 +75,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         for i in items {
             
             let queryName = i.name
-            print("query name : \(queryName)")
             guard let value = i.value else { continue }
             switch queryName {
             case "scuess":
                 if value == "true" {
-                    print("value : \(value)")
                     loginViewModel.authSuccess.accept(true)
                 } else {
                     loginViewModel.authSuccess.accept(false)
@@ -89,7 +86,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 
             case "bot_id":
                 //로컬에 이 값을 저장
-                print("bot_id : \(value)")
                 UserDefaultsManager.setData(value: value, key: .botId)
                 
             default:

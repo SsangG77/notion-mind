@@ -23,11 +23,12 @@ class LoginViewController: UIViewController {
     lazy var stackView = setStackView()
     
     //rx 설정
-    private let loginViewModel: LoginViewModel
+    
     private let disposeBag = DisposeBag()
     
     
     //view model
+    private let loginViewModel: LoginViewModel
     let webService = WebService()
     
     //safari view controller
@@ -77,13 +78,13 @@ class LoginViewController: UIViewController {
             .observe(on: MainScheduler.instance) //
             .subscribe(onNext: { [weak self] success in //
                 guard let self = self else { return }
-                self.closeSafari()
                 if success {
                     UserDefaultsManager.setData(value: true, key: .isLogin)
                     self.navigateToMain()
                 } else {
                     print("로그인 실패 알림창 띄우기")
                 }
+                self.closeSafari()
             })
             .disposed(by: disposeBag)
     }
