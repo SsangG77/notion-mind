@@ -42,8 +42,6 @@ extension MainViewController {
 
         settingButton.setImage(UIImage(named: "settingButton"), for: .normal)
         settingButton.imageView?.contentMode = .scaleAspectFit // 이미지 크기 유지
-//        settingButton.tintColor = .white
-//        settingButton.backgroundColor = .black
         settingButton.clipsToBounds = true
         return settingButton
     }
@@ -84,14 +82,14 @@ extension MainViewController {
         
         mainViewModel.isLoading.accept(true)
         
-        mainViewModel.nodeCount
-            .subscribe(onNext: { count in
-                nodesCount = count
-                Service.myPrint("updateLayout() nodes count") {
-                    print(nodesCount)
-                }
-            })
-            .disposed(by: disposeBag)
+//        mainViewModel.nodeCount
+//            .subscribe(onNext: { count in
+//                nodesCount = count
+//                Service.myPrint("2. updateLayout() nodes count") {
+//                    print("nodes count: ", nodesCount)
+//                }
+//            })
+//            .disposed(by: disposeBag)
 
         
 //        MainViewModel.shared.nodesRelay
@@ -99,27 +97,32 @@ extension MainViewController {
             .observe(on: MainScheduler.instance) // UI 업데이트는 메인 스레드에서 실행
             .subscribe(onNext: { [weak self] nodes in
                 guard let self = self else { return }
+                nodesCount = nodes.count
                 for node in nodes {
                     let newNode = self.setNode(frame: self.view.frame, node: node, nodesCount: nodesCount)
                     savedNode.append(newNode)
+                }
+                
+                //콘텐트 뷰 크기를 업데이트
+                contentView.snp.remakeConstraints {
+                    $0.height.equalTo(frameHeight + CGFloat(self.nodePerSize * nodesCount))
+                    $0.width.equalTo(frameWidth   + CGFloat(self.nodePerSize * nodesCount))
+                    $0.edges.equalTo(self.scrollView.contentLayoutGuide)
+                    
+                    Service.myPrint("컨텐트뷰 업데이트") {
+                        print("node count : ",nodesCount)
+                    }
+                    
                 }
                 mainViewModel.isLoading.accept(false)
                 
             })
             .disposed(by: disposeBag)
 
-//        mainViewModel.nodesRelay.accept(savedNode) //이거 하면 NodeView가 두번 그려짐
-//        drawLine()
         
-        //콘텐트 뷰 크기를 업데이트
-        contentView.snp.remakeConstraints {
-            $0.height.equalTo(frameHeight + CGFloat(nodePerSize * nodesCount))
-            $0.width.equalTo(frameWidth   + CGFloat(nodePerSize * nodesCount))
-            
-            $0.edges.equalTo(scrollView.contentLayoutGuide)
-            
-        }
         
+        
+//      mainViewModel.nodesRelay.accept(savedNode) //이거 하면 NodeView가 두번 그려짐
        
         mainViewModel.isLoading.accept(false)
         
@@ -188,9 +191,6 @@ extension MainViewController {
     ///   - nodesCount: 노드 총 갯수
     /// - Returns: 배치된 노드 Rect 값
     func setNode(frame: CGRect , node: Node, nodesCount: Int) -> Node {
-        Service.myPrint("setNode()", nodesCount) {
-            print(#function)
-        }
         
         let frameHeight           = frame.height  // MainViewController의 높이
         let frameWidth            = frame.width   // MainViewController의 넓이
@@ -218,24 +218,37 @@ extension MainViewController {
         let inset: CGFloat = CGFloat((nodePerSize/20) * nodesCount)
         
         repeat {
-            
-            //(x,y)를 지정할 범위를 정함
+            // (x, y)를 지정할 범위를 정함
             randomX = CGFloat.random(in: inset...(frameWidth + CGFloat(nodePerSize * nodesCount) - nodeWidth - inset))
             randomY = CGFloat.random(in: inset...(frameHeight + CGFloat(nodePerSize * nodesCount) - nodeHeight - inset))
             
-            //(x,y, width, height)를 생성해서 모든 node rect배열에 저장
+            // newRect 생성
             newRect = CGRect(x: randomX, y: randomY, width: nodeWidth, height: nodeHeight)
-        }
-        while savedNode.contains(where: { $0.rect!.intersects(newRect) })
+            
+            // 다른 노드들과 겹치는지 확인
+        } while savedNode.contains(where: {
+            guard let rect = $0.getCGRect() else { return false }
+            return rect.intersects(newRect)
+        })
 
-        
-                let newNode = Node(id: node.id, parentId: node.parentId, icon: node.icon, cover: node.cover, title: node.title, property: node.property, rect: newRect)
-                
-       
+        // newNode 생성
+        let newNode = Node(
+            id: node.id,
+            parentId: node.parentId,
+            icon: node.icon,
+            cover: node.cover,
+            title: node.title,
+            lastEdit: node.lastEdit,
+            property: node.property,
+            rect: CodableRect(from: newRect)
+        )
+
+        // 뷰 위치 지정
         nodeView.snp.updateConstraints {
             $0.leading.equalToSuperview().offset(randomX)
             $0.top.equalToSuperview().offset(randomY)
         }
+
         
         // ✅ 탭 제스처 추가
            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(nodeViewTapped(_:)))
@@ -267,7 +280,7 @@ extension MainViewController {
     
     func drawLinks(savedNode: [Node]) {
         for node in savedNode {
-            let nodeRect = node.rect!
+            let nodeRect = node.getCGRect()!
             let centerX = nodeRect.midX
             let centerY = nodeRect.midY
             
@@ -292,7 +305,7 @@ extension MainViewController {
             }
             
             for findNode in relatedNodes {
-                let findNodeRect = findNode.rect!
+                let findNodeRect = findNode.getCGRect()!
                 let findNodeCenterX = findNodeRect.midX
                 let findNodeCenterY = findNodeRect.midY
                 
@@ -338,40 +351,6 @@ extension MainViewController: UIScrollViewDelegate {
 
 
 
-
-
-
-
-
-
-
-
-
-
-//====================================================================================================================
-#if DEBUG
-
-import SwiftUI
-
-
-struct MainVCPresentable: UIViewControllerRepresentable {
-    func updateUIViewController(_ uiViewCOntroller: UIViewControllerType, context: Context) {
-        
-    }
-    
-    func makeUIViewController(context: Context) -> some UIViewController {
-        MainViewController()
-    }
-    
+#Preview {
+    MainViewController()
 }
-
-struct MainVCPresentablePreviews: PreviewProvider {
-    static var previews: some View {
-        MainVCPresentable()
-            .ignoresSafeArea()
-    }
-}
-
-
-
-#endif

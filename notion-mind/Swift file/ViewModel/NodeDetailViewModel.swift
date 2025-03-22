@@ -13,7 +13,7 @@ class NodeDetailViewModel {
     func propToView(prop: Property) -> UIView {
         
         switch prop.type {
-        case "multi_select":
+        case "multi_select", "select", "status":
             let stackView = UIStackView()
             stackView.axis = .vertical
             stackView.alignment = .leading
@@ -39,23 +39,6 @@ class NodeDetailViewModel {
                 stackView.addArrangedSubview(valueContainer)
             }
             return stackView
-            
-        case "select", "status":
-            let stackView  = UIStackView()
-            stackView.axis = .vertical
-            stackView.spacing = 5
-            for value in prop.value {
-                let label = UILabel()
-                label.clipsToBounds = true
-                label.layer.masksToBounds = true
-                label.layer.cornerRadius = 6
-                label.backgroundColor = colorStringToColor(colorName: value.color)
-                label.setFont(text: value.name, size: 16, color: .white)
-                stackView.addArrangedSubview(label)
-            }
-            return stackView
-            
-            
             
             
         case "checkbox":

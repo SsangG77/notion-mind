@@ -53,8 +53,8 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         
         Service.myPrint("information") {
-            print("login : ", UserDefaultsManager.getData(type: Bool.self, key: .isLogin) ?? "login 없음")
-            print("bot_id : ", UserDefaultsManager.getData(type: String.self, key: .botId) ?? "bot_id 없음")
+            print("login : ", SaveDataManager.getData(type: Bool.self, key: .isLogin) ?? "login 없음")
+            print("bot_id : ", SaveDataManager.getData(type: String.self, key: .botId) ?? "bot_id 없음")
         }
         
         setUI()
@@ -79,7 +79,7 @@ class LoginViewController: UIViewController {
             .subscribe(onNext: { [weak self] success in //
                 guard let self = self else { return }
                 if success {
-                    UserDefaultsManager.setData(value: true, key: .isLogin)
+                    SaveDataManager.setData(value: true, key: .isLogin)
                     self.navigateToMain()
                 } else {
                     print("로그인 실패 알림창 띄우기")

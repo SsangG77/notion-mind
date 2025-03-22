@@ -21,7 +21,7 @@ class WebService {
     
     init() {
         auth = self.setServerIP(.local) + "/auth/notion"
-        nodeData = self.setServerIP(.local) + "/data/page"
+        nodeData = self.setServerIP(.local) + "/data/nodes"
     }
     
     

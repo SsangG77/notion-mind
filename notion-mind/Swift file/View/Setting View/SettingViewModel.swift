@@ -26,8 +26,8 @@ class SettingViewModel {
         
         logoutButtonTapped
             .subscribe(onNext: {
-                UserDefaultsManager.setData(value: false, key: .isLogin)
-                UserDefaultsManager.removeData(key: .botId)
+                SaveDataManager.setData(value: false, key: .isLogin)
+                SaveDataManager.removeData(key: .botId)
                 
                 let loginVC = LoginViewController(viewModel: self.loginViewModel)
                 UIApplication.shared.windows.first?.rootViewController = loginVC

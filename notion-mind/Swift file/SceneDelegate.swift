@@ -44,7 +44,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
 
         
-        let isLoggedIn = UserDefaultsManager.getData(type: Bool.self, key: .isLogin) ?? false
+        let isLoggedIn = SaveDataManager.getData(type: Bool.self, key: .isLogin) ?? false
         /*AuthManager.shared.isLoggedIn()*/
         
         
@@ -86,7 +86,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 
             case "bot_id":
                 //로컬에 이 값을 저장
-                UserDefaultsManager.setData(value: value, key: .botId)
+                SaveDataManager.setData(value: value, key: .botId)
                 
             default:
                 break

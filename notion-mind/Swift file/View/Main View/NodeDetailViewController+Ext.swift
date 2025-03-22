@@ -14,102 +14,48 @@ import UIViewSeparator
 
 
 
-//MARK: - set ui
-extension NodeDetailViewController {
-    
-    func setUI() {
-        self.view.backgroundColor = .white
-        
-        
-        self.view.addSubview(scrollView)
-        scrollView.addSubview(contentView)
-        
-        
-        
-        scrollView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-        
-        if node?.cover != nil {
-            
-            contentView.addSubview(imageView)
-            imageView.snp.makeConstraints {
-                $0.top.equalToSuperview()
-                $0.leading.trailing.equalToSuperview()
-            }
-        }
-        
-        
-        
-        contentView.addSubview(propertyView)
-        
-        
-        contentView.snp.makeConstraints {
-               $0.width.equalTo(scrollView.frameLayoutGuide.snp.width) // 스크롤뷰의 실제 프레임 너비와 같게 설정
-               $0.top.bottom.equalTo(scrollView.contentLayoutGuide) // 상하만 콘텐츠 가이드에 맞춤
-               $0.leading.trailing.equalTo(scrollView.frameLayoutGuide) // 좌우는 프레임 가이드에 맞춤
-           }
-        
-        propertyView.snp.makeConstraints { //5
-            if node?.cover != nil {
-                $0.top.equalTo(imageView.snp.bottom).inset(-20)
-            } else {
-                $0.top.equalToSuperview().inset(20)
-            }
-            $0.leading.trailing.equalToSuperview().inset(20)
-        }
-        
-        
-        
-        
-    }// setUI
-    
-}
-
-
 //MARK: - set component
 extension NodeDetailViewController {
     
     
     func setScrollView() -> UIScrollView {
         let scrollView = UIScrollView()
-        scrollView.showsVerticalScrollIndicator = true
-            scrollView.showsHorizontalScrollIndicator = false
-            scrollView.alwaysBounceVertical = true
-            scrollView.alwaysBounceHorizontal = false
+        scrollView.bounces = true
+        scrollView.alwaysBounceVertical = true
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.backgroundColor = UIColor.init(hexCode: "DFDFDF")
-//        scrollView.backgroundColor = .blue
-        
-        
         
         return scrollView
     }
     
     func setContentView() -> UIView {
         let contentView  = UIView()
+        contentView.translatesAutoresizingMaskIntoConstraints = false
         contentView.backgroundColor = UIColor.init(hexCode: "DFDFDF")
-        
         return contentView
     }
     
     func setCoverView() -> UIImageView {
         let imageView = UIImageView()
+        imageView.backgroundColor = UIColor.init(hexCode: "DFDFDF")
+        
         guard let node = node else { return imageView }
-        URLSession.shared.dataTask(with: URL(string: node.cover!)!) { [weak self] data, response, error in
-                   guard let self,
-                         let data = data,
-                         response != nil,
-                         error == nil else { return }
-                   DispatchQueue.main.async {
-                       self.imageView.image = UIImage(data: data) ?? UIImage()
-                   }
-               }.resume()
+        if node.cover != nil {
+            URLSession.shared.dataTask(with: URL(string: node.cover ?? "https://picsum.photos/400/600")!) { [weak self] data, response, error in
+                guard let self,
+                      let data = data,
+                      response != nil,
+                      error == nil else { return }
+                DispatchQueue.main.async {
+                    imageView.image = UIImage(data: data) ?? UIImage()
+                }
+            }.resume()
+        }
+        
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.backgroundColor = .gray
-        imageView.snp.makeConstraints {
-            $0.height.equalTo(230)
-        }
         
         return imageView
     }
@@ -117,10 +63,11 @@ extension NodeDetailViewController {
     
     func setPropertyView() -> UIStackView {
         let stackView = UIStackView()
+        stackView.backgroundColor = UIColor.init(hexCode: "DFDFDF")
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.spacing = 15
       
-        
         guard let node = node else {
             print("node property 할당 안됨")
             return stackView
@@ -148,13 +95,9 @@ extension NodeDetailViewController {
             }
             
             stackView.addArrangedSubview(hstack)
-            
-            
         }
         
-        
         stackView.separator(color: UIColor(hexCode: "787773") , height: 2, spacing: 12)
-        
         
         return stackView
     }
@@ -164,6 +107,77 @@ extension NodeDetailViewController {
 }
 
 
+
+//MARK: - set ui
+extension NodeDetailViewController {
+    
+    
+    func newSetUI() {
+        view.backgroundColor = UIColor.init(hexCode: "DFDFDF")
+        
+        view.addSubview(scrollView)
+        
+        scrollView.snp.makeConstraints {
+            $0.edges.equalTo(view.snp.edges)
+        }
+        
+        if node?.cover != nil {
+            view.addSubview(imageView)
+            
+            headerHeightConstraint = imageView.heightAnchor.constraint(equalToConstant: headerHeight)
+            
+            NSLayoutConstraint.activate([
+                imageView.topAnchor.constraint(equalTo: view.topAnchor), // 상단 고정
+                imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                headerHeightConstraint
+            ])
+            
+        }
+        
+       
+        scrollView.addSubview(contentView)
+        
+        NSLayoutConstraint.activate([
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: node?.cover != nil ? headerHeight - 60 : 30),
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
+        ])
+        
+        
+        contentView.addSubview(propertyView)
+        
+        propertyView.snp.makeConstraints {
+            $0.top.equalTo(contentView.snp.top).inset(node?.cover != nil ? 100 : 20)
+            $0.leading.equalTo(contentView.snp.leading).inset(20)
+            $0.trailing.equalTo(contentView.snp.trailing).inset(20)
+            $0.bottom.equalTo(contentView.snp.bottom).inset(20)
+        }
+        
+    }
+    
+}
+
+
+
+
+extension NodeDetailViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
+        if node?.cover != nil {
+            
+            let offsetY = scrollView.contentOffset.y
+            if offsetY != 0 {
+                headerHeightConstraint.constant = 0 >  (headerHeight - offsetY) ? 0 : (headerHeight - offsetY)
+                // 이미지 뷰의 상단은 계속 화면 상단에 고정됨
+            } else {
+                // 원래 상태로 복원
+                headerHeightConstraint.constant = headerHeight
+            }
+        }
+        
+    }
+}
 
 
 
@@ -183,30 +197,6 @@ extension NodeDetailViewController {
 
 
 
-//====================================================================================================================
-#if DEBUG
-
-import SwiftUI
-
-
-struct NodeDetailVCPresentable: UIViewControllerRepresentable {
-    func updateUIViewController(_ uiViewCOntroller: UIViewControllerType, context: Context) {
-        
-    }
-    
-    func makeUIViewController(context: Context) -> some UIViewController {
-        NodeDetailViewController()
-    }
-    
+#Preview {
+    NodeDetailViewController()
 }
-
-struct NodeDeatilVCPresentablePreviews: PreviewProvider {
-    static var previews: some View {
-        NodeDetailVCPresentable()
-            .ignoresSafeArea()
-    }
-}
-
-
-
-#endif

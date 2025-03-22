@@ -19,10 +19,6 @@ class MainViewController: UIViewController {
     lazy var settingButton: UIButton    =  setSettingButton()
     
     
-    
-    
-    
-    
     //뷰모델
     let mainViewModel = MainViewModel()
     
@@ -30,9 +26,6 @@ class MainViewController: UIViewController {
     //viewcontroller
     lazy var settingsVC = SettingViewController()
     lazy var settingNavController = UINavigationController(rootViewController: settingsVC)
-    
-//    lazy var nodeDetailVC = NodeDetailViewController()
-//    lazy var nodeDetailNavController = UINavigationController(rootViewController: nodeDetailVC)
     
     
     //Rx 설정
@@ -60,18 +53,19 @@ class MainViewController: UIViewController {
         setLayout()
         positionSettingButtton()
         
-        mainViewModel.nodesRelay
-            .bind(to: { _ in
-                self.mainViewModel.isLoading.accept(true)
-            })
+//        mainViewModel.nodesRelay
+//            .bind(to: { _ in
+//                self.mainViewModel.isLoading.accept(true)
+//            })
+        
         
         updateLayout()
-
     } // viewDidLoad
     
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        
         drawLinks(savedNode: savedNode)
     }
 

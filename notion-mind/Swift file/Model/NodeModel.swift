@@ -9,26 +9,32 @@ import Foundation
 import UIKit
 
 //MARK: - node model
-struct Node: Decodable {
+struct Node: Codable {
     let id: String
     let parentId: String?
     let icon: String?
     let cover: String?
     let title: String?
+    let lastEdit: Date?
     let property: [Property]
-    var rect: CGRect?
     
-    mutating func setRect(rect: CGRect) {
-        self.rect = rect
+    var rect: CodableRect?
+    
+    func getCGRect() -> CGRect? {
+        rect?.cgRect
     }
+    
+//    mutating func setRect(rect: CGRect) {
+//        self.rect = rect
+//    }
+    
 }
-
 
 
 //MARK: - 속성 model
 struct Property: Codable {
     let name: String
-    let type: String /*PropertyType*/
+    let type: String
     let value: [ValueType]
 }
 
@@ -38,25 +44,22 @@ struct ValueType: Codable {
     let color: String
 }
 
-enum PropertyType: Codable {
-    case    checkbox, // bool
-            email,
-            date,
-            formula,
-            multi_select, // array
-            number,
-            people,
-            phone_number,
-            relation, // array
-            rich_text,
-            select,
-            status,
-            title,
-            url
-    //            rollup,
-    //            created_by,
-    //            created_time,
-    //            files,
-    //            last_edited_by,
-    //            last_edited_time,
+
+
+struct CodableRect: Codable {
+    let x: CGFloat
+    let y: CGFloat
+    let width: CGFloat
+    let height: CGFloat
+
+    init(from rect: CGRect) {
+        self.x = rect.origin.x
+        self.y = rect.origin.y
+        self.width = rect.size.width
+        self.height = rect.size.height
+    }
+
+    var cgRect: CGRect {
+        CGRect(x: x, y: y, width: width, height: height)
+    }
 }
