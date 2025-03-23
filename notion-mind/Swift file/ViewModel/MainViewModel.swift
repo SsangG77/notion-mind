@@ -39,39 +39,32 @@ class MainViewModel {
    
     init() {
         
-//        self.nodesRelay = nodeApi.nodesRelay
-        
-//        nodesRelay
-//            .subscribe(onNext: { nodes in
-//                self.nodeCount.accept(nodes.count)
-//                
+//        nodeApi.fetchNodes()
+//            .withUnretained(self)
+//            .subscribe(onNext: { vm, nodes in
+//                vm.nodesRelay.accept(nodes)
+//                vm.nodeCount.accept(nodes.count)
+//                Service.myPrint("MainViewModel.nodeApi.fetchNodes") {
+//                    print("node count : ", nodes.count)
+//                }
 //            })
 //            .disposed(by: disposeBag)
-
-//        fetchNodes()
         
-//        nodeApi.nodesRelay
         nodeApi.fetchNodes()
-            .withUnretained(self)
-            .subscribe(onNext: { vm, nodes in
-                vm.nodesRelay.accept(nodes)
-                vm.nodeCount.accept(nodes.count)
-                Service.myPrint("MainViewModel.nodeApi.fetchNodes") {
-                    print("node count : ", nodes.count)
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        
     }
     
     // 더미 데이터를 불러오는 함수
-        func fetchNodes() {
-            isLoading.accept(true) // 로딩 시작
-            nodeApi.getNodeByObservable()
-            isLoading.accept(false) // 로딩 완료
-        }
-
+//        func fetchNodes() {
+//            isLoading.accept(true) // 로딩 시작
+//            nodeApi.getNodeByObservable()
+//            isLoading.accept(false) // 로딩 완료
+//        }
+    
+    
+    
+   
+    
+    
 }
 
 

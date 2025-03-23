@@ -15,7 +15,7 @@ struct Node: Codable {
     let icon: String?
     let cover: String?
     let title: String?
-    let lastEdit: Date?
+    let lastEdit: Date
     let property: [Property]
     
     var rect: CodableRect?

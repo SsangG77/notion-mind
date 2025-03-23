@@ -48,13 +48,20 @@ class SaveDataManager {
         }
     }
     
-    func loadNodes() -> [Node]? {
+    static func loadNodes() -> [Node]? {
         let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
             .appendingPathComponent("nodes.json")
         
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
         
+        let fileManager = FileManager.default
+        if !fileManager.fileExists(atPath: url.path) {
+            // 파일이 없으면 빈 배열 저장 후 반환
+            saveNodes([])
+            return []
+        }
+
         do {
             let data = try Data(contentsOf: url)
             return try decoder.decode([Node].self, from: data)
@@ -71,6 +78,7 @@ class SaveDataManager {
         }
         return nil
     }
+
 
 
 

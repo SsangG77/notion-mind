@@ -19,8 +19,8 @@ extension MainViewController {
     func setScrollView() -> UIScrollView {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-//        scrollView.backgroundColor = UIColor.init(hexCode: "DFDFDF")
-        scrollView.backgroundColor = .blue
+        scrollView.backgroundColor = UIColor.init(hexCode: "DFDFDF")
+        scrollView.backgroundColor = .gray
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 10.0
         scrollView.zoomScale = 1.5
@@ -31,7 +31,7 @@ extension MainViewController {
         let innerView = UIView()
          innerView.translatesAutoresizingMaskIntoConstraints = false
         innerView.backgroundColor = UIColor.init(hexCode: "DFDFDF")
-        innerView.backgroundColor = .red
+//        innerView.backgroundColor = .red
          
          return innerView
     }
