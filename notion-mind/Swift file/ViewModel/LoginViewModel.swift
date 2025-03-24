@@ -17,12 +17,13 @@ struct LoginResult {
 
 
 class LoginViewModel {
-
+    
     let disposeBag = DisposeBag()
     
     
     let loginButtonTapped = PublishSubject<Void>()
     let authSuccess: PublishRelay<Bool> = PublishRelay()
+//    let savedBotId: PublishRelay<String> = PublishRelay()
     
     init() {
         authSuccess
@@ -37,8 +38,11 @@ class LoginViewModel {
             .disposed(by: disposeBag)
         
         
-        
-        
+//        savedBotId
+//            .subscribe(onNext: { id in
+//                self.mainViewModel.fetchNodes()
+//            })
+//            .disposed(by: disposeBag)
         
         
     }

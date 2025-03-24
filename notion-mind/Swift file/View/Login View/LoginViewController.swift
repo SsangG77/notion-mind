@@ -28,14 +28,16 @@ class LoginViewController: UIViewController {
     
     
     //view model
-    private let loginViewModel: LoginViewModel
+    let loginViewModel: LoginViewModel
+    let mainViewModel: MainViewModel
     let webService = WebService()
     
     //safari view controller
     var safariViewController: SFSafariViewController?
     
-    init(viewModel: LoginViewModel) {
+    init(viewModel: LoginViewModel, mainViewModel: MainViewModel) {
         self.loginViewModel = viewModel
+        self.mainViewModel = mainViewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -52,7 +54,7 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        Service.myPrint("information") {
+        Service.myPrint("LoginViewController - viewDodLoad()") {
             print("login : ", SaveDataManager.getData(type: Bool.self, key: .isLogin) ?? "login 없음")
             print("bot_id : ", SaveDataManager.getData(type: String.self, key: .botId) ?? "bot_id 없음")
         }
@@ -100,31 +102,3 @@ class LoginViewController: UIViewController {
 
 
 
-
-
-#if DEBUG
-
-import SwiftUI
-
-
-struct LoginVCPresentable: UIViewControllerRepresentable {
-    func updateUIViewController(_ uiViewCOntroller: UIViewControllerType, context: Context) {
-        
-    }
-    
-    func makeUIViewController(context: Context) -> some UIViewController {
-        LoginViewController(viewModel:LoginViewModel())
-    }
-    
-}
-
-struct LoginVCPresentablePreviews: PreviewProvider {
-    static var previews: some View {
-        LoginVCPresentable()
-            .ignoresSafeArea()
-    }
-}
-
-
-
-#endif

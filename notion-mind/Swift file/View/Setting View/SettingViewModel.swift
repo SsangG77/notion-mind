@@ -21,6 +21,7 @@ class SettingViewModel {
     
     //viewModel
     let loginViewModel = LoginViewModel()
+//    let mainViewModel = MainViewModel()
     
     init() {
         
@@ -29,15 +30,12 @@ class SettingViewModel {
                 SaveDataManager.setData(value: false, key: .isLogin)
                 SaveDataManager.removeData(key: .botId)
                 
-                let loginVC = LoginViewController(viewModel: self.loginViewModel)
+                let loginVC = LoginViewController(viewModel: self.loginViewModel, mainViewModel: MainViewModel.shared)
                 UIApplication.shared.windows.first?.rootViewController = loginVC
                 
             })
             .disposed(by: disposeBag)
         
-        
     }
-    
-    
     
 }

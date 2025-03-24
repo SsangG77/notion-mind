@@ -50,10 +50,6 @@ extension MainViewController {
 }
 
 
-
-
-
-
 //MARK: - 레이아웃
 extension MainViewController {
     
@@ -350,7 +346,7 @@ extension MainViewController: UIScrollViewDelegate {
 }
 
 
-
-#Preview {
-    MainViewController()
-}
+//
+//#Preview {
+//    MainViewController()
+//}

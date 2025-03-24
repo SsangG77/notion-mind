@@ -29,13 +29,13 @@ extension LoginViewController {
     }
     
     func navigateToMain() {
-        let mainVC = MainViewController()
+        let mainVC = MainViewController(viewModel: mainViewModel)
         UIApplication.shared.windows.first?.rootViewController = mainVC
     }
 }
 
 
-//MARK: -
+//MARK: - set layout
 extension LoginViewController {
     
     func setTitle() -> UILabel {

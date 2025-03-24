@@ -20,7 +20,8 @@ class MainViewController: UIViewController {
     
     
     //뷰모델
-    let mainViewModel = MainViewModel()
+    let mainViewModel: MainViewModel
+//    private let loginViewModel: LoginViewModel
     
     
     //viewcontroller
@@ -45,6 +46,16 @@ class MainViewController: UIViewController {
     
     /// node 하나당 지정할 높이, 넓이
     let nodePerSize:Int = 100
+    
+    
+    init(viewModel: MainViewModel) {
+        self.mainViewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
    
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,8 +69,32 @@ class MainViewController: UIViewController {
 //                self.mainViewModel.isLoading.accept(true)
 //            })
         
+        if let savedId = SaveDataManager.getData(type: String.self, key: .botId) {
+            Service.myPrint("MainViewController - savedId") {
+                print("file: \(#file) / function: \(#function) / line: \(#line)")
+            }
+                mainViewModel.savedBotId.accept(savedId)
+        }
         
         updateLayout()
+        
+        
+        mainViewModel.responseRelay
+            .subscribe(onNext: { res in
+                Service.myPrint("MainViewController - response relay") {
+                    print("file: \(#file)")
+                    print("function: \(#function)")
+                    print("line: \(#line)")
+                    print(res)
+                }
+                
+            })
+            .disposed(by: disposeBag)
+        
+        
+        
+        
+        
     } // viewDidLoad
     
     

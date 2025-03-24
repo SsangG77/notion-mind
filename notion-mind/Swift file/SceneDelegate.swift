@@ -16,6 +16,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     
     let loginViewModel = LoginViewModel()
+//    let mainViewModel = MainViewModel()
 
     
 
@@ -45,15 +46,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         
         let isLoggedIn = SaveDataManager.getData(type: Bool.self, key: .isLogin) ?? false
-        /*AuthManager.shared.isLoggedIn()*/
         
         
-               let rootViewController: UIViewController
-               if isLoggedIn {
-                   rootViewController = MainViewController()
-               } else {
-                   rootViewController = LoginViewController(viewModel: loginViewModel)
-               }
+        
+       let rootViewController: UIViewController
+       if isLoggedIn {
+           rootViewController = MainViewController(viewModel: MainViewModel.shared)
+           
+       } else {
+           rootViewController = LoginViewController(viewModel: loginViewModel, mainViewModel: MainViewModel.shared)
+       }
 
         window.rootViewController = rootViewController
         self.window = window
@@ -65,7 +67,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         guard let urlContext = URLContexts.first else { return }
-        
         
         let url = urlContext.url
         guard let components = URLComponents(string: url.absoluteString) else { return }
@@ -85,18 +86,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 }
                 
             case "bot_id":
+                Service.myPrint("bot_id response query") {
+                    print(#function)
+                    print(value)
+                }
                 //로컬에 이 값을 저장
                 SaveDataManager.setData(value: value, key: .botId)
+                
+//                loginViewModel.savedBotId.accept(value)
+                MainViewModel.shared.savedBotId.accept(value)
                 
             default:
                 break
             } // switch
             
-        
-            
         }
-        
-         
     }
     
  
