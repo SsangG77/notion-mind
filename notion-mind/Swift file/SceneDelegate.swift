@@ -40,6 +40,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        for key in UserDefaults.standard.dictionaryRepresentation().keys {
 //            UserDefaults.standard.removeObject(forKey: key.description)
 //        }
+        SaveDataManager.saveNodes([])
+
         
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)

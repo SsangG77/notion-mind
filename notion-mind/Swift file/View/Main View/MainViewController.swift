@@ -37,7 +37,7 @@ class MainViewController: UIViewController {
     var savedOffset: [CGRect] = []
     
     /// Rect가 지정된 node 저장
-    var savedNode: [Node] = []
+//    var savedNode: [Node] = []
     
     /// 연결 처리된 node 저장
     var linkedNodeId: [String] = []
@@ -64,32 +64,85 @@ class MainViewController: UIViewController {
         setLayout()
         positionSettingButtton()
         
-//        mainViewModel.nodesRelay
-//            .bind(to: { _ in
-//                self.mainViewModel.isLoading.accept(true)
-//            })
         
         if let savedId = SaveDataManager.getData(type: String.self, key: .botId) {
             Service.myPrint("MainViewController - savedId") {
                 print("file: \(#file) / function: \(#function) / line: \(#line)")
             }
-                mainViewModel.savedBotId.accept(savedId)
+            mainViewModel.savedBotId.accept(savedId)
         }
         
         updateLayout()
         
         
         mainViewModel.responseRelay
-            .subscribe(onNext: { res in
+            .observe(on: MainScheduler.instance)
+            .map { res -> [Node] in
                 Service.myPrint("MainViewController - response relay") {
                     print("file: \(#file)")
                     print("function: \(#function)")
                     print("line: \(#line)")
                     print(res)
                 }
+
+                self.removeNodesByDeletedIds(deleteIds: res.deleteIds)
+
+                var localNodes = SaveDataManager.loadNodes() ?? []
+                localNodes = localNodes.filter { !res.deleteIds.contains($0.id) }
+                localNodes = self.setEditNodes(localNodes: localNodes, resEditNodes: res.editNodes)
+
+                var allNodes = localNodes
+
+                for newNode in res.newNodes {
+                    let dummyView = NodeView(node: newNode)
+                    self.contentView.addSubview(dummyView)
+                    dummyView.snp.makeConstraints {
+                        $0.leading.equalToSuperview().offset(0)
+                        $0.top.equalToSuperview().offset(0)
+                    }
+                    self.contentView.layoutIfNeeded()
+                    let size = dummyView.frame.size
+                    dummyView.removeFromSuperview()
+
+                    let rect = self.calculateNonOverlappingRect(
+                        frame: self.view.frame,
+                        nodeSize: size,
+                        existingNodes: allNodes
+                    )
+
+                    let finalNode = Node(
+                        id: newNode.id,
+                        parentId: newNode.parentId,
+                        icon: newNode.icon,
+                        cover: newNode.cover,
+                        title: newNode.title,
+                        lastEdit: newNode.lastEdit,
+                        property: newNode.property,
+                        rect: CodableRect(from: rect)
+                    )
+                 
+
+                    self.createAndAttachNodeView(node: finalNode, rect: rect)
+                    allNodes.append(finalNode)
+                }
                 
+                self.contentView.snp.remakeConstraints {
+                    $0.height.equalTo(self.view.frame.height + CGFloat(self.nodePerSize * allNodes.count))
+                    $0.width.equalTo(self.view.frame.width   + CGFloat(self.nodePerSize * allNodes.count))
+                    $0.edges.equalTo(self.scrollView.contentLayoutGuide)
+                    
+                    Service.myPrint("컨텐트뷰 업데이트 2") {
+                        print("node count : ",allNodes.count)
+                    }
+                }
+
+                return allNodes
+            }
+            .subscribe(onNext: { finalNodes in
+                SaveDataManager.saveNodes(finalNodes)
             })
             .disposed(by: disposeBag)
+
         
         
         
@@ -101,7 +154,7 @@ class MainViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        drawLinks(savedNode: savedNode)
+        drawLinks(savedNode: SaveDataManager.loadNodes() ?? [])
     }
 
     

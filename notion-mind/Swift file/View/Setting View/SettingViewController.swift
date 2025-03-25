@@ -73,7 +73,6 @@ extension SettingViewController {
         scrollView.addSubview(logoutButton)
         logoutButton.snp.makeConstraints {
             $0.top.equalTo(stackDBView.snp.bottom).offset(330)
-//            $0.bottom.equalToSuperview().inset(30)
             $0.leading.equalToSuperview().inset(30)
             $0.centerX.equalToSuperview()
             $0.bottom.equalToSuperview().inset(50) // 마지막 뷰의 하단을 scrollView의 bottom과 연결

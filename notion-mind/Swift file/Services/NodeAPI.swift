@@ -168,7 +168,9 @@ class NodeAPI {
         
         return Observable.create { observer in
             do {
-                let encoder  = JSONEncoder()
+                let encoder = JSONEncoder()
+                encoder.dateEncodingStrategy = .iso8601
+
                 let jsonData = try encoder.encode(requestModel)
                 
                 
@@ -224,30 +226,9 @@ class NodeAPI {
     /// 저장되어있는 nodes에서 id, lastEdit 데이터만 가져와서 반환하는 함수
     /// - Returns: [RequestNodeModel]
     func requestData() -> [RequestNodeModel] {
-        return SaveDataManager.loadNodes()?.map {
-            RequestNodeModel(id: $0.id, lastEdit: $0.lastEdit)
+        return SaveDataManager.loadNodes()?.map { node in
+            RequestNodeModel(id: node.id, lastEdit: node.lastEdit)
         } ?? []
-        
     }
 }
 
-
-struct RequestModel: Codable {
-    let botId: String
-    let nodes: [RequestNodeModel]
-    
-    init(nodes: [RequestNodeModel]) {
-        Service.myPrint("RequestModel init") {
-            
-        }
-        self.botId = SaveDataManager.getData(type: String.self, key: .botId) ?? "bot id 없음"
-        self.nodes = nodes
-    }
-}
-
-
-struct ResponseModel: Codable {
-    let deleteIds: [String]
-    let editNodes: [Node]
-    let newNodes: [Node]
-}

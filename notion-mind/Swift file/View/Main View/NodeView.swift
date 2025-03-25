@@ -25,7 +25,7 @@ class NodeView: UIView {
     
     
     //component
-    let innerView: UIView
+    var innerView: UIView
     
     
     
@@ -34,11 +34,15 @@ class NodeView: UIView {
         self.innerView = NodeView.createInnerView(node: node) //추가
         super.init(frame: frame)
         setupUI()
-        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setNewNode(node: Node) {
+        self.node = node
+        self.innerView = NodeView.createInnerView(node: node)
     }
     
 }

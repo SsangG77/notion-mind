@@ -31,6 +31,7 @@ extension LoginViewController {
     func navigateToMain() {
         let mainVC = MainViewController(viewModel: mainViewModel)
         UIApplication.shared.windows.first?.rootViewController = mainVC
+        closeSafari()
     }
 }
 
