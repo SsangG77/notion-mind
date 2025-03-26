@@ -12,9 +12,7 @@ struct RequestModel: Codable {
     let nodes: [RequestNodeModel]
     
     init(nodes: [RequestNodeModel]) {
-        Service.myPrint("RequestModel init") {
-            
-        }
+        
         self.botId = SaveDataManager.getData(type: String.self, key: .botId) ?? "bot id 없음"
         self.nodes = nodes
     }

@@ -158,9 +158,6 @@ class NodeAPI {
     
     
     func fetchNodes() -> Observable<ResponseModel> {
-        Service.myPrint(#function) {
-            print("fetchNodes 실행됨")
-        }
         
         let requestModel = RequestModel(nodes: requestData())
         
@@ -197,9 +194,7 @@ class NodeAPI {
                         let decoder = JSONDecoder()
                         decoder.dateDecodingStrategy = .iso8601
                         let responseData = try decoder.decode(ResponseModel.self, from: data)
-//                        Service.myPrint("NodeAPI - fetchNodes()") {
-//                            print(responseData)
-//                        }
+                        
                         observer.onNext(responseData)
                     } catch {
                         Service.myPrint("fetchNodes() - error") {

@@ -15,8 +15,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
     
     
-    let loginViewModel = LoginViewModel()
-//    let mainViewModel = MainViewModel()
+    let loginViewModel = LoginViewModel() 
 
     
 
@@ -27,20 +26,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         
         
-//        if let urlContext = connectionOptions.urlContexts.first {
-//               let sendingAppID = urlContext.options.sourceApplication
-//               let url = urlContext.url
-//               print("URL을 보낸 앱: \(sendingAppID ?? "Unknown")")
-//               print("실행된 URL: \(url)")
-//           }
-        
-        
-        
-        //UserDefaults 전부 삭제
-//        for key in UserDefaults.standard.dictionaryRepresentation().keys {
-//            UserDefaults.standard.removeObject(forKey: key.description)
-//        }
-        SaveDataManager.saveNodes([])
 
         
         guard let windowScene = (scene as? UIWindowScene) else { return }
@@ -53,10 +38,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
        let rootViewController: UIViewController
        if isLoggedIn {
-           rootViewController = MainViewController(viewModel: MainViewModel.shared)
+           rootViewController = MainViewController(/*viewModel: MainViewModel.shared*/)
            
        } else {
-           rootViewController = LoginViewController(viewModel: loginViewModel, mainViewModel: MainViewModel.shared)
+           rootViewController = LoginViewController(viewModel: loginViewModel)
        }
 
         window.rootViewController = rootViewController
@@ -72,26 +57,31 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let url = urlContext.url
         guard let components = URLComponents(string: url.absoluteString) else { return }
+        
 //        let host = components.host ?? "host 없음"
         let items = components.queryItems ?? []
+        
+        Service.myPrint("3. items response query") {
+            print(#function)
+            print(items)
+        }
         
         for i in items {
             
             let queryName = i.name
             guard let value = i.value else { continue }
+            
             switch queryName {
             case "scuess":
                 if value == "true" {
+                    print("scene value: \(value)")
                     loginViewModel.authSuccess.accept(true)
                 } else {
+                    print("scene value: \(value)")
                     loginViewModel.authSuccess.accept(false)
                 }
                 
             case "bot_id":
-                Service.myPrint("bot_id response query") {
-                    print(#function)
-                    print(value)
-                }
                 //로컬에 이 값을 저장
                 SaveDataManager.setData(value: value, key: .botId)
                 

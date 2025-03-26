@@ -18,31 +18,17 @@ struct LoginResult {
 
 class LoginViewModel {
     
+//    static let shared = LoginViewModel()
+    
+    
+    
     let disposeBag = DisposeBag()
-    
-    
     let loginButtonTapped = PublishSubject<Void>()
     let authSuccess: PublishRelay<Bool> = PublishRelay()
-//    let savedBotId: PublishRelay<String> = PublishRelay()
+
     
     init() {
-        authSuccess
-            .subscribe(onNext: { success in
-                if success {
-                    print("login success")
-                    //workspace id 저자
-                } else {
-                    print("login fail")
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        
-//        savedBotId
-//            .subscribe(onNext: { id in
-//                self.mainViewModel.fetchNodes()
-//            })
-//            .disposed(by: disposeBag)
+
         
         
     }

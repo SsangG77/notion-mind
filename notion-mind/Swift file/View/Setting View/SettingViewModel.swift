@@ -30,7 +30,7 @@ class SettingViewModel {
                 SaveDataManager.setData(value: false, key: .isLogin)
                 SaveDataManager.removeData(key: .botId)
                 
-                let loginVC = LoginViewController(viewModel: self.loginViewModel, mainViewModel: MainViewModel.shared)
+                let loginVC = LoginViewController(viewModel: self.loginViewModel)
                 UIApplication.shared.windows.first?.rootViewController = loginVC
                 
             })

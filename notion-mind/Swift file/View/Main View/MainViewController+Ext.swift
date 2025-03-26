@@ -47,7 +47,7 @@ extension MainViewController {
         
         
         /// 저장되어 있는 [Node]를 화면에 배치하기
-        mainViewModel.getSavedNodesObservable()
+        MainViewModel.shared.getSavedNodesObservable()
             .observe(on: MainScheduler.instance) // UI 업데이트는 메인 스레드에서 실행
             .subscribe(onNext: { [weak self] savedNodes in
                 guard let self = self else { return }
@@ -62,6 +62,9 @@ extension MainViewController {
                         $0.leading.equalToSuperview().offset(node.rect?.x ?? 0)
                         $0.top.equalToSuperview().offset(node.rect?.y ?? 0)
                     }
+                    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(nodeViewTapped(_:)))
+                    nodeView.addGestureRecognizer(tapGesture)
+                    nodeView.isUserInteractionEnabled = true
                     
                 }
                 
@@ -70,9 +73,9 @@ extension MainViewController {
                     $0.width.equalTo(frameWidth   + CGFloat(self.nodePerSize * nodesCount))
                     $0.edges.equalTo(self.scrollView.contentLayoutGuide)
                     
-                    Service.myPrint("컨텐트뷰 업데이트") {
-                        print("node count : ",nodesCount)
-                    }
+//                    Service.myPrint("컨텐트뷰 업데이트") {
+//                        print("node count : ",nodesCount)
+//                    }
                 }
                 
             })
@@ -91,12 +94,12 @@ extension MainViewController {
     /// 서버로부터 응답된 삭제 id들과 일치하는 node를 가진 nodeView를 삭제
     /// - Parameter deleteIds: 서버로 응답된 삭제 id 배열
     func removeNodesByDeletedIds(deleteIds: [String]) {
-        Service.myPrint("removeNodesByDeletedIds()") {
-            print("file: \(#file)")
-            print("function: \(#function)")
-            print("line: \(#line)")
-            print("deleted ids: \(deleteIds)")
-        }
+//        Service.myPrint("removeNodesByDeletedIds()") {
+//            print("file: \(#file)")
+//            print("function: \(#function)")
+//            print("line: \(#line)")
+//            print("deleted ids: \(deleteIds)")
+//        }
         DispatchQueue.main.async {
             for subView in self.contentView.subviews {
                 if let nodeView = subView as? NodeView {
@@ -116,8 +119,9 @@ extension MainViewController {
     func setEditNodes(localNodes: [Node], resEditNodes: [Node]) -> [Node] {
         // resEditNodes를 Dictionary로 변환해 빠르게 탐색
         let resMap = Dictionary(uniqueKeysWithValues: resEditNodes.map { ($0.id, $0) })
+        var useLocalNodes = localNodes
         
-        return localNodes.map { local in
+        return useLocalNodes.map { local in
             if let res = resMap[local.id] {
                 let newNode = Node(
                     id: res.id,
@@ -190,6 +194,11 @@ extension MainViewController {
     }
     
     @objc private func nodeViewTapped(_ sender: UITapGestureRecognizer) {
+        Service.myPrint("nodeViewTapped") {
+            print("file: \(#file)")
+            print("function: \(#function)")
+            print("line: \(#line)")
+        }
         guard let tappedView = sender.view as? NodeView else { return }
         let tappedNode = tappedView.node
 
@@ -207,81 +216,6 @@ extension MainViewController {
 
 //MARK: - node, line 설정
 extension MainViewController {
-    
-    /// newSetNode
-    /// - Parameters:
-    ///   - frame: 노드 배치를 위한 범위 전체 프레임
-    ///   - node: 해당 노드
-    ///   - nodesCount: 노드 총 갯수
-    /// - Returns: 배치된 노드 Rect 값
-//    func setNode(frame: CGRect , node: Node, loadNodes: [Node]) -> Node {
-//        
-//        let frameHeight           = frame.height  // MainViewController의 높이
-//        let frameWidth            = frame.width   // MainViewController의 넓이
-//        let nodesCount            = loadNodes.count
-//        
-//        let nodeView = NodeView(node: node)
-//        
-//        self.contentView.addSubview(nodeView)
-//        
-//        // 임시로 (0,0)에 배치
-//        nodeView.snp.makeConstraints {
-//            $0.leading.equalToSuperview().offset(0)
-//            $0.top.equalToSuperview().offset(0)
-//        }
-//        
-//        //배치하고 레이아웃 업데이트
-//        self.contentView.layoutIfNeeded()
-//        
-//        let nodeHeight = nodeView.frame.height
-//        let nodeWidth = nodeView.frame.width
-//        
-//        var randomX: CGFloat
-//        var randomY: CGFloat
-//        var newRect: CGRect
-//        
-//        let inset: CGFloat = CGFloat((nodePerSize/20) * nodesCount)
-//        
-//        repeat {
-//            // (x, y)를 지정할 범위를 정함
-//            randomX = CGFloat.random(in: inset...(frameWidth + CGFloat(nodePerSize * nodesCount) - nodeWidth - inset))
-//            randomY = CGFloat.random(in: inset...(frameHeight + CGFloat(nodePerSize * nodesCount) - nodeHeight - inset))
-//            
-//            // newRect 생성
-//            newRect = CGRect(x: randomX, y: randomY, width: nodeWidth, height: nodeHeight)
-//            
-//            // 다른 노드들과 겹치는지 확인
-//        } while loadNodes.contains(where: {
-//            guard let rect = $0.getCGRect() else { return false }
-//            return rect.intersects(newRect)
-//        })
-//
-//        // newNode 생성
-//        let newNode = Node(
-//            id: node.id,
-//            parentId: node.parentId,
-//            icon: node.icon,
-//            cover: node.cover,
-//            title: node.title,
-//            lastEdit: node.lastEdit,
-//            property: node.property,
-//            rect: CodableRect(from: newRect)
-//        )
-//
-//        // 뷰 위치 지정
-//        nodeView.snp.updateConstraints {
-//            $0.leading.equalToSuperview().offset(randomX)
-//            $0.top.equalToSuperview().offset(randomY)
-//        }
-//
-//        
-//        // ✅ 탭 제스처 추가
-//           let tapGesture = UITapGestureRecognizer(target: self, action: #selector(nodeViewTapped(_:)))
-//           nodeView.addGestureRecognizer(tapGesture)
-//           nodeView.isUserInteractionEnabled = true
-//        
-//        return newNode
-//    }
     
     func calculateNonOverlappingRect(
         frame: CGRect,
@@ -404,7 +338,7 @@ extension MainViewController {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.backgroundColor = UIColor.init(hexCode: "DFDFDF")
-        scrollView.backgroundColor = .gray
+//        scrollView.backgroundColor = .gray
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 10.0
         scrollView.zoomScale = 1.5

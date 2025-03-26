@@ -41,9 +41,8 @@ extension NodeDetailViewController {
         
         guard let node = node else { return imageView }
         if node.cover != nil {
-            URLSession.shared.dataTask(with: URL(string: node.cover ?? "https://picsum.photos/400/600")!) { [weak self] data, response, error in
-                guard let self,
-                      let data = data,
+            URLSession.shared.dataTask(with: URL(string: node.cover ?? "https://picsum.photos/400/600")!) { data, response, error in
+                guard let data = data,
                       response != nil,
                       error == nil else { return }
                 DispatchQueue.main.async {

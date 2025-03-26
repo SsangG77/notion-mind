@@ -42,7 +42,7 @@ class NodeView: UIView {
     
     func setNewNode(node: Node) {
         self.node = node
-        self.innerView = NodeView.createInnerView(node: node)
+//        self.innerView = NodeView.createInnerView(node: node)
     }
     
 }

@@ -23,21 +23,17 @@ class LoginViewController: UIViewController {
     lazy var stackView = setStackView()
     
     //rx 설정
-    
     private let disposeBag = DisposeBag()
-    
     
     //view model
     let loginViewModel: LoginViewModel
-    let mainViewModel: MainViewModel
     let webService = WebService()
     
     //safari view controller
     var safariViewController: SFSafariViewController?
     
-    init(viewModel: LoginViewModel, mainViewModel: MainViewModel) {
+    init(viewModel: LoginViewModel) {
         self.loginViewModel = viewModel
-        self.mainViewModel = mainViewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -54,7 +50,12 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        Service.myPrint("LoginViewController - viewDodLoad()") {
+        let now = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let currentTime = formatter.string(from: now)
+
+        Service.myPrint("LoginViewController - viewDodLoad() \(currentTime)") {
             print("login : ", SaveDataManager.getData(type: Bool.self, key: .isLogin) ?? "login 없음")
             print("bot_id : ", SaveDataManager.getData(type: String.self, key: .botId) ?? "bot_id 없음")
         }
@@ -62,15 +63,13 @@ class LoginViewController: UIViewController {
         setUI()
         setLayout()
        
-        eventHandling()
-       
-        
-    }
-// viewDidLoad
-    
-    private func eventHandling() {
         connectButton.rx.tap //로그인 버튼 클릭하여 이벤트 방출
             .subscribe(onNext: {
+                Service.myPrint("1. connectionButton tapped") {
+                    print("file: \(#file)")
+                    print("function: \(#function)")
+                    print("line: \(#line)")
+                }
                 self.openNotionAuth()
             })
             .disposed(by: disposeBag)
@@ -81,20 +80,23 @@ class LoginViewController: UIViewController {
             .subscribe(onNext: { [weak self] success in //
                 guard let self = self else { return }
                 if success {
+                    Service.myPrint("4. authSuccess") {
+                        print("file: \(#file)")
+                        print("function: \(#function)")
+                        print("line: \(#line)")
+                        print(success)
+                    }
                     SaveDataManager.setData(value: true, key: .isLogin)
                     self.navigateToMain()
                 } else {
                     print("로그인 실패 알림창 띄우기")
                 }
-                self.closeSafari()
             })
             .disposed(by: disposeBag)
+       
+        
     }
-    
-    
-    
-  
-   
+// viewDidLoad
     
 }
 // LoginViewController

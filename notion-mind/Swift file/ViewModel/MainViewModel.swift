@@ -45,10 +45,18 @@ class MainViewModel {
     init() {
         
         savedBotId
+            .do(onNext: { _ in
+//                Service.myPrint("savedBotId.do(onNext:)") {
+//                    print("file: \(#file)")
+//                    print("function: \(#function)")
+//                    print("line: \(#line)")
+//                }
+            })
             .flatMap { _ in
                 self.nodeApi.fetchNodes()
             }
             .bind(to: self.responseRelay)
+            
             .disposed(by: disposeBag)
             
     }
@@ -57,11 +65,6 @@ class MainViewModel {
     /// 로컬에 저장된 nodes를 방출
     /// - Returns: Observable[Node]
     func getSavedNodesObservable() -> Observable<[Node]> {
-        Service.myPrint("getSavedNodesObservable()") {
-            print("file: \(#file)")
-            print("function: \(#function)")
-            print("line: \(#line)")
-        }
         
         let nodes = SaveDataManager.loadNodes() ?? []
         

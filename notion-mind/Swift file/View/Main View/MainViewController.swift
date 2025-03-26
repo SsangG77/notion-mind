@@ -20,7 +20,7 @@ class MainViewController: UIViewController {
     
     
     //뷰모델
-    let mainViewModel: MainViewModel
+//    let mainViewModel: MainViewModel
 //    private let loginViewModel: LoginViewModel
     
     
@@ -48,14 +48,14 @@ class MainViewController: UIViewController {
     let nodePerSize:Int = 100
     
     
-    init(viewModel: MainViewModel) {
-        self.mainViewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+//    init(viewModel: MainViewModel) {
+//        self.mainViewModel = viewModel
+//        super.init(nibName: nil, bundle: nil)
+//    }
+//    
+//    required init?(coder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
    
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,24 +66,16 @@ class MainViewController: UIViewController {
         
         
         if let savedId = SaveDataManager.getData(type: String.self, key: .botId) {
-            Service.myPrint("MainViewController - savedId") {
-                print("file: \(#file) / function: \(#function) / line: \(#line)")
-            }
-            mainViewModel.savedBotId.accept(savedId)
+           
+            MainViewModel.shared.savedBotId.accept(savedId)
         }
         
         updateLayout()
         
         
-        mainViewModel.responseRelay
+        MainViewModel.shared.responseRelay
             .observe(on: MainScheduler.instance)
             .map { res -> [Node] in
-                Service.myPrint("MainViewController - response relay") {
-                    print("file: \(#file)")
-                    print("function: \(#function)")
-                    print("line: \(#line)")
-                    print(res)
-                }
 
                 self.removeNodesByDeletedIds(deleteIds: res.deleteIds)
 
@@ -131,9 +123,9 @@ class MainViewController: UIViewController {
                     $0.width.equalTo(self.view.frame.width   + CGFloat(self.nodePerSize * allNodes.count))
                     $0.edges.equalTo(self.scrollView.contentLayoutGuide)
                     
-                    Service.myPrint("컨텐트뷰 업데이트 2") {
-                        print("node count : ",allNodes.count)
-                    }
+//                    Service.myPrint("컨텐트뷰 업데이트 2") {
+//                        print("node count : ",allNodes.count)
+//                    }
                 }
 
                 return allNodes
