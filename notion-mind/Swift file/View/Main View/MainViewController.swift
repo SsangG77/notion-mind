@@ -83,7 +83,7 @@ class MainViewController: UIViewController {
                 localNodes = localNodes.filter { !res.deleteIds.contains($0.id) }
                 localNodes = self.setEditNodes(localNodes: localNodes, resEditNodes: res.editNodes)
 
-                var allNodes = localNodes
+//                var allNodes = localNodes
 
                 for newNode in res.newNodes {
                     let dummyView = NodeView(node: newNode)
@@ -99,28 +99,30 @@ class MainViewController: UIViewController {
                     let rect = self.calculateNonOverlappingRect(
                         frame: self.view.frame,
                         nodeSize: size,
-                        existingNodes: allNodes
+                        existingNodes: localNodes
                     )
 
-                    let finalNode = Node(
-                        id: newNode.id,
-                        parentId: newNode.parentId,
-                        icon: newNode.icon,
-                        cover: newNode.cover,
-                        title: newNode.title,
-                        lastEdit: newNode.lastEdit,
-                        property: newNode.property,
-                        rect: CodableRect(from: rect)
-                    )
-                 
+                    if !localNodes.contains(where: { $0.id == newNode.id }) {
+                        let finalNode = Node(
+                            id: newNode.id,
+                            parentId: newNode.parentId,
+                            icon: newNode.icon,
+                            cover: newNode.cover,
+                            title: newNode.title,
+                            lastEdit: newNode.lastEdit,
+                            property: newNode.property,
+                            rect: CodableRect(from: rect)
+                        )
 
-                    self.createAndAttachNodeView(node: finalNode, rect: rect)
-                    allNodes.append(finalNode)
+                        self.createAndAttachNodeView(node: finalNode, rect: rect)
+                        localNodes.append(finalNode)
+                    }
+
                 }
                 
                 self.contentView.snp.remakeConstraints {
-                    $0.height.equalTo(self.view.frame.height + CGFloat(self.nodePerSize * allNodes.count))
-                    $0.width.equalTo(self.view.frame.width   + CGFloat(self.nodePerSize * allNodes.count))
+                    $0.height.equalTo(self.view.frame.height + CGFloat(self.nodePerSize * localNodes.count))
+                    $0.width.equalTo(self.view.frame.width   + CGFloat(self.nodePerSize * localNodes.count))
                     $0.edges.equalTo(self.scrollView.contentLayoutGuide)
                     
 //                    Service.myPrint("컨텐트뷰 업데이트 2") {
@@ -128,7 +130,7 @@ class MainViewController: UIViewController {
 //                    }
                 }
 
-                return allNodes
+                return localNodes
             }
             .subscribe(onNext: { finalNodes in
                 SaveDataManager.saveNodes(finalNodes)

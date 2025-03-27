@@ -158,6 +158,11 @@ class NodeAPI {
     
     
     func fetchNodes() -> Observable<ResponseModel> {
+        Service.myPrint("fetchNodes()") {
+            print("file: \(#file)")
+            print("function: \(#function)")
+            print("line: \(#line)")
+        }
         
         let requestModel = RequestModel(nodes: requestData())
         
@@ -194,6 +199,12 @@ class NodeAPI {
                         let decoder = JSONDecoder()
                         decoder.dateDecodingStrategy = .iso8601
                         let responseData = try decoder.decode(ResponseModel.self, from: data)
+                        Service.myPrint("response Data") {
+                            print("file: \(#file)")
+                            print("function: \(#function)")
+                            print("line: \(#line)")
+                            print(responseData)
+                        }
                         
                         observer.onNext(responseData)
                     } catch {

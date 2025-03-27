@@ -119,9 +119,8 @@ extension MainViewController {
     func setEditNodes(localNodes: [Node], resEditNodes: [Node]) -> [Node] {
         // resEditNodes를 Dictionary로 변환해 빠르게 탐색
         let resMap = Dictionary(uniqueKeysWithValues: resEditNodes.map { ($0.id, $0) })
-        var useLocalNodes = localNodes
         
-        return useLocalNodes.map { local in
+        return localNodes.map { local in
             if let res = resMap[local.id] {
                 let newNode = Node(
                     id: res.id,

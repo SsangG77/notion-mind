@@ -46,11 +46,11 @@ class MainViewModel {
         
         savedBotId
             .do(onNext: { _ in
-//                Service.myPrint("savedBotId.do(onNext:)") {
-//                    print("file: \(#file)")
-//                    print("function: \(#function)")
-//                    print("line: \(#line)")
-//                }
+                Service.myPrint("savedBotId.do(onNext:)") {
+                    print("file: \(#file)")
+                    print("function: \(#function)")
+                    print("line: \(#line)")
+                }
             })
             .flatMap { _ in
                 self.nodeApi.fetchNodes()

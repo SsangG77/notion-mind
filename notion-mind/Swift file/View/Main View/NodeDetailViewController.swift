@@ -73,19 +73,37 @@ class NodeDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let node = node else { return }
-        title = node.title
+        
+        setupCustomTitleView(with: node.title ?? "title 없음")
         
         scrollView.delegate = self
         
-//        setUI()
         newSetUI()
         setupCloseButton()
-    }// viewDidLoad
-    
-    
-    
-}
+    }
 
+    private func setupCustomTitleView(with title: String) {
+        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
+        blurView.layer.cornerRadius = 10
+        blurView.clipsToBounds = true
+
+        let titleLabel = UILabel()
+        titleLabel.setFont(text: title, style: .bold, size: 20, color: .black)
+
+        blurView.contentView.addSubview(titleLabel)
+        titleLabel.snp.makeConstraints {
+            $0.edges.equalToSuperview().inset(8) // 블러뷰 안에서 여백
+        }
+
+        blurView.frame = CGRect(x: 0, y: 0,
+                                   width: titleLabel.intrinsicContentSize.width + 24,
+                                   height: titleLabel.intrinsicContentSize.height + 16)
+
+        navigationItem.titleView = blurView
+    }
+
+
+}
 
 
 

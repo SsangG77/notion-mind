@@ -56,7 +56,11 @@ class NodeDetailViewModel {
             stackView.spacing = 5
             for value in prop.value {
                 let label = UILabel()
-                label.setFont(text: value.name, size: 16)
+                
+                let pageTitle = value.name
+#warning("pagetitle 가져오기")
+                
+                label.setFont(text: pageTitle, size: 16)
                 stackView.addArrangedSubview(label)
             }
             return stackView
@@ -82,4 +86,15 @@ class NodeDetailViewModel {
             return .clear
         }
     }
+    
+    func getPageTitleById(_ id: String) -> String {
+        // 저장되어있는 배열에서 매개변수와 일치하는 id를 가진 node의 title을 가져온다.
+        let nodes = SaveDataManager.loadNodes()
+        
+        
+        
+    }
+    
+    
+    
 }

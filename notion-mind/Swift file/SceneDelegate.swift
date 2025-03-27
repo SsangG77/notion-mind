@@ -15,7 +15,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
     
     
-    let loginViewModel = LoginViewModel() 
+//    let loginViewModel = LoginViewModel() 
 
     
 
@@ -41,7 +41,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
            rootViewController = MainViewController(/*viewModel: MainViewModel.shared*/)
            
        } else {
-           rootViewController = LoginViewController(viewModel: loginViewModel)
+           rootViewController = LoginViewController()
        }
 
         window.rootViewController = rootViewController
@@ -61,38 +61,70 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        let host = components.host ?? "host 없음"
         let items = components.queryItems ?? []
         
-        Service.myPrint("3. items response query") {
-            print(#function)
-            print(items)
+//        Service.myPrint("3. items response query") {
+//            print(#function)
+//            print(items)
+//        }
+        
+        let authResult = items[0]
+        let botIdResult = items[1]
+        
+        if authResult.name == "success" {
+            guard let value = authResult.value else { return }
+            Service.myPrint("scene auth value") {
+                print("file: \(#file)")
+                print("function: \(#function)")
+                print("line: \(#line)")
+                print(value)
+            }
+            if value == "true" {
+                LoginViewModel.shared.authSuccess.accept(true)
+            } else {
+                LoginViewModel.shared.authSuccess.accept(false)
+            }
+        } else {
+            Service.myPrint("authResult.name != 'success'") {
+                print("file: \(#file)")
+                print("function: \(#function)")
+                print("line: \(#line)")
+                print(authResult)
+            }
         }
         
-        for i in items {
-            
-            let queryName = i.name
-            guard let value = i.value else { continue }
-            
-            switch queryName {
-            case "scuess":
-                if value == "true" {
-                    print("scene value: \(value)")
-                    loginViewModel.authSuccess.accept(true)
-                } else {
-                    print("scene value: \(value)")
-                    loginViewModel.authSuccess.accept(false)
-                }
-                
-            case "bot_id":
-                //로컬에 이 값을 저장
-                SaveDataManager.setData(value: value, key: .botId)
-                
-//                loginViewModel.savedBotId.accept(value)
-                MainViewModel.shared.savedBotId.accept(value)
-                
-            default:
-                break
-            } // switch
-            
+        if botIdResult.name == "bot_id" {
+            guard let value = botIdResult.value else { return }
+            SaveDataManager.setData(value: value, key: .botId)
         }
+        
+//        for i in items {
+//            Service.myPrint("item \(i)") {
+//                print("file: \(#file)")
+//                print("function: \(#function)")
+//                print("line: \(#line)")
+//            }
+//            let queryName = i.name
+//            guard let value = i.value else { continue }
+//            
+//            switch queryName {
+//            case "success":
+//                if value == "true" {
+//                    print("scene value: \(value)")
+//                    LoginViewModel.shared.authSuccess.accept(true)
+//                } else {
+//                    print("scene value: \(value)")
+//                    LoginViewModel.shared.authSuccess.accept(false)
+//                }
+//                
+//            case "bot_id":
+//                //로컬에 이 값을 저장
+//                SaveDataManager.setData(value: value, key: .botId)
+//
+//                
+//            default:
+//                break
+//            } // switch
+//            
+//        }
     }
     
  

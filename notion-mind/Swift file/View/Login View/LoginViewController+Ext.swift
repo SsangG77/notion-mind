@@ -14,11 +14,11 @@ import SafariServices
 //MARK: - Navigation
 extension LoginViewController {
     func openNotionAuth() {
-        Service.myPrint("2. openNotionAuth") {
-            print("file: \(#file)")
-            print("function: \(#function)")
-            print("line: \(#line)")
-        }
+//        Service.myPrint("2. openNotionAuth") {
+//            print("file: \(#file)")
+//            print("function: \(#function)")
+//            print("line: \(#line)")
+//        }
         guard let url = URL(string: webService.auth) else { return }
         let safariVC = SFSafariViewController(url: url)
         safariViewController = safariVC
@@ -26,11 +26,11 @@ extension LoginViewController {
     }
     
     func closeSafari() {
-        Service.myPrint("6. closeSafari()") {
-            print("file: \(#file)")
-            print("function: \(#function)")
-            print("line: \(#line)")
-        }
+//        Service.myPrint("6. closeSafari()") {
+//            print("file: \(#file)")
+//            print("function: \(#function)")
+//            print("line: \(#line)")
+//        }
         if let safariVC = safariViewController {
             safariVC.dismiss(animated: true) {
                 print("✅ SafariViewController 닫힘")
@@ -39,14 +39,16 @@ extension LoginViewController {
     }
     
     func navigateToMain() {
-        Service.myPrint("5. navigateToMain()") {
-            print("file: \(#file)")
-            print("function: \(#function)")
-            print("line: \(#line)")
-        }
+//        Service.myPrint("5. navigateToMain()") {
+//            print("file: \(#file)")
+//            print("function: \(#function)")
+//            print("line: \(#line)")
+//        }
         let mainVC = MainViewController()
-        UIApplication.shared.windows.first?.rootViewController = mainVC
         closeSafari()
+//        UIApplication.shared.windows.first?.rootViewController = mainVC
+        LoginViewModel.shared.changeRootViewController(mainVC)
+        
     }
 }
 

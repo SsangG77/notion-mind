@@ -19,9 +19,6 @@ class SettingViewModel {
     let disposeBag = DisposeBag()
     
     
-    //viewModel
-    let loginViewModel = LoginViewModel()
-//    let mainViewModel = MainViewModel()
     
     init() {
         
@@ -29,12 +26,14 @@ class SettingViewModel {
             .subscribe(onNext: {
                 SaveDataManager.setData(value: false, key: .isLogin)
                 SaveDataManager.removeData(key: .botId)
-                
-                let loginVC = LoginViewController(viewModel: self.loginViewModel)
-                UIApplication.shared.windows.first?.rootViewController = loginVC
-                
+                LoginViewModel.shared.authSuccess.accept(false)
+
+                let loginVC = LoginViewController()
+
+                LoginViewModel.shared.changeRootViewController(loginVC)
             })
             .disposed(by: disposeBag)
+
         
     }
     

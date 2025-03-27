@@ -37,7 +37,7 @@ extension NodeDetailViewController {
     
     func setCoverView() -> UIImageView {
         let imageView = UIImageView()
-        imageView.backgroundColor = UIColor.init(hexCode: "DFDFDF")
+        
         
         guard let node = node else { return imageView }
         if node.cover != nil {
@@ -54,7 +54,7 @@ extension NodeDetailViewController {
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.backgroundColor = .gray
+        imageView.backgroundColor = UIColor.init(hexCode: "DFDFDF")
         
         return imageView
     }
