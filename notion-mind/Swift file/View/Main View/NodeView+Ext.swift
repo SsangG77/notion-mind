@@ -22,7 +22,15 @@ extension NodeView {
     
     static func createInnerView(node: Node) -> UIView {
         let innerView = UIView()
-        innerView.backgroundColor = .brown
+        
+        // 초기 색상 설정
+        if let parentId = node.parentId {
+            let color = SettingViewModel().getOrCreateColor(for: parentId)
+            innerView.backgroundColor = color
+        } else {
+            innerView.backgroundColor = .brown // 기본 색상
+        }
+        
         innerView.layer.cornerRadius = 10
         
         let label = UILabel()
@@ -92,5 +100,16 @@ extension NodeView {
 //        present(navController, animated: true, completion: nil)
 //        
 //    }
+}
+
+extension NodeView {
+    // innerView 색상 업데이트
+    func updateInnerViewColor(_ color: UIColor) {
+        innerView.backgroundColor = color
+        // 텍스트 색상도 배경색에 맞게 업데이트
+        if let label = innerView.subviews.first as? UILabel {
+            label.changeTextColorByBG(for: color)
+        }
+    }
 }
 

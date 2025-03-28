@@ -16,12 +16,13 @@ class WebService {
     
     var auth = "" // notion auth url
     var nodeData = "" // 인증된 페이지, 데이터베이스들의 모든 하위 페이지
-    
+    var database = ""
     
     
     init() {
-        auth = self.setServerIP(.local) + "/auth/notion"
-        nodeData = self.setServerIP(.local) + "/data/nodes"
+        auth      = self.setServerIP(.local) + "/auth/notion"
+        nodeData  = self.setServerIP(.local) + "/data/nodes"
+        database  = self.setServerIP(.local) + "/data/database"
     }
     
     
@@ -29,11 +30,13 @@ class WebService {
     func setServerIP(_ host: HostType) -> String {
         switch host {
         case .local:
-            return "https://1bf9-58-226-117-28.ngrok-free.app" //localhost ngrok
+            return "https://8b62-58-226-117-28.ngrok-free.app"
+            
             
         case .global:
             
-            return "" // TODO: 서버 호스팅 후 ip 추가
+            #warning("서버 호스팅 후 ip 추가")
+            return ""
         }
     }
     

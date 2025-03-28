@@ -74,7 +74,16 @@ class NodeDetailViewController: UIViewController {
         super.viewDidLoad()
         guard let node = node else { return }
         
-        setupCustomTitleView(with: node.title ?? "title 없음")
+        var title = ""
+        if node.icon != nil {
+            title = node.icon! + node.title!
+        } else {
+            title = node.title!
+        }
+        
+        
+        
+        setupCustomTitleView(with: title)
         
         scrollView.delegate = self
         
@@ -83,21 +92,27 @@ class NodeDetailViewController: UIViewController {
     }
 
     private func setupCustomTitleView(with title: String) {
-        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
+        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: node?.cover != nil ? .extraLight : .systemThinMaterialDark))
         blurView.layer.cornerRadius = 10
         blurView.clipsToBounds = true
 
         let titleLabel = UILabel()
-        titleLabel.setFont(text: title, style: .bold, size: 20, color: .black)
+        
+       
+        
+        
+        titleLabel.setFont(text: title, style: .bold, size: 20, color: node?.cover != nil ? .black : .white)
 
         blurView.contentView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(8) // 블러뷰 안에서 여백
+//            $0.edges.equalToSuperview() // 블러뷰 안에서 여백
+            $0.center.equalToSuperview()
         }
 
         blurView.frame = CGRect(x: 0, y: 0,
-                                   width: titleLabel.intrinsicContentSize.width + 24,
-                                   height: titleLabel.intrinsicContentSize.height + 16)
+           width: titleLabel.intrinsicContentSize.width + 24,
+           height: titleLabel.intrinsicContentSize.height + 16
+        )
 
         navigationItem.titleView = blurView
     }

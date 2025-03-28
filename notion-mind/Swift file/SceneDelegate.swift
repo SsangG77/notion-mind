@@ -94,37 +94,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if botIdResult.name == "bot_id" {
             guard let value = botIdResult.value else { return }
             SaveDataManager.setData(value: value, key: .botId)
+            MainViewModel.shared.savedBotId.accept(value)
         }
-        
-//        for i in items {
-//            Service.myPrint("item \(i)") {
-//                print("file: \(#file)")
-//                print("function: \(#function)")
-//                print("line: \(#line)")
-//            }
-//            let queryName = i.name
-//            guard let value = i.value else { continue }
-//            
-//            switch queryName {
-//            case "success":
-//                if value == "true" {
-//                    print("scene value: \(value)")
-//                    LoginViewModel.shared.authSuccess.accept(true)
-//                } else {
-//                    print("scene value: \(value)")
-//                    LoginViewModel.shared.authSuccess.accept(false)
-//                }
-//                
-//            case "bot_id":
-//                //로컬에 이 값을 저장
-//                SaveDataManager.setData(value: value, key: .botId)
-//
-//                
-//            default:
-//                break
-//            } // switch
-//            
-//        }
+      
     }
     
  

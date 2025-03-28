@@ -45,9 +45,21 @@ extension NodeDetailViewController {
                 guard let data = data,
                       response != nil,
                       error == nil else { return }
+//                DispatchQueue.main.async {
+//                    imageView.image = UIImage(data: data) ?? UIImage()
+//                }
                 DispatchQueue.main.async {
-                    imageView.image = UIImage(data: data) ?? UIImage()
+                    if let image = UIImage(data: data) {
+                        UIView.transition(
+                            with: imageView,
+                            duration: 0.3,
+                            options: .transitionCrossDissolve,
+                            animations: {
+                                imageView.image = image
+                            })
+                    }
                 }
+
             }.resume()
         }
         

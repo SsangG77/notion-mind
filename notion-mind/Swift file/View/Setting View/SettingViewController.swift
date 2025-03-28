@@ -12,8 +12,16 @@ import RxSwift
 import RxRelay
 import RxCocoa
 
+import Foundation
+import UIKit
+import SnapKit
+import RxSwift
+import RxRelay
+import RxCocoa
 
 class SettingViewController: UIViewController {
+    
+    let webService = WebService()
     
     // view model
     let settingViewModel = SettingViewModel()
@@ -27,6 +35,9 @@ class SettingViewController: UIViewController {
     // rx
     let disposeBag = DisposeBag()
     
+    // UserDefaults keys
+//    private let databaseColorsKey = "databaseColors"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 //        view.backgroundColor = UIColor(hexCode: "DFDFDF")
@@ -34,16 +45,57 @@ class SettingViewController: UIViewController {
         setupCloseButton() // setting close button
         setUI()
         
+        fetchDatabaseList()
         
         logoutButton.rx.tap
-//            .bind(to: settingViewModel.logoutButtonTapped)
             .bind {
                 self.settingViewModel.logoutButtonTapped.accept($0)
-                
             }
             .disposed(by: disposeBag)
     }
     
+    private func fetchDatabaseList() {
+        guard let url = URL(string: webService.database) else { return }
+        
+        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+            guard let self = self,
+                  let data = data,
+                  error == nil else { return }
+            
+            do {
+                let databases = try JSONDecoder().decode([DatabaseModel].self, from: data)
+                DispatchQueue.main.async {
+                    // 기존의 모든 arrangedSubview 제거
+                    self.stackDBView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+                    
+                    // 새로운 데이터베이스 목록 추가
+                    databases.forEach { database in
+                        self.stackDBView.addArrangedSubview(self.setSingleDBView(database: database))
+                    }
+                }
+            } catch {
+                print("Error decoding database list: \(error)")
+            }
+        }.resume()
+    }
+    
+//    private func getOrCreateColor(for databaseId: String) -> UIColor {
+//        if let existingColor = settingViewModel.getOrCreateColor(for: databaseId) {
+//            return existingColor
+//        } else {
+//            // 새로운 랜덤 색상 생성
+//            let randomColor = UIColor(
+//                red: CGFloat.random(in: 0...1),
+//                green: CGFloat.random(in: 0...1),
+//                blue: CGFloat.random(in: 0...1),
+//                alpha: 1.0
+//            )
+//            var colors = settingViewModel.getDatabaseColors()
+//            colors[databaseId] = randomColor.toHexString()
+//            settingViewModel.saveDatabaseColors(colors)
+//            return randomColor
+//        }
+//    }
 }
 
 //MARK: - set Layout
@@ -51,7 +103,7 @@ extension SettingViewController {
     
     func setUI() {
         view.backgroundColor = UIColor(hexCode: "DFDFDF")
-
+        
         view.addSubview(scrollView)
         scrollView.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -70,12 +122,11 @@ extension SettingViewController {
             $0.centerX.equalToSuperview()
         }
 
-        scrollView.addSubview(logoutButton)
+        view.addSubview(logoutButton)
         logoutButton.snp.makeConstraints {
-            $0.top.equalTo(stackDBView.snp.bottom).offset(330)
             $0.leading.equalToSuperview().inset(30)
             $0.centerX.equalToSuperview()
-            $0.bottom.equalToSuperview().inset(50) // 마지막 뷰의 하단을 scrollView의 bottom과 연결
+            $0.bottom.equalToSuperview().inset(50)
         }
         
     }
@@ -109,16 +160,17 @@ extension SettingViewController {
     
     
     // single database view
-    func setSingleDBView(title: String) -> UIView {
+    func setSingleDBView(database: DatabaseModel) -> UIView {
         let dbView = UIView()
-        dbView.backgroundColor = UIColor(hexCode: "D0D0D0")
+        let color = settingViewModel.getOrCreateColor(for: database.id)
+        dbView.backgroundColor = color
         dbView.layer.cornerRadius = 12
         dbView.snp.makeConstraints {
             $0.height.equalTo(50)
         }
         
         let label = UILabel()
-        label.setFont(text: title, size: 20)
+        label.setFont(text: database.title, size: 20)
         
         dbView.addSubview(label)
         label.snp.makeConstraints {
@@ -138,13 +190,6 @@ extension SettingViewController {
         stackView.spacing = 20
         stackView.alignment = .fill
 //        stackView.backgroundColor = .blue
-        
-#warning("임시 데이터베이스 데이터")
-    
-        stackView.addArrangedSubview(setSingleDBView(title: "A DB"))
-        stackView.addArrangedSubview(setSingleDBView(title: "A DB"))
-        stackView.addArrangedSubview(setSingleDBView(title: "A DB"))
-        
         
         return stackView
     }

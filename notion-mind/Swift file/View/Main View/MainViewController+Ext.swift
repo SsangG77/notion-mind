@@ -13,14 +13,6 @@ import RxRelay
 import RxCocoa
 
 
-extension MainViewController {
-    
-   
-
-    
-}
-
-
 //MARK: - 레이아웃
 extension MainViewController {
     
@@ -39,6 +31,12 @@ extension MainViewController {
     
     //레이아웃 업데이트 부분
     func updateLayout() {
+        Service.myPrint("updateLayout()") {
+            print("file: \(#file)")
+            print("function: \(#function)")
+            print("line: \(#line)")
+        }
+        
         let frameHeight    = self.view.frame.height  // MainViewController의 높이
         let frameWidth     = self.view.frame.width   // MainViewController의 넓이
         
@@ -51,10 +49,8 @@ extension MainViewController {
             .observe(on: MainScheduler.instance) // UI 업데이트는 메인 스레드에서 실행
             .subscribe(onNext: { [weak self] savedNodes in
                 guard let self = self else { return }
-                var nodesCount = savedNodes.count
+                let nodesCount = savedNodes.count
                 for node in savedNodes {
-//                    let newNode = self.setNode(frame: self.view.frame, node: node, nodesCount: nodesCount)
-//                    savedNode.append(newNode)
                     
                     let nodeView = NodeView(node: node)
                     self.contentView.addSubview(nodeView)
@@ -73,16 +69,11 @@ extension MainViewController {
                     $0.width.equalTo(frameWidth   + CGFloat(self.nodePerSize * nodesCount))
                     $0.edges.equalTo(self.scrollView.contentLayoutGuide)
                     
-//                    Service.myPrint("컨텐트뷰 업데이트") {
-//                        print("node count : ",nodesCount)
-//                    }
                 }
                 
             })
             .disposed(by: disposeBag)
 
-        
-        
         
 //      mainViewModel.nodesRelay.accept(savedNode) //이거 하면 NodeView가 두번 그려짐
        
@@ -193,11 +184,7 @@ extension MainViewController {
     }
     
     @objc private func nodeViewTapped(_ sender: UITapGestureRecognizer) {
-        Service.myPrint("nodeViewTapped") {
-            print("file: \(#file)")
-            print("function: \(#function)")
-            print("line: \(#line)")
-        }
+        
         guard let tappedView = sender.view as? NodeView else { return }
         let tappedNode = tappedView.node
 

@@ -1,4 +1,3 @@
-
 //  MainViewController.swift
 //  notion-mind
 //
@@ -19,11 +18,6 @@ class MainViewController: UIViewController {
     lazy var settingButton: UIButton    =  setSettingButton()
     
     
-    //뷰모델
-//    let mainViewModel: MainViewModel
-//    private let loginViewModel: LoginViewModel
-    
-    
     //viewcontroller
     lazy var settingsVC = SettingViewController()
     lazy var settingNavController = UINavigationController(rootViewController: settingsVC)
@@ -36,8 +30,6 @@ class MainViewController: UIViewController {
     /// 배치된 노드 rect 저장 배열
     var savedOffset: [CGRect] = []
     
-    /// Rect가 지정된 node 저장
-//    var savedNode: [Node] = []
     
     /// 연결 처리된 node 저장
     var linkedNodeId: [String] = []
@@ -48,15 +40,6 @@ class MainViewController: UIViewController {
     let nodePerSize:Int = 100
     
     
-//    init(viewModel: MainViewModel) {
-//        self.mainViewModel = viewModel
-//        super.init(nibName: nil, bundle: nil)
-//    }
-//    
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-   
     override func viewDidLoad() {
         super.viewDidLoad()
         self.scrollView.delegate = self
@@ -64,16 +47,29 @@ class MainViewController: UIViewController {
         setLayout()
         positionSettingButtton()
         
+        // 데이터베이스 색상 업데이트 구독
+        settingsVC.settingViewModel.databaseColors
+            .subscribe(onNext: { [weak self] _ in
+                self?.updateNodeColors()
+            })
+            .disposed(by: disposeBag)
         
-        if let savedId = SaveDataManager.getData(type: String.self, key: .botId) {
-           
-            MainViewModel.shared.savedBotId.accept(savedId)
-        }
+//        if let savedId = SaveDataManager.getData(type: String.self, key: .botId) {
+//            MainViewModel.shared.savedBotId.accept(savedId)
+//        }
         
         updateLayout()
         
         
         MainViewModel.shared.responseRelay
+            .do(onNext: { _ in
+                Service.myPrint("responseRelay do") {
+                    print("file: \(#file)")
+                    print("function: \(#function)")
+                    print("line: \(#line)")
+                    print(<#content#>)
+                }
+            })
             .observe(on: MainScheduler.instance)
             .map { res -> [Node] in
 
@@ -125,9 +121,6 @@ class MainViewController: UIViewController {
                     $0.width.equalTo(self.view.frame.width   + CGFloat(self.nodePerSize * localNodes.count))
                     $0.edges.equalTo(self.scrollView.contentLayoutGuide)
                     
-//                    Service.myPrint("컨텐트뷰 업데이트 2") {
-//                        print("node count : ",allNodes.count)
-//                    }
                 }
 
                 return localNodes
@@ -151,7 +144,16 @@ class MainViewController: UIViewController {
         drawLinks(savedNode: SaveDataManager.loadNodes() ?? [])
     }
 
-    
+    // 노드 색상 업데이트
+    private func updateNodeColors() {
+        contentView.subviews.forEach { subview in
+            if let nodeView = subview as? NodeView,
+               let parentId = nodeView.node.parentId {
+                let color = settingsVC.settingViewModel.getOrCreateColor(for: parentId)
+                nodeView.updateInnerViewColor(color)
+            }
+        }
+    }
     
 } // MainViewController
 

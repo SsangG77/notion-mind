@@ -13,6 +13,7 @@ class SaveDataManager {
     enum Key: String {
         case isLogin
         case botId
+        case databaseColors
     }
     
    
@@ -32,6 +33,20 @@ class SaveDataManager {
         defaults.removeObject(forKey: key.rawValue)
     }
     
+    // 데이터베이스 색상 관련 메서드
+    static func saveDatabaseColor(databaseId: String, color: String) {
+        var colors = getDatabaseColors()
+        colors[databaseId] = color
+        setData(value: colors, key: .databaseColors)
+    }
+    
+    static func getDatabaseColors() -> [String: String] {
+        return getData(type: [String: String].self, key: .databaseColors) ?? [:]
+    }
+    
+    static func getDatabaseColor(databaseId: String) -> String? {
+        return getDatabaseColors()[databaseId]
+    }
     
     static func saveNodes(_ nodes: [Node]) {
         let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]

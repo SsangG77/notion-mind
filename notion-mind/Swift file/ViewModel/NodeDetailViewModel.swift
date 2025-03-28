@@ -17,7 +17,7 @@ class NodeDetailViewModel {
             let stackView = UIStackView()
             stackView.axis = .vertical
             stackView.alignment = .leading
-            stackView.spacing = 8
+            stackView.spacing = 10
             for value in prop.value {
                 let label = UILabel()
                 label.setFont(text: value.name, style: .bold, size: 15, color: .white)
@@ -47,20 +47,29 @@ class NodeDetailViewModel {
             label.text = value == "true" ? "✅" : "✖️"
             return label
             
-//        case "relation":
+        case "relation":
+            let stackView  = UIStackView()
+            stackView.axis = .vertical
+            stackView.spacing = 10
+            for value in prop.value {
+                let label = UILabel()
+                
+                let pageTitle = self.getPageTitleById(value.name)
+
+                label.setFont(text: pageTitle, size: 16)
+                stackView.addArrangedSubview(label)
+            }
+            return stackView
             
             
         default:
             let stackView  = UIStackView()
             stackView.axis = .vertical
-            stackView.spacing = 5
+            stackView.spacing = 10
             for value in prop.value {
                 let label = UILabel()
                 
-                let pageTitle = value.name
-#warning("pagetitle 가져오기")
-                
-                label.setFont(text: pageTitle, size: 16)
+                label.setFont(text: value.name, size: 16)
                 stackView.addArrangedSubview(label)
             }
             return stackView
@@ -89,8 +98,15 @@ class NodeDetailViewModel {
     
     func getPageTitleById(_ id: String) -> String {
         // 저장되어있는 배열에서 매개변수와 일치하는 id를 가진 node의 title을 가져온다.
-        let nodes = SaveDataManager.loadNodes()
+        let nodes = SaveDataManager.loadNodes() ?? []
         
+        let node = nodes.first(where: { $0.id == id })!
+        
+        if node.icon != nil {
+            return node.icon! + node.title!
+        } else {
+            return node.title!
+        }
         
         
     }
