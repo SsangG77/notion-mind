@@ -15,6 +15,7 @@ import RxCocoa
 
 class SettingViewModel {
     // MARK: - Properties
+    let webService = WebService()
     private let disposeBag = DisposeBag()
     
     // MARK: - Observable Properties
@@ -62,7 +63,7 @@ class SettingViewModel {
     
     // MARK: - Public Methods
     func fetchDatabaseList() {
-        guard let url = URL(string: "https://8b62-58-226-117-28.ngrok-free.app/data/database") else { return }
+        guard let url = URL(string: webService.database) else { return }
         
         URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
             guard let self = self,

@@ -24,7 +24,7 @@ class NodeAPI {
 
     
     func fetchNodes() -> Observable<ResponseModel> {
-        Service.myPrint("fetchNodes()") {
+        Service.myPrint("3. fetchNodes()") {
             print("file: \(#file)")
             print("function: \(#function)")
             print("line: \(#line)")

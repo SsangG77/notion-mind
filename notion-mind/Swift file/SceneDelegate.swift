@@ -71,12 +71,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         if authResult.name == "success" {
             guard let value = authResult.value else { return }
-            Service.myPrint("scene auth value") {
-                print("file: \(#file)")
-                print("function: \(#function)")
-                print("line: \(#line)")
-                print(value)
-            }
+           
             if value == "true" {
                 LoginViewModel.shared.authSuccess.accept(true)
             } else {
@@ -92,9 +87,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         
         if botIdResult.name == "bot_id" {
+           
             guard let value = botIdResult.value else { return }
             SaveDataManager.setData(value: value, key: .botId)
             MainViewModel.shared.savedBotId.accept(value)
+            
+            Service.myPrint("1. bot id value") {
+                print("file: \(#file)")
+                print("function: \(#function)")
+                print("line: \(#line)")
+                print(value)
+            }
+            
+            
         }
       
     }

@@ -46,7 +46,7 @@ class MainViewModel {
         
         savedBotId
             .do(onNext: { _ in
-                Service.myPrint("savedBotId.do(onNext:)") {
+                Service.myPrint("2. savedBotId.do(onNext:)") {
                     print("file: \(#file)")
                     print("function: \(#function)")
                     print("line: \(#line)")

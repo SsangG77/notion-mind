@@ -81,7 +81,7 @@ class NodeDetailViewModel {
     
     func colorStringToColor(colorName: String) -> UIColor {
         switch colorName {
-        case "default": return UIColor(hexCode: "F1F1EF")
+        case "default": return UIColor(hexCode: "9F9F9F")
         case "gray": return UIColor(hexCode: "878682")
         case "brown": return UIColor(hexCode: "64473A")
         case "orange": return UIColor(hexCode: "D9730B")
@@ -100,15 +100,19 @@ class NodeDetailViewModel {
         // 저장되어있는 배열에서 매개변수와 일치하는 id를 가진 node의 title을 가져온다.
         let nodes = SaveDataManager.loadNodes() ?? []
         
-        let node = nodes.first(where: { $0.id == id })!
-        
-        if node.icon != nil {
-            return node.icon! + node.title!
-        } else {
-            return node.title!
+        // 노드를 찾지 못했을 경우의 처리 추가
+        guard let node = nodes.first(where: { $0.id == id }) else {
+            return "비어 있음" // 또는 다른 기본값
         }
         
-        
+        // 옵셔널 체이닝을 사용하여 안전하게 접근
+        if let icon = node.icon, let title = node.title {
+            return icon + title
+        } else if let title = node.title {
+            return title
+        } else {
+            return "Untitled"
+        }
     }
     
     

@@ -18,6 +18,7 @@ class MainViewController: UIViewController {
     lazy var settingButton: UIButton    =  setSettingButton()
     
     
+    
     //viewcontroller
     lazy var settingsVC = SettingViewController()
     lazy var settingNavController = UINavigationController(rootViewController: settingsVC)
@@ -54,20 +55,20 @@ class MainViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-//        if let savedId = SaveDataManager.getData(type: String.self, key: .botId) {
-//            MainViewModel.shared.savedBotId.accept(savedId)
-//        }
+        if let savedId = SaveDataManager.getData(type: String.self, key: .botId) {
+            MainViewModel.shared.savedBotId.accept(savedId)
+        }
         
-        updateLayout()
+        
         
         
         MainViewModel.shared.responseRelay
-            .do(onNext: { _ in
-                Service.myPrint("responseRelay do") {
+            .do(onNext: { relay in
+                Service.myPrint("4. responseRelay do") {
                     print("file: \(#file)")
                     print("function: \(#function)")
                     print("line: \(#line)")
-                    print(<#content#>)
+                    print("responseRelay: \(relay)")
                 }
             })
             .observe(on: MainScheduler.instance)
@@ -127,22 +128,15 @@ class MainViewController: UIViewController {
             }
             .subscribe(onNext: { finalNodes in
                 SaveDataManager.saveNodes(finalNodes)
+                self.updateLayout()
+                self.drawLinks(savedNode: finalNodes)
             })
             .disposed(by: disposeBag)
 
         
-        
-        
-        
-        
     } // viewDidLoad
     
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        drawLinks(savedNode: SaveDataManager.loadNodes() ?? [])
-    }
 
     // 노드 색상 업데이트
     private func updateNodeColors() {

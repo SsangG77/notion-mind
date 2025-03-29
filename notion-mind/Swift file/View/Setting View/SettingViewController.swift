@@ -45,7 +45,30 @@ class SettingViewController: UIViewController {
         setupCloseButton() // setting close button
         setUI()
         
-        fetchDatabaseList()
+        
+        settingViewModel.fetchDatabaseList()
+        
+        settingViewModel.databases
+            .observe(on: MainScheduler.instance)
+            .withUnretained(self)
+            .subscribe(onNext: { vc, databases in
+                // 기존의 모든 arrangedSubview 제거
+                vc.stackDBView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+
+                // 새로운 데이터베이스 목록 추가
+                databases.forEach { database in
+                    
+                    UIView.transition(
+                        with: vc.stackDBView,
+                        duration: 0.3,
+                        options: .transitionCrossDissolve,
+                        animations: {
+                            vc.stackDBView.addArrangedSubview(self.setSingleDBView(database: database))
+                    })
+                    
+                }
+            })
+            .disposed(by: disposeBag)
         
         logoutButton.rx.tap
             .bind {
@@ -54,48 +77,12 @@ class SettingViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    private func fetchDatabaseList() {
-        guard let url = URL(string: webService.database) else { return }
-        
-        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-            guard let self = self,
-                  let data = data,
-                  error == nil else { return }
-            
-            do {
-                let databases = try JSONDecoder().decode([DatabaseModel].self, from: data)
-                DispatchQueue.main.async {
-                    // 기존의 모든 arrangedSubview 제거
-                    self.stackDBView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-                    
-                    // 새로운 데이터베이스 목록 추가
-                    databases.forEach { database in
-                        self.stackDBView.addArrangedSubview(self.setSingleDBView(database: database))
-                    }
-                }
-            } catch {
-                print("Error decoding database list: \(error)")
-            }
-        }.resume()
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if let contentView = scrollView.subviews.first {
+            scrollView.contentSize = contentView.frame.size
+        }
     }
-    
-//    private func getOrCreateColor(for databaseId: String) -> UIColor {
-//        if let existingColor = settingViewModel.getOrCreateColor(for: databaseId) {
-//            return existingColor
-//        } else {
-//            // 새로운 랜덤 색상 생성
-//            let randomColor = UIColor(
-//                red: CGFloat.random(in: 0...1),
-//                green: CGFloat.random(in: 0...1),
-//                blue: CGFloat.random(in: 0...1),
-//                alpha: 1.0
-//            )
-//            var colors = settingViewModel.getDatabaseColors()
-//            colors[databaseId] = randomColor.toHexString()
-//            settingViewModel.saveDatabaseColors(colors)
-//            return randomColor
-//        }
-//    }
 }
 
 //MARK: - set Layout
@@ -104,33 +91,42 @@ extension SettingViewController {
     func setUI() {
         view.backgroundColor = UIColor(hexCode: "DFDFDF")
         
-        view.addSubview(scrollView)
-        scrollView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-
-        scrollView.addSubview(selectedDBTitle)
+        view.addSubview(selectedDBTitle)
         selectedDBTitle.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(30)
-            $0.top.equalToSuperview().inset(30)
+            $0.trailing.equalToSuperview().inset(30)
+            $0.top.equalToSuperview().inset(100)
         }
-
-        scrollView.addSubview(stackDBView)
-        stackDBView.snp.makeConstraints {
-            $0.top.equalTo(selectedDBTitle.snp.bottom).offset(25)
-            $0.leading.equalToSuperview().inset(30)
-            $0.centerX.equalToSuperview()
-        }
-
+        
         view.addSubview(logoutButton)
         logoutButton.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(30)
-            $0.centerX.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(30)
             $0.bottom.equalToSuperview().inset(50)
         }
         
-    }
+        view.addSubview(scrollView)
+        scrollView.snp.makeConstraints {
+            $0.top.equalTo(selectedDBTitle.snp.bottom).offset(25)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(logoutButton.snp.top).inset(-10)
+        }
+        
+        let contentView = UIView()
+        scrollView.addSubview(contentView)
+        contentView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+            $0.width.equalTo(scrollView)
+        }
 
+        contentView.addSubview(stackDBView)
+        stackDBView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(30)
+            $0.leading.equalToSuperview().inset(30)
+            $0.trailing.equalToSuperview().inset(30)
+            $0.bottom.equalToSuperview().inset(30)
+        }
+    }
 }
 
 
@@ -141,12 +137,10 @@ extension SettingViewController {
     //scrollview
     func setScrollView() -> UIScrollView {
         let scrollView = UIScrollView()
-        
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-       
-        //임시
-//        scrollView.backgroundColor = .red
-        
+        scrollView.showsVerticalScrollIndicator = true
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.alwaysBounceVertical = true
         return scrollView
     }
     
@@ -171,6 +165,7 @@ extension SettingViewController {
         
         let label = UILabel()
         label.setFont(text: database.title, size: 20)
+        label.changeTextColorByBG(for: color)
         
         dbView.addSubview(label)
         label.snp.makeConstraints {
@@ -193,11 +188,6 @@ extension SettingViewController {
         
         return stackView
     }
-    
-    
-    //logout view
-    
-    
     
 }
 

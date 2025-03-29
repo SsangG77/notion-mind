@@ -37,49 +37,52 @@ extension MainViewController {
             print("line: \(#line)")
         }
         
-        let frameHeight    = self.view.frame.height  // MainViewController의 높이
-        let frameWidth     = self.view.frame.width   // MainViewController의 넓이
+        let frameHeight = self.view.frame.height
+        let frameWidth = self.view.frame.width
         
-        //기존 노드들 제거
         contentView.subviews.forEach { $0.removeFromSuperview() }
         
-        
-        /// 저장되어 있는 [Node]를 화면에 배치하기
         MainViewModel.shared.getSavedNodesObservable()
-            .observe(on: MainScheduler.instance) // UI 업데이트는 메인 스레드에서 실행
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] savedNodes in
                 guard let self = self else { return }
                 let nodesCount = savedNodes.count
-                for node in savedNodes {
-                    
+                
+                for (index, node) in savedNodes.enumerated() {
                     let nodeView = NodeView(node: node)
+                    nodeView.alpha = 0 // 초기 투명도 설정
+                    nodeView.transform = CGAffineTransform(scaleX: 0.5, y: 0.5) // 초기 크기 설정
+                    
                     self.contentView.addSubview(nodeView)
                     nodeView.snp.makeConstraints {
                         $0.leading.equalToSuperview().offset(node.rect?.x ?? 0)
                         $0.top.equalToSuperview().offset(node.rect?.y ?? 0)
                     }
-                    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(nodeViewTapped(_:)))
+                    
+                    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.nodeViewTapped(_:)))
                     nodeView.addGestureRecognizer(tapGesture)
                     nodeView.isUserInteractionEnabled = true
                     
+                    // 애니메이션 적용 (각 노드마다 약간의 딜레이를 주어 순차적으로 나타나도록)
+                    UIView.animate(
+                        withDuration: 0.3,
+                        delay: Double(index) * 0.05, // 노드마다 0.05초씩 딜레이
+                        options: [.curveEaseOut],
+                        animations: {
+                            nodeView.alpha = 1
+                            nodeView.transform = .identity
+                        }
+                    )
                 }
                 
                 self.contentView.snp.remakeConstraints {
                     $0.height.equalTo(frameHeight + CGFloat(self.nodePerSize * nodesCount))
-                    $0.width.equalTo(frameWidth   + CGFloat(self.nodePerSize * nodesCount))
+                    $0.width.equalTo(frameWidth + CGFloat(self.nodePerSize * nodesCount))
                     $0.edges.equalTo(self.scrollView.contentLayoutGuide)
-                    
                 }
-                
             })
             .disposed(by: disposeBag)
-
-        
-//      mainViewModel.nodesRelay.accept(savedNode) //이거 하면 NodeView가 두번 그려짐
-       
-
-        
-    } // updateLayout
+    }
     
     
     /// 서버로부터 응답된 삭제 id들과 일치하는 node를 가진 nodeView를 삭제
@@ -158,6 +161,7 @@ extension MainViewController {
         
         
         overlayView.addSubview(settingButton) // overlayView에 버튼 추가
+        
 
         settingButton.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(30)
@@ -168,6 +172,21 @@ extension MainViewController {
         settingButton.isUserInteractionEnabled = true
         settingButton.addTarget(self, action: #selector(settingButtonTapped), for: .touchUpInside)
         
+        // add reloadButton
+        let reloadButton = setReloadButton()
+        overlayView.addSubview(reloadButton)
+        
+        reloadButton.snp.makeConstraints {
+            $0.trailing.equalTo(settingButton.snp.leading).offset(-10)
+            $0.top.equalToSuperview().inset(60)
+            $0.width.height.equalTo(50)
+        }
+        
+        reloadButton.isUserInteractionEnabled = true
+        reloadButton.addTarget(self, action: #selector(reloadButtonTapped), for: .touchUpInside)
+        
+        
+        
     }
     
 }
@@ -177,10 +196,17 @@ extension MainViewController {
 extension MainViewController {
     
     @objc func settingButtonTapped() {
-        
 //        let navController = UINavigationController(rootViewController: settingsVC) // 네비게이션 컨트롤러 포함
         settingNavController.modalPresentationStyle = .fullScreen // 전체 화면으로 표시
         present(settingNavController, animated: true, completion: nil)
+    }
+    
+    @objc func reloadButtonTapped() {
+        print("reload button tapped")
+        // MainViewModel의 savedBotId를 다시 방출하여 데이터 새로고침
+        if let savedId = SaveDataManager.getData(type: String.self, key: .botId) {
+            MainViewModel.shared.savedBotId.accept(savedId)
+        }
     }
     
     @objc private func nodeViewTapped(_ sender: UITapGestureRecognizer) {
@@ -232,24 +258,28 @@ extension MainViewController {
     
     func createAndAttachNodeView(node: Node, rect: CGRect) {
         let nodeView = NodeView(node: node)
+        nodeView.alpha = 0
+        nodeView.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+        
         contentView.addSubview(nodeView)
-
-        // 임시 배치 후 사이즈 측정
         nodeView.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(0)
-            $0.top.equalToSuperview().offset(0)
-        }
-        contentView.layoutIfNeeded()
-
-        // 실제 위치로 이동
-        nodeView.snp.updateConstraints {
             $0.leading.equalToSuperview().offset(rect.origin.x)
             $0.top.equalToSuperview().offset(rect.origin.y)
         }
-
+        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(nodeViewTapped(_:)))
         nodeView.addGestureRecognizer(tapGesture)
         nodeView.isUserInteractionEnabled = true
+        
+        UIView.animate(
+            withDuration: 0.3,
+            delay: 0,
+            options: [.curveEaseOut],
+            animations: {
+                nodeView.alpha = 1
+                nodeView.transform = .identity
+            }
+        )
     }
 
     
@@ -262,32 +292,49 @@ extension MainViewController {
     ///   - endOffset: 끝점 (x, y)
     func drawLine(from startOffset: CGPoint, to endOffset: CGPoint) {
         let linePath = UIBezierPath()
-        linePath.move(to: startOffset)  // 시작점
-        linePath.addLine(to: endOffset) // 끝점
+        linePath.move(to: startOffset)
+        linePath.addLine(to: endOffset)
 
         let shapeLayer = CAShapeLayer()
         shapeLayer.path = linePath.cgPath
-        shapeLayer.strokeColor = UIColor.black.cgColor // 선 색상 (검은색)
-        shapeLayer.lineWidth = 5.0  // 선 두께
-        shapeLayer.lineCap = .round  // 선 끝 모양
+        shapeLayer.strokeColor = UIColor.black.cgColor
+        shapeLayer.lineWidth = 5.0
+        shapeLayer.lineCap = .round
+        shapeLayer.fillColor = nil
+        
+        // 처음에는 선을 보이지 않게 설정
+        shapeLayer.strokeEnd = 0
+        
         contentView.layer.insertSublayer(shapeLayer, at: 0)
+        
+        // 선이 그려지는 애니메이션
+        let animation = CABasicAnimation(keyPath: "strokeEnd")
+        animation.fromValue = 0
+        animation.toValue = 1
+        animation.duration = 0.6
+        animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+        animation.fillMode = .forwards
+        animation.isRemovedOnCompletion = false
+        
+        shapeLayer.add(animation, forKey: "lineAnimation")
     }
     
     func drawLinks(savedNode: [Node]) {
-        for node in savedNode {
+        // 기존 라인들 제거
+        contentView.layer.sublayers?.forEach { layer in
+            if layer is CAShapeLayer {
+                layer.removeFromSuperlayer()
+            }
+        }
+        
+        for (index, node) in savedNode.enumerated() {
             let nodeRect = node.getCGRect()!
             let centerX = nodeRect.midX
             let centerY = nodeRect.midY
             
-            
             guard !linkedNodeId.contains(node.id) else { continue }
             
-            //type이 "relation"인 property들만 가져오기
             let relationProperties = node.property.filter { $0.type == "relation" }
-            
-            // 거기서 value들만 가져오기
-            
-            
             
             let relatedIds = relationProperties
                 .compactMap { $0.value }
@@ -299,12 +346,21 @@ extension MainViewController {
                 savedNode.first(where: { $0.id == id })
             }
             
-            for findNode in relatedNodes {
+            // 각 라인마다 약간의 딜레이를 주어 순차적으로 그려지도록 함
+            for (lineIndex, findNode) in relatedNodes.enumerated() {
                 let findNodeRect = findNode.getCGRect()!
                 let findNodeCenterX = findNodeRect.midX
                 let findNodeCenterY = findNodeRect.midY
                 
-                drawLine(from: CGPoint(x: centerX, y: centerY), to: CGPoint(x: findNodeCenterX, y: findNodeCenterY))
+                // 노드와 라인의 인덱스를 기반으로 딜레이 계산
+                let delay = Double(index) * 0.1 + Double(lineIndex) * 0.05
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                    self.drawLine(
+                        from: CGPoint(x: centerX, y: centerY),
+                        to: CGPoint(x: findNodeCenterX, y: findNodeCenterY)
+                    )
+                }
             }
         }
     } // drawLinks
@@ -349,6 +405,16 @@ extension MainViewController {
         settingButton.clipsToBounds = true
         return settingButton
     }
+    
+    func setReloadButton() -> UIButton {
+        let reloadBtn = UIButton()
+        reloadBtn.setImage(UIImage(named: "reload"), for: .normal)
+        reloadBtn.imageView?.contentMode = .scaleAspectFit
+        reloadBtn.clipsToBounds = true
+        
+        return reloadBtn
+    }
+    
     
     
 }

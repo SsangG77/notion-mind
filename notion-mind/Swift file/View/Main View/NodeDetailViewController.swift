@@ -32,39 +32,8 @@ class NodeDetailViewController: UIViewController {
     let headerHeight: CGFloat = 200
     var headerHeightConstraint: NSLayoutConstraint!
     
-    
-//    var node: Node? = nil
-    var node: Node? = Node(id: "id 1", parentId: "preant_id", icon: "🥬", cover: "https://images.unsplash.com/photo-1742387436246-a7288481be39?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", title: "1 node", lastEdit: Date(), property: [
-        Property(name: "항목", type: "relation", value: [
-            ValueType(id: UUID().uuidString, name: "id 2", color: "clear"),
-            ValueType(id: UUID().uuidString, name: "id 3", color: "clear"),
-        ]),
-       
-        Property(name: "pages", type: "relation", value: [
-            ValueType(id: UUID().uuidString, name: "id 4", color: "clear"),
-            ValueType(id: UUID().uuidString, name: "id 5", color: "clear"),
-        ]),
-        Property(name: "Tech", type: "select", value: [
-            ValueType(id: UUID().uuidString, name: "rxswift", color: "red")
-        ]),
-        Property(name: "pages", type: "relation", value: [
-            ValueType(id: UUID().uuidString, name: "id 4", color: "clear"),
-            ValueType(id: UUID().uuidString, name: "id 5", color: "clear"),
-        ]),
-        Property(name: "Tech", type: "multi_select", value: [
-            ValueType(id: UUID().uuidString, name: "rxswift", color: "red"),
-            ValueType(id: UUID().uuidString, name: "uikit", color: "green"),
-            ValueType(id: UUID().uuidString, name: "mvvm", color: "blue"),
-        ]),
-        Property(name: "Done", type: "checkbox", value: [
-            ValueType(id: UUID().uuidString, name: "false", color: "clear"),
-        ]),
-        Property(name: "Done", type: "checkbox", value: [
-            ValueType(id: UUID().uuidString, name: "false", color: "clear"),
-        ])
-    ], rect: CodableRect(from: CGRect()))
-    
-    
+    var node: Node? = nil
+
     func setNode(node: Node) {
         self.node = node
     }
@@ -78,7 +47,7 @@ class NodeDetailViewController: UIViewController {
         if node.icon != nil {
             title = node.icon! + node.title!
         } else {
-            title = node.title!
+            title = node.title ?? "제목 없음"
         }
         
         
@@ -91,31 +60,7 @@ class NodeDetailViewController: UIViewController {
         setupCloseButton()
     }
 
-    private func setupCustomTitleView(with title: String) {
-        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: node?.cover != nil ? .extraLight : .systemThinMaterialDark))
-        blurView.layer.cornerRadius = 10
-        blurView.clipsToBounds = true
-
-        let titleLabel = UILabel()
-        
-       
-        
-        
-        titleLabel.setFont(text: title, style: .bold, size: 20, color: node?.cover != nil ? .black : .white)
-
-        blurView.contentView.addSubview(titleLabel)
-        titleLabel.snp.makeConstraints {
-//            $0.edges.equalToSuperview() // 블러뷰 안에서 여백
-            $0.center.equalToSuperview()
-        }
-
-        blurView.frame = CGRect(x: 0, y: 0,
-           width: titleLabel.intrinsicContentSize.width + 24,
-           height: titleLabel.intrinsicContentSize.height + 16
-        )
-
-        navigationItem.titleView = blurView
-    }
+   
 
 
 }

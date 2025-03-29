@@ -28,7 +28,7 @@ extension NodeView {
             let color = SettingViewModel().getOrCreateColor(for: parentId)
             innerView.backgroundColor = color
         } else {
-            innerView.backgroundColor = .brown // 기본 색상
+            innerView.backgroundColor = .white // 기본 색상
         }
         
         innerView.layer.cornerRadius = 10

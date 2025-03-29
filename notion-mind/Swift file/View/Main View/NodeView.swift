@@ -30,15 +30,9 @@ class NodeView: UIView {
     
     
     init(node: Node, frame: CGRect = .zero) {
-        Service.myPrint("init node view") {
-            print("file: \(#file)")
-            print("function: \(#function)")
-            print("line: \(#line)")
-            print(node)
-        }
         
         self.node = node
-        self.innerView = NodeView.createInnerView(node: node) //추가
+        self.innerView = NodeView.createInnerView(node: node)
         super.init(frame: frame)
         setupUI()
     }
