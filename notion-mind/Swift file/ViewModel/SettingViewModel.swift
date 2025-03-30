@@ -65,7 +65,23 @@ class SettingViewModel {
     func fetchDatabaseList() {
         guard let url = URL(string: webService.database) else { return }
         
-        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let json: [String: String] = ["botId": SaveDataManager.getData(type: String.self, key: .botId) ?? "botId 없음"]
+        
+        
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
+            request.httpBody = jsonData
+        } catch let error {
+            print(error)
+        }
+        
+        
+        
+        URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
             guard let self = self,
                   let data = data,
                   error == nil else { return }

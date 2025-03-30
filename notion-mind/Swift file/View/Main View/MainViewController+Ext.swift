@@ -380,10 +380,9 @@ extension MainViewController {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.backgroundColor = UIColor.init(hexCode: "DFDFDF")
-//        scrollView.backgroundColor = .gray
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 10.0
-        scrollView.zoomScale = 1.5
+        scrollView.zoomScale = 8.0
         return scrollView
     }
     
