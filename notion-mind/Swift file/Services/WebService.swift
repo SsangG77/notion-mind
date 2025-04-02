@@ -20,9 +20,9 @@ class WebService {
     
     
     init() {
-        auth      = self.setServerIP(.local) + "/auth/notion"
-        nodeData  = self.setServerIP(.local) + "/data/nodes"
-        database  = self.setServerIP(.local) + "/data/database"
+        auth      = self.setServerIP(.global) + "/auth/notion"
+        nodeData  = self.setServerIP(.global) + "/data/nodes"
+        database  = self.setServerIP(.global) + "/data/database"
     }
     
     
@@ -34,9 +34,9 @@ class WebService {
             
             
         case .global:
+//            #warning("서버 호스팅 후 ip 추가")
             
-            #warning("서버 호스팅 후 ip 추가")
-            return ""
+            return "https://notion-mind-server.com"
         }
     }
     

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		91970C9A2D9D8668004C8D0B /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 91970C992D9D865E004C8D0B /* README.md */; };
 		91C35ACD2D7C18B20085516C /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 91C35ACC2D7C18B20085516C /* SnapKit */; };
 		91F64E562D78758800D3ACAF /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 91F64E552D78758800D3ACAF /* RxCocoa */; };
 		91F64E582D78758800D3ACAF /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 91F64E572D78758800D3ACAF /* RxRelay */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		91970C992D9D865E004C8D0B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		91F64E3C2D78739F00D3ACAF /* notion-mind.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "notion-mind.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		91F64EA32D788BF300D3ACAF /* InriaSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InriaSans-Bold.ttf"; sourceTree = "<group>"; };
 		91F64EA52D788BF300D3ACAF /* InriaSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InriaSans-Regular.ttf"; sourceTree = "<group>"; };
@@ -60,6 +62,7 @@
 		91F64E332D78739F00D3ACAF = {
 			isa = PBXGroup;
 			children = (
+				91970C992D9D865E004C8D0B /* README.md */,
 				91F64E3E2D78739F00D3ACAF /* notion-mind */,
 				91F64E3D2D78739F00D3ACAF /* Products */,
 				91F64EA92D788C0E00D3ACAF /* Font */,
@@ -156,6 +159,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				91970C9A2D9D8668004C8D0B /* README.md in Resources */,
 				91F64EA62D788BF300D3ACAF /* InriaSans-Bold.ttf in Resources */,
 				91F64EA82D788BF300D3ACAF /* InriaSans-Regular.ttf in Resources */,
 			);
@@ -189,8 +193,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -199,9 +202,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.sangjin.notion-mind";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -220,8 +227,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -230,9 +236,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.sangjin.notion-mind";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
