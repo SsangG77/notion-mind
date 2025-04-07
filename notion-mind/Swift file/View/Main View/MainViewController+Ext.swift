@@ -297,8 +297,8 @@ extension MainViewController {
 
         let shapeLayer = CAShapeLayer()
         shapeLayer.path = linePath.cgPath
-        shapeLayer.strokeColor = UIColor.black.cgColor
-        shapeLayer.lineWidth = 5.0
+        shapeLayer.strokeColor = UIColor.gray.cgColor
+        shapeLayer.lineWidth = 2.0
         shapeLayer.lineCap = .round
         shapeLayer.fillColor = nil
         

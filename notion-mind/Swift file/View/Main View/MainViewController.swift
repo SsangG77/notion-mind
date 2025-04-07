@@ -63,14 +63,6 @@ class MainViewController: UIViewController {
         
         
         MainViewModel.shared.responseRelay
-            .do(onNext: { relay in
-                Service.myPrint("4. responseRelay do") {
-                    print("file: \(#file)")
-                    print("function: \(#function)")
-                    print("line: \(#line)")
-                    print("responseRelay: \(relay)")
-                }
-            })
             .observe(on: MainScheduler.instance)
             .map { res -> [Node] in
 

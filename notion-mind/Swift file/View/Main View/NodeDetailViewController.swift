@@ -44,11 +44,16 @@ class NodeDetailViewController: UIViewController {
         guard let node = node else { return }
         
         var title = ""
-        if node.icon != nil {
-            title = node.icon! + node.title!
-        } else {
-            title = node.title ?? "제목 없음"
-        }
+        var icon = node.icon ?? ""
+        var name = node.title ?? "제목 없음"
+        
+        title = "\(icon) \(name)"
+        
+//        if node.icon != nil {
+//            title = node.icon + (node.title != nil ? "제목 없음" : node.title)
+//        } else {
+//            title = node.title ?? "제목 없음"
+//        }
         
         
         

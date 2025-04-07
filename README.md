@@ -1,9 +1,12 @@
 
 
 # Notion-Mind
-![Image](https://github-production-user-asset-6210df.s3.amazonaws.com/63487642/429539302-d03307d3-5a34-41d4-9ec4-29a2168c1ebd.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250402%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250402T145452Z&X-Amz-Expires=300&X-Amz-Signature=71237717f9b404a38b60792f212e7c2001fccd09c9390feacc3a5ec5d387bb4f&X-Amz-SignedHeaders=host)
 
-- 배포 URL : [Notion-Mind AppStore]()
+<div>
+  <img src="https://file.notion.so/f/f/0f86b459-412a-451d-9229-4dc4f87d6213/82ef2618-0e21-45f8-9844-8744cdd1daab/notionMind_(1).png?table=block&id=1c6ee035-a51f-806d-a110-c6fd33eb2bfe&spaceId=0f86b459-412a-451d-9229-4dc4f87d6213&expirationTimestamp=1743991200000&signature=40MwO6ZyIxZbwOaik6nKTmfGdcXewAoTwQ6QAWBiwJY&downloadName=notionMind+%281%29.png" />
+</div> 
+
+- 배포 URL : [Notion-Mind AppStore](https://apps.apple.com/kr/app/notion-mind/id6744064353)
 
 </br>
 
@@ -47,6 +50,7 @@
 
 - **RxSwift / RxCocoa:** 비동기 데이터 흐름 처리 및 바인딩
 - **SnapKit:** 오토레이아웃 코드 간결화
+- **UIViewSeparator:** UIView 구분선
 
 </br>
 
@@ -62,8 +66,8 @@
 - Notion 인증을 통해 사용자의 데이터를 가져옴.
 
 <div>
-  <img width="200" src="https://github-production-user-asset-6210df.s3.amazonaws.com/63487642/428424659-566dde71-941e-4bbc-b950-3455f4171ecb.PNG?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250330%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250330T200314Z&X-Amz-Expires=300&X-Amz-Signature=6de6bbdfdf65e575d7639989fe5125622f0939186c0465f1f4f8aefd3a7d3a08&X-Amz-SignedHeaders=host" />
-</div>
+  <img width="200" src="https://file.notion.so/f/f/0f86b459-412a-451d-9229-4dc4f87d6213/4b4629b9-4c11-4dc4-a272-eb2ef6616064/IMG_0180.png?table=block&id=1cdee035-a51f-8069-964a-e78ea0ef669e&spaceId=0f86b459-412a-451d-9229-4dc4f87d6213&expirationTimestamp=1743991200000&signature=RtF6luMAe2Dk7RbG0o1Ql2Qfolf-ZYPXM_494c31hoQ&downloadName=IMG_0180.PNG.png" />
+</div> 
 
 </br>
 
@@ -71,18 +75,19 @@
 
 
 <div>
-  <img width="200" src="https://github-production-user-asset-6210df.s3.amazonaws.com/63487642/429539704-d72bce38-ac8a-4fc0-bdc5-ca77b6b9eaf6.PNG?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250402%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250402T145548Z&X-Amz-Expires=300&X-Amz-Signature=c6726f8bf6eb1520c314f185b6f32a071096156944c8fe0758e7fa4b621506ab&X-Amz-SignedHeaders=host" />
-</div>
+  <img width="200" src="https://file.notion.so/f/f/0f86b459-412a-451d-9229-4dc4f87d6213/571bc27c-4434-4a02-87d3-196526265bbc/IMG_0183.png?table=block&id=1cdee035-a51f-80d4-bdb3-cef5c83ce482&spaceId=0f86b459-412a-451d-9229-4dc4f87d6213&expirationTimestamp=1743991200000&signature=F3VwOpcEl4rCjRzWZVnhzR5WdNAejg9BJ58gvv1b3yo&downloadName=IMG_0183.PNG.png" />
+</div> 
 
 </br>
 
 - 각 아이템의 상세페이지 확인.
 
 <div>
-  <img width="200" src="https://github-production-user-asset-6210df.s3.amazonaws.com/63487642/429540056-87152b5e-531f-4b23-a0e5-9407e4542760.PNG?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250402%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250402T145622Z&X-Amz-Expires=300&X-Amz-Signature=7faaeb0c4ed43773a544015dc41c5d9be4a0d2928eaf62260083cb7631296827&X-Amz-SignedHeaders=host" />
-</div>
+  <img width="200" src="https://file.notion.so/f/f/0f86b459-412a-451d-9229-4dc4f87d6213/7ea87dd1-2f9c-48fb-85ba-b93f9ab7cea9/IMG_0181.png?table=block&id=1cdee035-a51f-80a7-8605-cdcacaf80499&spaceId=0f86b459-412a-451d-9229-4dc4f87d6213&expirationTimestamp=1743991200000&signature=8UahAUHcKmdm-WIOtatnfWNtJyhNHTI2yHuWEk6Tip0&downloadName=IMG_0181.PNG.png" />
+</div> 
 
 </br>
+
 
 
 
