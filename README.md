@@ -2,9 +2,6 @@
 
 # Notion-Mind
 
-<div>
-  <img src="https://file.notion.so/f/f/0f86b459-412a-451d-9229-4dc4f87d6213/82ef2618-0e21-45f8-9844-8744cdd1daab/notionMind_(1).png?table=block&id=1c6ee035-a51f-806d-a110-c6fd33eb2bfe&spaceId=0f86b459-412a-451d-9229-4dc4f87d6213&expirationTimestamp=1743991200000&signature=40MwO6ZyIxZbwOaik6nKTmfGdcXewAoTwQ6QAWBiwJY&downloadName=notionMind+%281%29.png" />
-</div> 
 
 - 배포 URL : [Notion-Mind AppStore](https://apps.apple.com/kr/app/notion-mind/id6744064353)
 
@@ -66,7 +63,7 @@
 - Notion 인증을 통해 사용자의 데이터를 가져옴.
 
 <div>
-  <img width="200" src="https://file.notion.so/f/f/0f86b459-412a-451d-9229-4dc4f87d6213/4b4629b9-4c11-4dc4-a272-eb2ef6616064/IMG_0180.png?table=block&id=1cdee035-a51f-8069-964a-e78ea0ef669e&spaceId=0f86b459-412a-451d-9229-4dc4f87d6213&expirationTimestamp=1743991200000&signature=RtF6luMAe2Dk7RbG0o1Ql2Qfolf-ZYPXM_494c31hoQ&downloadName=IMG_0180.PNG.png" />
+  <img width="200" src="https://file.notion.so/f/f/0f86b459-412a-451d-9229-4dc4f87d6213/4b4629b9-4c11-4dc4-a272-eb2ef6616064/IMG_0180.png?table=block&id=1cdee035-a51f-8069-964a-e78ea0ef669e&spaceId=0f86b459-412a-451d-9229-4dc4f87d6213&expirationTimestamp=1744221600000&signature=jxfl4iWHS1GyNymiOWmSOrBfrk5VNmRMU_9UZhlBazY&downloadName=IMG_0180.PNG.png" />
 </div> 
 
 </br>
@@ -75,7 +72,7 @@
 
 
 <div>
-  <img width="200" src="https://file.notion.so/f/f/0f86b459-412a-451d-9229-4dc4f87d6213/571bc27c-4434-4a02-87d3-196526265bbc/IMG_0183.png?table=block&id=1cdee035-a51f-80d4-bdb3-cef5c83ce482&spaceId=0f86b459-412a-451d-9229-4dc4f87d6213&expirationTimestamp=1743991200000&signature=F3VwOpcEl4rCjRzWZVnhzR5WdNAejg9BJ58gvv1b3yo&downloadName=IMG_0183.PNG.png" />
+  <img width="200" src="https://file.notion.so/f/f/0f86b459-412a-451d-9229-4dc4f87d6213/571bc27c-4434-4a02-87d3-196526265bbc/IMG_0183.png?table=block&id=1cdee035-a51f-80d4-bdb3-cef5c83ce482&spaceId=0f86b459-412a-451d-9229-4dc4f87d6213&expirationTimestamp=1744221600000&signature=vlivJH9hp8K34IOqO6UZa3tyxFCBVj3h01yxJf6d2rw&downloadName=IMG_0183.PNG.png" />
 </div> 
 
 </br>
@@ -83,10 +80,11 @@
 - 각 아이템의 상세페이지 확인.
 
 <div>
-  <img width="200" src="https://file.notion.so/f/f/0f86b459-412a-451d-9229-4dc4f87d6213/7ea87dd1-2f9c-48fb-85ba-b93f9ab7cea9/IMG_0181.png?table=block&id=1cdee035-a51f-80a7-8605-cdcacaf80499&spaceId=0f86b459-412a-451d-9229-4dc4f87d6213&expirationTimestamp=1743991200000&signature=8UahAUHcKmdm-WIOtatnfWNtJyhNHTI2yHuWEk6Tip0&downloadName=IMG_0181.PNG.png" />
+  <img width="200" src="https://file.notion.so/f/f/0f86b459-412a-451d-9229-4dc4f87d6213/7ea87dd1-2f9c-48fb-85ba-b93f9ab7cea9/IMG_0181.png?table=block&id=1cdee035-a51f-80a7-8605-cdcacaf80499&spaceId=0f86b459-412a-451d-9229-4dc4f87d6213&expirationTimestamp=1744221600000&signature=Ddx_C4spa0zkz0HfioKcv7YmCGnmrvB6cXXCBz5M-Vk&downloadName=IMG_0181.PNG.png" />
 </div> 
 
 </br>
+
 
 
 
