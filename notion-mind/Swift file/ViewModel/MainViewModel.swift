@@ -11,6 +11,32 @@ import RxRelay
 import RxCocoa
 
 
+// UseCase로 분리된 로직
+class FetchNodesUseCase {
+    private let nodeApi: NodeAPI
+    private let disposeBag = DisposeBag()
+    
+    init(nodeApi: NodeAPI) {
+        self.nodeApi = nodeApi
+    }
+    
+    func execute(savedBotId: PublishRelay<String>, responseRelay: PublishRelay<ResponseModel>) {
+        savedBotId
+            .do(onNext: { _ in
+                Service.myPrint("2. savedBotId.do(onNext:)") {
+                    print("file: \(#file)")
+                    print("function: \(#function)")
+                    print("line: \(#line)")
+                }
+            })
+            .flatMap { _ in
+                self.nodeApi.fetchNodes()
+            }
+            .bind(to: responseRelay)
+            .disposed(by: disposeBag)
+    }
+}
+
 //실제 로직 처리
 class MainViewModel {
     
@@ -39,25 +65,27 @@ class MainViewModel {
     //
     let isLoggedIn = SaveDataManager.getData(type: Bool.self, key: .isLogin) ?? true
     
+    let fetchNodesUseCase: FetchNodesUseCase
     
-    
-   
     init() {
-        
-        savedBotId
-            .do(onNext: { _ in
-                Service.myPrint("2. savedBotId.do(onNext:)") {
-                    print("file: \(#file)")
-                    print("function: \(#function)")
-                    print("line: \(#line)")
-                }
-            })
-            .flatMap { _ in
-                self.nodeApi.fetchNodes()
-            }
-            .bind(to: self.responseRelay)
-            
-            .disposed(by: disposeBag)
+        // 원래 코드
+// savedBotId
+//     .do(onNext: { _ in
+//         Service.myPrint("2. savedBotId.do(onNext:)") {
+//             print("file: \(#file)")
+//             print("function: \(#function)")
+//             print("line: \(#line)")
+//         }
+//     })
+//     .flatMap { _ in
+//         self.nodeApi.fetchNodes()
+//     })
+//     .bind(to: self.responseRelay)
+//     .disposed(by: disposeBag)
+
+// 변경된 코드
+fetchNodesUseCase.execute(savedBotId: savedBotId, responseRelay: responseRelay)
+        fetchNodesUseCase.execute(savedBotId: savedBotId, responseRelay: responseRelay)
             
     }
     
