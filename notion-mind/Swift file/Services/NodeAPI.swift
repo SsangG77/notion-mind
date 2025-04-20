@@ -10,8 +10,11 @@ import RxSwift
 import RxRelay
 import RxCocoa
 
+protocol NodeRepository {
+    func fetchNodes() -> Observable<ResponseModel>
+}
 
-class NodeAPI {
+class NodeAPI: NodeRepository {
     
     static let shared = NodeAPI()
     

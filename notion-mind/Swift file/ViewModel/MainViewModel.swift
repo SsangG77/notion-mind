@@ -11,32 +11,6 @@ import RxRelay
 import RxCocoa
 
 
-// UseCase로 분리된 로직
-class FetchNodesUseCase {
-    private let nodeApi: NodeAPI
-    private let disposeBag = DisposeBag()
-    
-    init(nodeApi: NodeAPI) {
-        self.nodeApi = nodeApi
-    }
-    
-    func execute(savedBotId: PublishRelay<String>, responseRelay: PublishRelay<ResponseModel>) {
-        savedBotId
-            .do(onNext: { _ in
-                Service.myPrint("2. savedBotId.do(onNext:)") {
-                    print("file: \(#file)")
-                    print("function: \(#function)")
-                    print("line: \(#line)")
-                }
-            })
-            .flatMap { _ in
-                self.nodeApi.fetchNodes()
-            }
-            .bind(to: responseRelay)
-            .disposed(by: disposeBag)
-    }
-}
-
 //실제 로직 처리
 class MainViewModel {
     
@@ -58,34 +32,21 @@ class MainViewModel {
     
     let disposeBag = DisposeBag()
     
-    
-    // TODO: 데이터를 불러올때 상태 감지 옵저블
-//    var isLoading: BehaviorRelay<Bool> = BehaviorRelay<Bool>(value: false)
-    
     //
     let isLoggedIn = SaveDataManager.getData(type: Bool.self, key: .isLogin) ?? true
     
-    let fetchNodesUseCase: FetchNodesUseCase
+    // UseCase를 통해 NodeAPI 호출
+    let fetchNodesUseCase = FetchNodesUseCase(nodeRepository: NodeAPI())
     
     init() {
-        // 원래 코드
-// savedBotId
-//     .do(onNext: { _ in
-//         Service.myPrint("2. savedBotId.do(onNext:)") {
-//             print("file: \(#file)")
-//             print("function: \(#function)")
-//             print("line: \(#line)")
-//         }
-//     })
-//     .flatMap { _ in
-//         self.nodeApi.fetchNodes()
-//     })
-//     .bind(to: self.responseRelay)
-//     .disposed(by: disposeBag)
-
-// 변경된 코드
-fetchNodesUseCase.execute(savedBotId: savedBotId, responseRelay: responseRelay)
-        fetchNodesUseCase.execute(savedBotId: savedBotId, responseRelay: responseRelay)
+        
+        savedBotId
+            .flatMap { _ in
+                self.fetchNodesUseCase.execute()
+            }
+            .bind(to: self.responseRelay)
+            
+            .disposed(by: disposeBag)
             
     }
     
