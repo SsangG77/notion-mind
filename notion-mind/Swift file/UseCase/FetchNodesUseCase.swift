@@ -11,3 +11,4 @@ class FetchNodesUseCase {
         return nodeRepository.fetchNodes()
     }
 } 
+

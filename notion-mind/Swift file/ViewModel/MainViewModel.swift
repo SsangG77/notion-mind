@@ -15,14 +15,10 @@ import RxCocoa
 class MainViewModel {
     
     //의존성
-    let nodeApi = NodeAPI()
-    
-    
+//    let nodeApi = NodeAPI()
     
     //싱글톤 인스턴스
     static let shared = MainViewModel()
-    
-    
     
     // Rx
     var nodesRelay: BehaviorRelay<[Node]> = BehaviorRelay(value: [])
@@ -36,13 +32,18 @@ class MainViewModel {
     let isLoggedIn = SaveDataManager.getData(type: Bool.self, key: .isLogin) ?? true
     
     // UseCase를 통해 NodeAPI 호출
-    let fetchNodesUseCase = FetchNodesUseCase(nodeRepository: NodeAPI())
+
+    let nodeRepositoryImpl = NodeRepositoryImpl(local: LocalNodeDataSourceImpl(), remote: RemoteNodeDataSourceImpl())
+    let fetchNodesUseCase: FetchNodesUseCase
+    
     
     init() {
+        fetchNodesUseCase = FetchNodesUseCase(nodeRepository: nodeRepositoryImpl)
         
         savedBotId
             .flatMap { _ in
                 self.fetchNodesUseCase.execute()
+                
             }
             .bind(to: self.responseRelay)
             
@@ -64,10 +65,4 @@ class MainViewModel {
         }
         
     }
-    
-   
-    
-    
 }
-
-
