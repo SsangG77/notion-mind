@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 //MARK: - node model
-struct Node: Codable {
+struct Node: Codable, Equatable {
     let id: String
     let parentId: String?
     let icon: String?
@@ -23,22 +23,17 @@ struct Node: Codable {
     func getCGRect() -> CGRect? {
         rect?.cgRect
     }
-    
-//    mutating func setRect(rect: CGRect) {
-//        self.rect = rect
-//    }
-    
 }
 
 
 //MARK: - 속성 model
-struct Property: Codable {
+struct Property: Codable, Equatable {
     let name: String
     let type: String
     let value: [ValueType]
 }
 
-struct ValueType: Codable {
+struct ValueType: Codable, Equatable {
     let id: String
     let name: String
     let color: String
@@ -46,7 +41,7 @@ struct ValueType: Codable {
 
 
 
-struct CodableRect: Codable {
+struct CodableRect: Codable, Equatable {
     let x: CGFloat
     let y: CGFloat
     let width: CGFloat

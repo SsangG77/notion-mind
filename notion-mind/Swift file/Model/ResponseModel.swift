@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ResponseModel: Codable {
+struct ResponseModel: Codable, Equatable {
     let deleteIds: [String]
     let editNodes: [Node]
     let newNodes: [Node]
