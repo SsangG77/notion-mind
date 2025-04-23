@@ -38,7 +38,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
        let rootViewController: UIViewController
        if isLoggedIn {
-           rootViewController = MainViewController(/*viewModel: MainViewModel.shared*/)
+           rootViewController = MainViewController()
            
        } else {
            rootViewController = LoginViewController()
@@ -61,10 +61,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        let host = components.host ?? "host 없음"
         let items = components.queryItems ?? []
         
-//        Service.myPrint("3. items response query") {
-//            print(#function)
-//            print(items)
-//        }
         
         let authResult = items[0]
         let botIdResult = items[1]
@@ -98,8 +94,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 print("line: \(#line)")
                 print(value)
             }
-            
-            
         }
       
     }
