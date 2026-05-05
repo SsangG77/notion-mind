@@ -16,8 +16,19 @@
 		91FE8CDE2D843088005B3557 /* UIViewSeparator in Frameworks */ = {isa = PBXBuildFile; productRef = 91FE8CDD2D843088005B3557 /* UIViewSeparator */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		91AE6B742DBA263E00300584 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 91F64E342D78739F00D3ACAF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 91F64E3B2D78739F00D3ACAF;
+			remoteInfo = "notion-mind";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		91970C992D9D865E004C8D0B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		91AE6B702DBA263E00300584 /* notion-mindTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "notion-mindTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		91F64E3C2D78739F00D3ACAF /* notion-mind.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "notion-mind.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		91F64EA32D788BF300D3ACAF /* InriaSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InriaSans-Bold.ttf"; sourceTree = "<group>"; };
 		91F64EA52D788BF300D3ACAF /* InriaSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "InriaSans-Regular.ttf"; sourceTree = "<group>"; };
@@ -34,6 +45,11 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		91AE6B712DBA263E00300584 /* notion-mindTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "notion-mindTests";
+			sourceTree = "<group>";
+		};
 		91F64E3E2D78739F00D3ACAF /* notion-mind */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -45,6 +61,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		91AE6B6D2DBA263E00300584 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		91F64E392D78739F00D3ACAF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -64,6 +87,7 @@
 			children = (
 				91970C992D9D865E004C8D0B /* README.md */,
 				91F64E3E2D78739F00D3ACAF /* notion-mind */,
+				91AE6B712DBA263E00300584 /* notion-mindTests */,
 				91F64E3D2D78739F00D3ACAF /* Products */,
 				91F64EA92D788C0E00D3ACAF /* Font */,
 			);
@@ -73,6 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				91F64E3C2D78739F00D3ACAF /* notion-mind.app */,
+				91AE6B702DBA263E00300584 /* notion-mindTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -89,6 +114,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		91AE6B6F2DBA263E00300584 /* notion-mindTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 91AE6B762DBA263E00300584 /* Build configuration list for PBXNativeTarget "notion-mindTests" */;
+			buildPhases = (
+				91AE6B6C2DBA263E00300584 /* Sources */,
+				91AE6B6D2DBA263E00300584 /* Frameworks */,
+				91AE6B6E2DBA263E00300584 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				91AE6B752DBA263E00300584 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				91AE6B712DBA263E00300584 /* notion-mindTests */,
+			);
+			name = "notion-mindTests";
+			packageProductDependencies = (
+			);
+			productName = "notion-mindTests";
+			productReference = 91AE6B702DBA263E00300584 /* notion-mindTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		91F64E3B2D78739F00D3ACAF /* notion-mind */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 91F64E4F2D7873A100D3ACAF /* Build configuration list for PBXNativeTarget "notion-mind" */;
@@ -122,9 +170,13 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1620;
+				LastSwiftUpdateCheck = 1630;
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
+					91AE6B6F2DBA263E00300584 = {
+						CreatedOnToolsVersion = 16.3;
+						TestTargetID = 91F64E3B2D78739F00D3ACAF;
+					};
 					91F64E3B2D78739F00D3ACAF = {
 						CreatedOnToolsVersion = 16.2;
 					};
@@ -150,11 +202,19 @@
 			projectRoot = "";
 			targets = (
 				91F64E3B2D78739F00D3ACAF /* notion-mind */,
+				91AE6B6F2DBA263E00300584 /* notion-mindTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		91AE6B6E2DBA263E00300584 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		91F64E3A2D78739F00D3ACAF /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -168,6 +228,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		91AE6B6C2DBA263E00300584 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		91F64E382D78739F00D3ACAF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -177,7 +244,53 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		91AE6B752DBA263E00300584 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 91F64E3B2D78739F00D3ACAF /* notion-mind */;
+			targetProxy = 91AE6B742DBA263E00300584 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		91AE6B772DBA263E00300584 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M3KH86595Z;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.sangjin.notion-mindTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/notion-mind.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/notion-mind";
+			};
+			name = Debug;
+		};
+		91AE6B782DBA263E00300584 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M3KH86595Z;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.sangjin.notion-mindTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/notion-mind.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/notion-mind";
+			};
+			name = Release;
+		};
 		91F64E502D7873A100D3ACAF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -368,6 +481,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		91AE6B762DBA263E00300584 /* Build configuration list for PBXNativeTarget "notion-mindTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				91AE6B772DBA263E00300584 /* Debug */,
+				91AE6B782DBA263E00300584 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		91F64E372D78739F00D3ACAF /* Build configuration list for PBXProject "notion-mind" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

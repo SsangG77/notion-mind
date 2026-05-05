@@ -32,15 +32,6 @@ class LoginViewController: UIViewController {
     //safari view controller
     var safariViewController: SFSafariViewController?
     
-//    init(viewModel: LoginViewModel) {
-//        self.loginViewModel = viewModel
-//        super.init(nibName: nil, bundle: nil)
-//    }
-//    
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-    
     
     deinit {
         NotificationCenter.default.removeObserver(self, name: Notification.Name("CloseSafariViewController"), object: nil)
@@ -55,21 +46,12 @@ class LoginViewController: UIViewController {
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let currentTime = formatter.string(from: now)
 
-        Service.myPrint("LoginViewController - viewDodLoad() \(currentTime)") {
-            print("login : ", SaveDataManager.getData(type: Bool.self, key: .isLogin) ?? "login 없음")
-            print("bot_id : ", SaveDataManager.getData(type: String.self, key: .botId) ?? "bot_id 없음")
-        }
         
         setUI()
         setLayout()
        
         connectButton.rx.tap //로그인 버튼 클릭하여 이벤트 방출
             .subscribe(onNext: {
-//                Service.myPrint("1. connectionButton tapped") {
-//                    print("file: \(#file)")
-//                    print("function: \(#function)")
-//                    print("line: \(#line)")
-//                }
                 self.openNotionAuth()
             })
             .disposed(by: disposeBag)
@@ -82,12 +64,6 @@ class LoginViewController: UIViewController {
             .subscribe(onNext: { [weak self] success in //
                 guard let self = self else { return }
                 if success {
-//                    Service.myPrint("4. authSuccess") {
-//                        print("file: \(#file)")
-//                        print("function: \(#function)")
-//                        print("line: \(#line)")
-//                        print(success)
-//                    }
                     SaveDataManager.setData(value: true, key: .isLogin)
                     self.navigateToMain()
                 } else {
